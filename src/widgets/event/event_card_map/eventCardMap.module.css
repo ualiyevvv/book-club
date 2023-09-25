@@ -1,0 +1,64 @@
+.event-card-map {
+    /*max-width: 270px;*/
+    position: fixed;
+    bottom: 70px;
+    left: 0;
+    padding: 0 10px;
+    width: 100%;
+    height: 90px;
+    /*width: 100%;*/
+    /*height: 100%;*/
+    border-radius: 12px;
+    /*box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;*/
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    z-index: 1111;
+}
+.event-card__header {
+    width: 90px;
+    height: 100%;
+    position: relative;
+    border-radius: 12px 0 0 12px;
+    flex: 0 0 auto;
+}
+.event-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px 0 0 12px;
+    background-color: #929292;
+}
+.event-card__body {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    /*background-color: white;*/
+    background-color: var(--color-bg-card);
+    border-radius: 0 12px 12px 0;
+    display: flex;
+    flex-direction: column;
+}
+.event-card__caption {
+    font-size: 15px;
+    font-weight: 600;
+    height: 100%;
+}
+.event-card__caption:hover {
+    color: #1d5d90;
+}
+.event-card--date {
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.event-card__free {
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.5);
+}
+.event-card__deadline {
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.5);
+}

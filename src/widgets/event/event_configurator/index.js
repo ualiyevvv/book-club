@@ -1,0 +1,1 @@
+export {EventConfigurator} from './ui/EventConfigurator';

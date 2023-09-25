@@ -1,0 +1,22 @@
+.EventList {
+    padding-bottom: 35px;
+}
+.EventList__header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px 0;
+}
+.EventList__title {
+    font-size: 28px;
+    font-weight: 600;
+}
+.EventList__description {
+    font-size: 18px;
+    /*color: grey;*/
+    margin-top: 4px;
+}
+.EventList__show-more {
+    width: 100%;
+    margin-top: 20px;
+}

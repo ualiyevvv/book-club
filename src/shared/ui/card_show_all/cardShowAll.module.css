@@ -1,0 +1,36 @@
+.CardShowAll {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 96%;
+    height: 96%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+CardShowAll__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ebebeb;
+}
+
+.CardShowAll__text {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+/*.CardShowAll:hover .CardShowAll__icon svg path {*/
+/*    fill: #102f86;*/
+/*}*/
+/*.CardShowAll:hover .CardShowAll__text {*/
+/*    color: #102f86;*/
+/*}*/
+.CardShowAll:hover  {
+    /*scale: 1.2;*/
+    opacity: .8;
+}

@@ -1,0 +1,27 @@
+.eventCategoryTabs {
+    position: sticky;
+    top: 64px;
+    padding: 10px 0;
+    /*background-color: #EBECED;*/
+    z-index: 11;
+    background-color: var(--color-bg);
+}
+
+.eventCategoryTabs span {
+    padding: 0 10px;
+}
+
+.eventCategoryTabs__list {
+    width: 100%;
+    display: flex;
+    overflow: auto;
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    /*-ms-scroll-snap-type: x mandatory;*/
+    scroll-snap-type: x mandatory;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.eventCategoryTabs__list::-webkit-scrollbar {
+    display: none;
+}

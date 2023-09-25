@@ -1,0 +1,41 @@
+.box {
+    /*height: 100%;*/
+    /*padding: 0 20px;*/
+    /*padding-bottom: 155px;*/
+    /*padding-bottom: 210px;*/
+    flex-grow: 1;
+    /*overflow: auto;*/
+    padding-bottom: 80px;
+}
+.box--navbar {
+    padding-top: 63px;
+}
+.box--menu {
+    padding-bottom: 95px;
+}
+.box--yummy{
+    padding-bottom: 165px;
+}
+
+.box--center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.box--desktop {
+    padding-bottom: 45px;
+}
+
+/*.container {*/
+/*    padding: 10px 20px;*/
+/*}*/
+
+.container {
+    /*height: 100%;*/
+    width: 100%;
+    padding: 10px 20px;
+    /*overflow: auto;*/
+}
+.container--header {
+
+}

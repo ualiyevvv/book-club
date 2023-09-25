@@ -1,0 +1,37 @@
+.event-page-header {
+    width: 100%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+}
+.event-page-header__block {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    border-right: 1px solid silver;
+}
+.event-page-header__block:last-child {
+    border-right: none;
+}
+.event-page-date {
+    display: flex;
+    align-items: center;
+}
+.event-page-calendar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #b3b3b3;
+    margin-right: 10px;
+}
+.event-page-date-info {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}

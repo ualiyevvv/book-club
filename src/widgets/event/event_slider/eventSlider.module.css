@@ -1,0 +1,105 @@
+.banner {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    min-height: 375px;
+    max-height: 500px;
+    border-radius: 0 0 25px 25px;
+    background-color: silver;
+}
+.banner :global(.slick-list), .banner :global(.slick-slide) {
+    border-radius: 0 0 25px 25px;
+}
+.banner-image {
+    background-color: silver;
+    width: 100%;
+    height: 450px;
+}
+@media (max-width:960px){
+    .banner {
+        height: 350px;
+        border-radius: 0 0 16px 16px;
+    }
+    .banner-image {
+        height: 350px;
+    }
+    .banner :global(.slick-list), .banner :global(.slick-slide) {
+        border-radius: 0 0 16px 16px;
+    }
+}
+
+@media (max-width:600px){
+    .banner {
+        height: 250px;
+    }
+    .banner-image {
+        height: 250px;
+    }
+}
+
+.banner-button {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    opacity: 0;
+    cursor: pointer;
+    /*background-color: black;*/
+    background: none;
+    border: none;
+    padding: 0 10px;
+}
+.banner:hover .banner-button {
+    opacity: .6;
+}
+.banner-button:hover {
+    /*box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;*/
+    /*background: rgba(0,0,0,.6);*/
+    background: rgb(14,14,14);
+    background: radial-gradient(circle, rgba(0,0,36,1) 0%, rgba(9,83,121,0) 96%);
+}
+.banner-button svg path {
+    fill: white;
+}
+.banner-button--prev {
+    left: 0;
+}
+.banner-button--next {
+    right: 0;
+}
+.banner-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+}
+.banner-dots li {
+    width: 7px;
+    height: 7px;
+    background-color: grey;
+    border-radius: 100px;
+    margin-right: 10px;
+}
+.banner-dots li:last-child {
+    margin-right: 0;
+}
+.banner-dots li button {
+    display: none;
+    border: none;
+}
+.banner-dots :global(li.slick-active) {
+    background-color: white;
+}
+.banner-counter {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding: 3px 6px;
+    background-color: white;
+    color: black;
+    font-size: 13px;
+    border-radius: 100px;
+}
