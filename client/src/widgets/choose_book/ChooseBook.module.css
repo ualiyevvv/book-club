@@ -1,0 +1,66 @@
+.ChooseBook {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    position: relative;
+}
+.ChooseBook__row {
+    height: 100%;
+    display: flex;
+    /*margin-bottom: 20px;*/
+}
+.ChooseBook__cover {
+    margin-right: 20px;
+}
+.ChooseBook img {
+    width: 80px;
+}
+
+.ChooseBook__wrapper {
+
+}
+.ChooseBook__user {
+
+}
+.user__name span {
+    color: grey;
+}
+.user__comment {
+    margin-top: 15px;
+}
+.ChooseBook__bookinfo {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    margin: 12px 0;
+    margin-bottom: 20px;
+    border-top: 1px solid silver;
+    border-bottom: 1px solid silver;
+}
+.ChooseBook__title {
+    font-size: 18px;
+    font-weight: 600;
+}
+.ChooseBook__author {
+    font-size: 16px;
+    color: grey;
+    margin-bottom: 15px;
+}
+
+@media (max-width:575px){
+    .ChooseBook img {
+        width: 80px;
+    }
+    .ChooseBook__author {
+        font-size: 14px;
+    }
+    .ChooseBook__bookinfo {
+        display: flex;
+        /*flex-direction: column;*/
+    }
+}

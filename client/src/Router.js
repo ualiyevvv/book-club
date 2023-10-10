@@ -47,18 +47,18 @@ export default function Router(){
 			{/** Admin:  */}
 			<Route path={'/admin'}>
 				<Route index element={
-					// <AdminPage>
+					<AdminPage>
 						<AdminDashboard />
-					// </AdminPage>
+					</AdminPage>
 				}/>
 			</Route>
 
 			{/** Authentication Pages */}
 			<Route path='/authn'>
 				<Route index element={
-					// <Page>
+					<Page>
 						<Authentication />
-					// </Page>
+					</Page>
 				}/>
 
 				<Route path='logout' element={

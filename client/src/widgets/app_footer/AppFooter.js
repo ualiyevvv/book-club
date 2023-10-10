@@ -7,7 +7,7 @@ export default function AppFooter() {
     return (
         <footer className={styles['appFooter']}>
             <Container>
-                <div  className={styles['appFooter__text']}>2023. Все права защищены. Разработчики @alar4j @mitxp </div>
+                <div  className={styles['appFooter__text']}>2023. Все права защищены. <br/> Разработчики @alar4j @mitxp </div>
             </Container>
         </footer>
     )

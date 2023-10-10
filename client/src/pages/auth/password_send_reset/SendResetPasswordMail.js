@@ -10,6 +10,7 @@ import CardBody from '../../../shared/ui/card/CardBody'
 import CardFooter from '../../../shared/ui/card/CardFooter'
 import Logo from '../../../shared/ui/logo/Logo'
 import TextWithLink from '../../../shared/ui/text_with_link/TextWithLink'
+import Block from "../../../shared/ui/block/Block";
 
 export default function SendResetPasswordMail(){
 
@@ -17,19 +18,21 @@ export default function SendResetPasswordMail(){
 
     return (<>
         <Box center={true}>
-            <Card>
-                <CardHeader>
-                    <Logo />
-                </CardHeader>
+            <Block isAlignCenter={true}>
+                <Card maxWidth={600}>
+                    <CardHeader>
+                        <Logo />
+                    </CardHeader>
 
-                <CardBody>
-                    <SendResetPasswordMailForm />
-                </CardBody>
-                
-                <CardFooter>
-                    <TextWithLink text="Уже есть аккаунт?" linktext="Авторизация" onClick={e => navigate('/authn', {replace:true})} />
-                </CardFooter>
-            </Card>
+                    <CardBody>
+                        <SendResetPasswordMailForm />
+                    </CardBody>
+
+                    <CardFooter>
+                        <TextWithLink text="Уже есть аккаунт?" linktext="Авторизация" onClick={e => navigate('/authn', {replace:true})} />
+                    </CardFooter>
+                </Card>
+            </Block>
         </Box>
     </>);
 }

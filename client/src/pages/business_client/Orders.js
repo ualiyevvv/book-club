@@ -117,9 +117,9 @@ export default function Orders({}){
                 {device !== 'mobile'
                     ? <>
                         <Logo />
-                        <Nav left={40}>
+                        <Nav left={35}>
                             <NavLink text={'Главная'} onClick={e => navigate('/', {replace: true,})}/>
-                            <NavLink text={'Мероприятия'} onClick={e => navigate('/event', {replace: true,})}/>
+                            <NavLink text={'Библиотека'} onClick={e => navigate('/event', {replace: true,})}/>
                             <NavLink text={'Блог'}/>
                         </Nav>
                     </>
@@ -129,7 +129,11 @@ export default function Orders({}){
 
             <GroupInline>
                 <ToggleTheme />
-                <Block left={20} width={'auto'}><EventPublishAction /></Block>
+                {/*<Block left={20} width={'auto'}><EventPublishAction /></Block>*/}
+                <Nav left={20}>
+                    <NavLink text={'Войти/Зарегистрироваться'} onClick={e => navigate('/authn', {replace: true,})}/>
+                    {/*<NavLink text={''} onClick={e => navigate('/event', {replace: true,})}/>*/}
+                </Nav>
             </GroupInline>
         </AppBar>
         <Box navbar={true} isDesktop={device === 'desktop'}>
@@ -138,9 +142,7 @@ export default function Orders({}){
                     {/*<EventConfigurator toggle={toggleTab} onChangeToggle={setToggleTab} />*/}
                     <Block>
                         {toggleTab === 'list' ?
-                            <Container>
-                                <EventList title={'Библиотека клуба'} description={'Можно одолжить книгу из списка на определенное время'} events={filterEvents(eventsInfo, selectedCategory, false)} />
-                            </Container>
+                            <EventList title={'Библиотека клуба'} description={'Можно одолжить книгу из списка на определенное время'} events={filterEvents(eventsInfo, selectedCategory, false)} />
                             : // <MapModal events={geoJson} />
                             <Leaflet markersData={events} />
                         }
@@ -158,6 +160,6 @@ export default function Orders({}){
 
 
         </Box>
-        {(device === 'mobile' || device === 'tablet') ? <NavigationPanel /> : <AppFooter /> }
+        <AppFooter />
     </>)
 }

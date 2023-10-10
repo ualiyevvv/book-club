@@ -15,6 +15,18 @@ import CardBody from '../../../shared/ui/card/CardBody';
 import CardFooter from '../../../shared/ui/card/CardFooter';
 import TextWithLink from '../../../shared/ui/text_with_link/TextWithLink'
 import Button from '../../../shared/ui/button/Button'
+import AppBar from "../../../shared/ui/app_bar/AppBar";
+import GroupInline from "../../../shared/ui/group_inline/GroupInline";
+import Nav from "../../../shared/ui/nav/Nav";
+import NavLink from "../../../shared/ui/nav/NavLink";
+import Burger from "../../../widgets/burger/Burger";
+import ToggleTheme from "../../../widgets/toggle_them/ToggleTheme";
+import Block from "../../../shared/ui/block/Block";
+import EventPublishAction from "../../../widgets/event/event_publish_action/EventPublishAction";
+import Container from "../../../shared/ui/box/Container";
+import Typography from "../../../shared/ui/typography/Typography";
+import NavigationPanel from "../../../widgets/navigation_panel/NavigationPanel";
+import AppFooter from "../../../widgets/app_footer/AppFooter";
 /*
 * 1) Не всегда при OAuth2 имеется имя, а в приложении хотелось бы иметь имя всегда.
 * Для этого нужно, если нет имени пользователя, перенаправлять на страницу
@@ -25,6 +37,8 @@ import Button from '../../../shared/ui/button/Button'
 export default function Authentication(){
 
     const navigate = useNavigate();
+    const { adaptiveHandler } = useAppContext();
+    const { device } = adaptiveHandler;
 
     const logger = useMemo(()=>new Logger('Authentication'), []);
 
@@ -32,31 +46,66 @@ export default function Authentication(){
 
     // SignUp/SignIn должны быть в одном компоненте и OAuth тоже, все должно быть в одном Authentication page
     return (
-        <Box center={true}>
+        <>
+            <AppBar padding={'10px'}>
+                <GroupInline>
+                    {device !== 'mobile'
+                        ? <>
+                            <Logo />
+                            <Nav left={35}>
+                                <NavLink text={'Главная'} onClick={e => navigate('/', {replace: true,})}/>
+                                <NavLink text={'Библиотека'} onClick={e => navigate('/event', {replace: true,})}/>
+                                <NavLink text={'Вступить'} onClick={e => navigate('/authn', {replace: true,})}/>
+                                <NavLink text={'Блог'}/>
+                            </Nav>
+                        </>
+                        : <Burger />
+                    }
+                </GroupInline>
 
-            <Card>
-                <CardHeader>
-                    <Logo />
-                </CardHeader>
+                <GroupInline>
+                    <ToggleTheme />
+                    {/*<Block left={20} width={'auto'}><EventPublishAction /></Block>*/}
+                    <Nav left={20}>
+                        <NavLink text={'Войти/Зарегистрироваться'} onClick={e => navigate('/authn', {replace: true,})}/>
+                        {/*<NavLink text={''} onClick={e => navigate('/event', {replace: true,})}/>*/}
+                    </Nav>
+                </GroupInline>
+            </AppBar>
+            <Box center={true}>
 
-                <CardBody>
-                    {tabType === 'signup' && <SendActivationMail />}
-                    {tabType === 'signin' && <SignIn />}
-                    <br />
-                    <Button variant='second'><a href={"/auth/azure"}>OpenID Connect</a></Button>
-                </CardBody>
-                
-                <CardFooter>
-                    {tabType === 'signup' && <TextWithLink text="Уже есть аккаунт?" linktext="Авторизация" onClick={() => setTabType('signin')} />}
-                    {tabType === 'signin' && <>
-                        <TextWithLink text="Нет аккаунта?" linktext="Регистрация" onClick={() => setTabType('signup')} /> 
-                        <br/>
-                        <TextWithLink linktext="Забыли пароль?" onClick={e => navigate('/authn/send-reset')} />
-                    </>}
-                </CardFooter>
-            </Card>
+                <Container>
+                    <Block isAlignCenter={true} top={60}>
+                        <Card maxWidth={600} forAuth={true}>
+                            <CardHeader>
+                                {/*<Logo />*/}
+                                <Block isAlignCenter={true}>
+                                    <Typography align={'center'} size={28} weight={600}>Добро пожаловать</Typography>
+                                </Block>
+                            </CardHeader>
 
-        </Box>
+                            <CardBody>
+                                {tabType === 'signup' && <SendActivationMail />}
+                                {tabType === 'signin' && <SignIn />}
+                                <br />
+                                <Button variant='second'><a href={"/auth/azure"}>OpenID Connect</a></Button>
+                            </CardBody>
+
+                            <CardFooter>
+                                {tabType === 'signup' && <TextWithLink text="Уже есть аккаунт?" linktext="Авторизация" onClick={() => setTabType('signin')} />}
+                                {tabType === 'signin' && <>
+                                    <TextWithLink text="Нет аккаунта?" linktext="Регистрация" onClick={() => setTabType('signup')} />
+                                    <br/>
+                                    <TextWithLink linktext="Забыли пароль?" onClick={e => navigate('/authn/send-reset')} />
+                                </>}
+                            </CardFooter>
+                        </Card>
+                    </Block>
+                </Container>
+
+            </Box>
+            <AppFooter />
+        </>
     );
 }
 

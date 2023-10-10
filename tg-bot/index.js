@@ -4,7 +4,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot('6645296253:AAFzHpMt1P2fzH5f1Wx3RY7Wm1TAyfz0zMg', { polling: true });
 
 // Define the group chat ID where you want to check membership
-const groupId = -4010066261; // Replace with your group chat ID
+const groupId = -1001875541217; // Replace with your group chat ID
 let chatId;
 let userId;
 
@@ -29,6 +29,29 @@ bot.onText(/\/start/, (msg) => {
     bot.sendMessage(chatId, 'Для продолжения, пожалуйста, нажмите "Подтвердить".', keyboard);
 });
 
+// Обработка команды /status
+bot.onText(/\/status/, async (msg) => {
+    chatId = msg.chat.id;
+    userId = msg.from.id;
+
+    try {
+        // Получение информации о пользователе
+        const memberInfo = await bot.getChatMember(groupId, userId);
+        const status = JSON.stringify(memberInfo);
+
+        // Проверка привилегий пользователя
+        if (memberInfo.status === 'administrator' || memberInfo.status === 'creator') {
+            bot.sendMessage(chatId, 'У вас есть привилегии в этой группе.');
+        } else {
+            bot.sendMessage(chatId, 'У вас нет привилегий в этой группе.');
+        }
+        // Отправка статуса пользователя
+        bot.sendMessage(chatId, `Статус пользователя в группе: ${status}`);
+    } catch (error) {
+        console.error('Ошибка:', error);
+        bot.sendMessage(chatId, 'Произошла ошибка при получении статуса пользователя.');
+    }
+});
 
 // Listener для кнопки "Подтвердить"
 bot.onText(/Подтвердить/, (msg) => {

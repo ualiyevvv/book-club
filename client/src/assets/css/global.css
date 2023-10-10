@@ -2,7 +2,8 @@
 	--color-main: #263f5f;
 	/*--color-main: #0B3D91;*/
 	--color-second: #fd7c33;
-	--color-bg: #EBECED;
+	/*--color-bg: #EBECED;*/
+	--color-bg: #f4f2ef;
 	/* --color-bg: #fffdfc; */
 	--color-danger: #dc3545;
 	--font-family-text: 'Manrope';
@@ -13,7 +14,8 @@
 }
 
 html[data-theme='light'] {
-	--color-bg: white;
+	--color-bg: #f4f2ef;
+	--color-block-bg: #f4f2ef;
 	--color-devider: #ddd;
 	--color-text: black;
 	--color-bg-card: white;
@@ -23,7 +25,7 @@ html[data-theme='light'] {
 	--color-element-secondary-text: black;
 	--color-active: #3E6AD7;
 	--color-active-text: white;
-	--color-main: #1E262F;
+	--color-main: #003c94;
 	--color-main-active: #1E262F;
 	--color-main-text: white;
 	--color-second: #2086E5;
@@ -40,7 +42,7 @@ html[data-theme='dark'] {
 	--color-element-secondary-hover: #c9c9c9;
 	--color-element-secondary-text: black;
 	--color-active: #3E6AD7;
-	--color-main: #363e51;
+	--color-main: #003c94;
 	--color-main-active: #eeeeee;
 	--color-main-text: white;
 	--color-cancel: EBEDF0;
@@ -54,6 +56,34 @@ html[data-theme='dark'] {
 	padding: 0;
 	box-sizing: border-box;
 	font-family: var(--font-family-text), sans-serif;
+}
+
+:root {
+	--scrollbarBgColor: rgba(0, 0, 0, .05);
+	--scrollbarThumbColor: rgba(0, 0, 0, .15);
+	--scrollbarThumbColorSecond: rgba(255, 255, 255, .7);
+	--scrollbarWidth: 2rem;
+	--scrollbarBorder: 0 solid var(--scrollbarBgColor);
+	--scrollbarBorderRadius: calc(var(--scrollbarWidth) / 4);
+}
+body::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 0 rgba(0,0,0,0.3);
+	border-radius: 0;
+	background-color: #F5F5F5;
+}
+
+body::-webkit-scrollbar
+{
+	width: 8px;
+	background-color: #F5F5F5;
+}
+
+body::-webkit-scrollbar-thumb
+{
+	border-radius: 5px;
+	/*-webkit-box-shadow: inset 0 0 6px #003c94;*/
+	background-color: #a8a8a8;
 }
 
 body {

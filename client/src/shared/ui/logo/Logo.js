@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './logo.module.css' ;
 import {useNavigate} from "react-router-dom";
-// import LogoIcon from '../../../assets/icons/astana_events_logo.svg';
+import LogoIcon from '../../../assets/icons/aitu_book_club_logo.png';
 
 export default function Logo(){
 
@@ -10,9 +10,10 @@ export default function Logo(){
 
     return (
         <div className={styles.logo} onClick={e => navigate("/")}>
-            {/*<LogoIcon />*/}
+            {/*<LogoIcon width={45} height={45} />*/}
             {/*<a href="/main">LOGO</a>*/}
-            LOGO
+            <img className={styles.logo__img} src={LogoIcon} alt=""/>
+            {/*LOGO*/}
         </div>
 
 

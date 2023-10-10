@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import Box from '../../shared/ui/box/Box'
 import NavigationPanel from '../../widgets/navigation_panel/NavigationPanel';
@@ -23,6 +23,12 @@ import ToggleTheme from "../../widgets/toggle_them/ToggleTheme";
 import TagsGroup from "../../shared/ui/tags_group/TagsGroup";
 import TagsItem from "../../shared/ui/tags_group/TagsItem";
 import BookCrossing from "../../widgets/book_crossing/BookCrossing";
+import VoteTimer from "../../widgets/vote_timer/VoteTimer";
+import ChooseBook from "../../widgets/choose_book/ChooseBook";
+import Grid from "../../shared/ui/grid/Grid";
+import Typography from "../../shared/ui/typography/Typography";
+import CreateBook from "../../widgets/create_book/CreateBook";
+import Card from "../../shared/ui/card/Card";
 
 export default function EventPage(){
 
@@ -76,13 +82,25 @@ export default function EventPage(){
         }
     }
 
+    const [books, setBooks] = useState([])
+
+    function onBookOffered(bookOffer) {
+        const newBooksArray = [...books, bookOffer];
+        setBooks(newBooksArray)
+    }
+
+    useEffect(() => {
+        console.log(books)
+    }, [books])
+
+
     return (<>
         <AppBar padding={'10px'}>
             {device !== 'mobile' ? <GroupInline>
                     <Logo />
-                    <Nav left={40}>
+                    <Nav left={35}>
                         <NavLink text={'Главная'} onClick={e => navigate('/', {replace: true,})}/>
-                        <NavLink text={'Мероприятия'} onClick={e => navigate('/event', {replace: true,})}/>
+                        <NavLink text={'Библиотека'} onClick={e => navigate('/event', {replace: true,})}/>
                         <NavLink text={'Блог'}/>
                     </Nav>
                 </GroupInline> : <>
@@ -92,65 +110,109 @@ export default function EventPage(){
 
             <GroupInline>
                 <ToggleTheme />
-                <Block left={20} width={'auto'}><EventPublishAction /></Block>
+                {/*<Block left={20} width={'auto'}><EventPublishAction /></Block>*/}
+                <Nav left={20}>
+                    <NavLink text={'Войти/Зарегистрироваться'} onClick={e => navigate('/authn', {replace: true,})}/>
+                    {/*<NavLink text={''} onClick={e => navigate('/event', {replace: true,})}/>*/}
+                </Nav>
             </GroupInline>
         </AppBar>
         <Box navbar={true} isDesktop={device === 'desktop'}>
-            <EventSlider photos={[1,2,3,4]}/>
+            {/*<EventSlider photos={[1,2,3,4]}/>*/}
+
 
             <Container>
                 <div className="event-page">
-                    <div className="event-page__title">{eventsInfo?.caption}</div>
-                    <TagsGroup>
-                        <TagsItem label={'category1'}/>
-                        <TagsItem label={'category2'}/>
-                        <TagsItem label={'category3'}/>
-                        <TagsItem label={'category4'}/>
-                        <TagsItem label={'category5'}/>
-                    </TagsGroup>
-                    <BookCrossing />
-                    <div className="event-page-row">
-                        <div className="event-page-block">
-                            <div className="event-page-block__icon">
-                                <IconLocation width={25} height={25} />
-                            </div>
-                            <div className="event-page-block__text">
-                                {eventsInfo?.address}
-                            </div>
-                        </div>
-                        <div className="event-page-block">
-                            <div className="event-page-block__icon">
-                                <IconCalendar width={25} height={25} />
-                            </div>
-                            <div className="event-page-block__text">
-                                {eventsInfo?.start_date} {eventsInfo?.end_date && ' - '+eventsInfo?.end_date}
-                            </div>
-                        </div>
-                    </div>
-                    {/*<div className="event-page-block">*/}
-                    {/*    <div className="event-page-block__icon">*/}
 
+
+                    <Block>
+                        <VoteTimer />
+                    </Block>
+
+                    <Block isAlignCenter={true} bottom={30}>
+                        <Block maxWidth={600}>
+                            <CreateBook onChosenBook={onBookOffered} />
+                        </Block>
+                    </Block>
+
+                    <Block isAlignCenter={true}>
+                        <Block isAlignCenter={true}>
+                            <span>
+                                <Typography align={'center'} size={16} color={'grey'} weight={500}>Предложено книг: </Typography>
+                                <Typography align={'center'} size={16} color={'black'} weight={500}>{books.length}</Typography>
+                            </span>
+                        </Block>
+
+                        {books.length > 0 &&
+                            <Block bottom={10}></Block>
+                        }
+                        {books.length < 1 &&
+                            <Block isAlignCenter={true} bottom={15}>
+                                <Block bottom={20}></Block>
+                                <Typography align={'center'} size={21} weight={500} color={'grey'}>Будьте первым! Предложите книгу</Typography>
+                            </Block>
+                        }
+
+                        <Grid isForBooks={true}>
+                            {books.map((book, index) => {
+                                return (
+                                    <ChooseBook item={book} key={index} />
+                                )
+                            })}
+                        </Grid>
+                    </Block>
+
+                    {/*<div className="event-page__title">{eventsInfo?.caption}</div>*/}
+                    {/*<TagsGroup>*/}
+                    {/*    <TagsItem label={'category1'}/>*/}
+                    {/*    <TagsItem label={'category2'}/>*/}
+                    {/*    <TagsItem label={'category3'}/>*/}
+                    {/*    <TagsItem label={'category4'}/>*/}
+                    {/*    <TagsItem label={'category5'}/>*/}
+                    {/*</TagsGroup>*/}
+                    {/*/!*<BookCrossing />*!/*/}
+                    {/*<div className="event-page-row">*/}
+                    {/*    <div className="event-page-block">*/}
+                    {/*        <div className="event-page-block__icon">*/}
+                    {/*            <IconLocation width={25} height={25} />*/}
+                    {/*        </div>*/}
+                    {/*        <div className="event-page-block__text">*/}
+                    {/*            {eventsInfo?.address}*/}
+                    {/*        </div>*/}
                     {/*    </div>*/}
-                    {/*    <div className="event-page-block__text">*/}
-
+                    {/*    <div className="event-page-block">*/}
+                    {/*        <div className="event-page-block__icon">*/}
+                    {/*            <IconCalendar width={25} height={25} />*/}
+                    {/*        </div>*/}
+                    {/*        <div className="event-page-block__text">*/}
+                    {/*            {eventsInfo?.start_date} {eventsInfo?.end_date && ' - '+eventsInfo?.end_date}*/}
+                    {/*        </div>*/}
                     {/*    </div>*/}
                     {/*</div>*/}
-                    <div className="event-page-description">
-                        <div className="event-page-description__title">
-                            Описание
-                        </div>
-                        <div className="event-page-description__text"
-                             dangerouslySetInnerHTML={{ __html: toDisplayedLinkText(eventsInfo?.description) }}
-                        >
-                            {/*<pre>*/}
-                            {/*    {toDisplayedLinkText(eventsInfo?.description)}*/}
-                            {/*</pre>*/}
-                        </div>
-                    </div>
-                    {/*<EventPageHeader />*/}
+                    {/*/!*<div className="event-page-block">*!/*/}
+                    {/*/!*    <div className="event-page-block__icon">*!/*/}
+
+                    {/*/!*    </div>*!/*/}
+                    {/*/!*    <div className="event-page-block__text">*!/*/}
+
+                    {/*/!*    </div>*!/*/}
+                    {/*/!*</div>*!/*/}
+                    {/*<div className="event-page-description">*/}
+                    {/*    <div className="event-page-description__title">*/}
+                    {/*        Описание*/}
+                    {/*    </div>*/}
+                    {/*    <div className="event-page-description__text"*/}
+                    {/*         dangerouslySetInnerHTML={{ __html: toDisplayedLinkText(eventsInfo?.description) }}*/}
+                    {/*    >*/}
+                    {/*        /!*<pre>*!/*/}
+                    {/*        /!*    {toDisplayedLinkText(eventsInfo?.description)}*!/*/}
+                    {/*        /!*</pre>*!/*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*/!*<EventPageHeader />*!/*/}
                 </div>
             </Container>
         </Box>
-        {(device === 'mobile' || device === 'tablet') ? <NavigationPanel /> : <AppFooter /> }
+        <AppFooter />
     </>)
 }

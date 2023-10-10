@@ -25,3 +25,8 @@
     border-radius: 12px;
     box-shadow: none;
 }
+.card--forauth {
+    box-shadow: none;
+    background: none;
+    border: none;
+}

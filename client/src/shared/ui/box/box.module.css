@@ -5,7 +5,7 @@
     /*padding-bottom: 210px;*/
     flex-grow: 1;
     /*overflow: auto;*/
-    padding-bottom: 80px;
+    padding-bottom: 40px;
 }
 .box--navbar {
     padding-top: 63px;
@@ -38,4 +38,7 @@
 }
 .container--header {
 
+}
+.container--wrapper {
+    padding: 10px;
 }

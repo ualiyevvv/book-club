@@ -1,3 +1,7 @@
+.input-wrapper {
+    width: 100%;
+    position: relative;
+}
 .input-form label, .select-form label {
     font-weight: 600;
     font-size: 14px;
@@ -19,7 +23,7 @@
     padding: 16px 20px;
     border: 1px solid rgba(30, 38, 47, 0.06);
     box-shadow: 2px 4px 4px rgba(30, 38, 47, 0.02);
-    border-radius: 16px;
+    border-radius: 10px;
     font-size: 14px;
     outline-color: #1E262F;
     margin-bottom: 10px;
@@ -32,3 +36,15 @@
 /* .input:last-child {
     margin-bottom: 0;
 } */
+.input-icon {
+    position: absolute;
+    top: 47%;
+    transform: translate(0, -50%);
+    right: 6px;
+    cursor: pointer;
+
+}
+.input-icon svg {
+    transform: scale(.5);
+    fill: #282C2E;
+}

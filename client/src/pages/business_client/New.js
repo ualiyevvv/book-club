@@ -56,13 +56,7 @@ export default function New(){
     ]
     const eventsBookInfo = [
         {id: 1, caption: 'Название', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        {id: 2, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        {id: 2, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        {id: 2, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        {id: 2, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        {id: 2, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        {id: 2, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        // {id: 6, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
+         // {id: 6, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
     ]
 
     return (
@@ -72,9 +66,9 @@ export default function New(){
                     {device !== 'mobile'
                         ? <>
                             <Logo />
-                            <Nav left={40}>
+                            <Nav left={35}>
                                 <NavLink text={'Главная'} onClick={e => navigate('/', {replace: true,})}/>
-                                <NavLink text={'Мероприятия'} onClick={e => navigate('/event', {replace: true,})}/>
+                                <NavLink text={'Библиотека'} onClick={e => navigate('/event', {replace: true,})}/>
                                 <NavLink text={'Вступить'} onClick={e => navigate('/authn', {replace: true,})}/>
                                 <NavLink text={'Блог'}/>
                             </Nav>
@@ -85,66 +79,81 @@ export default function New(){
 
                 <GroupInline>
                     <ToggleTheme />
-                    <Block left={20} width={'auto'}><EventPublishAction /></Block>
+                    {/*<Block left={20} width={'auto'}><EventPublishAction /></Block>*/}
+                    <Nav left={20}>
+                        <NavLink text={'Войти/Зарегистрироваться'} onClick={e => navigate('/authn', {replace: true,})}/>
+                        {/*<NavLink text={''} onClick={e => navigate('/event', {replace: true,})}/>*/}
+                    </Nav>
                 </GroupInline>
             </AppBar>
+
             <Box navbar={true} isDesktop={device === 'desktop'}>
-                <Container>
-                    <Block top={20} bottom={20}>
-                        <Typography size={24} weight={600} bottom={12}>Начать</Typography>
-                        <GroupButtons>
-                            <Button size={'small'}>Книжный обмен</Button>
-                            <Button size={'small'}>Выбор книги</Button>
-                            <Button size={'small'}>Встречу</Button>
-                        </GroupButtons>
-                    </Block>
-                </Container>
-                <HorizontalList bottom={20} title={'Миссии'} description={'Выполняйте миссии, зарабатываете баллы и обменивайте их в магазине'}>
-                    {eventsDonerInfo.map( (eventsDonerInfoItem, eventIndex) => {
-                        return(<>
-                            <HorizontalListItem key={eventIndex}>
-                                <EventCard item={eventsDonerInfoItem} />
-                            </HorizontalListItem>
-                        </>)
-                    })}
-                </HorizontalList>
-                <HorizontalList bottom={20} title={'Благотворительность'} description={'Периодически проводим благотворительные мероприятия'}>
-                    {eventsDonerInfo.map( (eventsDonerInfoItem, eventIndex) => {
-                        return(<>
-                            <HorizontalListItem key={eventIndex}>
-                                <EventCard item={eventsDonerInfoItem} />
-                            </HorizontalListItem>
-                        </>)
-                    })}
-                </HorizontalList>
-                <HorizontalList bottom={20} title={'Обсуждения книг'} description={'Каждый месяц встречаемся в кофейне и обсуждаем книгу'}>
-                    {eventsBookInfo.map( (eventsBookInfoItem, eventIndex) => {
-                        return(<>
-                            <HorizontalListItem key={eventIndex}>
-                                <EventCard item={eventsBookInfoItem} />
-                            </HorizontalListItem>
-                        </>)
-                    })}
-                </HorizontalList>
+                {/*<Block top={40} bottom={20} isWrapper={true} padding={20}>*/}
+                {/*    <Typography size={24} weight={600} bottom={12}>Начать</Typography>*/}
+                {/*    <GroupButtons>*/}
+                {/*        <Button size={'small'}>Книжный обмен</Button>*/}
+                {/*        <Button size={'small'}>Выбор книги</Button>*/}
+                {/*        <Button size={'small'}>Встречу</Button>*/}
+                {/*    </GroupButtons>*/}
+                {/*</Block>*/}
+
+                <Block bottom={20}></Block>
+
+                {/*<Block isWrapper={true}>*/}
+                {/*    <HorizontalList bottom={20} title={'Миссии'} description={'Выполняйте миссии, зарабатываете баллы и обменивайте их в магазине'}>*/}
+                {/*        {eventsDonerInfo.map( (eventsDonerInfoItem, eventIndex) => {*/}
+                {/*            return(<>*/}
+                {/*                <HorizontalListItem key={eventIndex}>*/}
+                {/*                    <EventCard item={eventsDonerInfoItem} />*/}
+                {/*                </HorizontalListItem>*/}
+                {/*            </>)*/}
+                {/*        })}*/}
+                {/*    </HorizontalList>*/}
+                {/*</Block>*/}
+                {/*<Block isWrapper={true}>*/}
+                {/*    <HorizontalList bottom={20} title={'Благотворительность'} description={'Периодически проводим благотворительные мероприятия'}>*/}
+                {/*        {eventsDonerInfo.map( (eventsDonerInfoItem, eventIndex) => {*/}
+                {/*            return(<>*/}
+                {/*                <HorizontalListItem key={eventIndex}>*/}
+                {/*                    <EventCard item={eventsDonerInfoItem} />*/}
+                {/*                </HorizontalListItem>*/}
+                {/*            </>)*/}
+                {/*        })}*/}
+                {/*    </HorizontalList>*/}
+                {/*</Block>*/}
+                <Block isWrapper={true}>
+                    <HorizontalList bottom={20} title={'Обсуждения книг'} description={'Каждый месяц встречаемся и обсуждаем книгу'}>
+                        {eventsBookInfo.map( (eventsBookInfoItem, eventIndex) => {
+                            return(<>
+                                <HorizontalListItem key={eventIndex}>
+                                    <EventCard item={eventsBookInfoItem} />
+                                </HorizontalListItem>
+                            </>)
+                        })}
+                    </HorizontalList>
+                </Block>
+                {/*<Block isWrapper={true}>*/}
+                {/*    <HorizontalList bottom={20} title={'Библиотека клуба'} description={'Можно одолжить книгу из списка на определенное время'} isShowAllBtn={true}>*/}
+                {/*        {eventsInfo.map( (eventInfo, eventIndex) => {*/}
+                {/*            return(<>*/}
+                {/*                <HorizontalListItem key={eventIndex}>*/}
+                {/*                    <EventCard item={eventInfo} />*/}
+                {/*                </HorizontalListItem>*/}
+                {/*            </>)*/}
+                {/*        })}*/}
+                {/*    </HorizontalList>*/}
+                {/*</Block>*/}
+
+                {/*<Container>*/}
+                {/*    <Block bottom={20}>*/}
+                {/*        <ClubUsers />*/}
+                {/*    </Block>*/}
+                {/*</Container>*/}
                 {/*<Banner slides={[1,2,3,4,5]} />*/}
-                <HorizontalList bottom={20} title={'Библиотека клуба'} description={'Можно одолжить книгу из списка на определенное время'} isShowAllBtn={true}>
-                    {eventsInfo.map( (eventInfo, eventIndex) => {
-                        return(<>
-                            <HorizontalListItem key={eventIndex}>
-                                <EventCard item={eventInfo} />
-                            </HorizontalListItem>
-                        </>)
-                    })}
-                </HorizontalList>
-                <Container>
-                    <Block bottom={20}>
-                        <ClubUsers />
-                    </Block>
-                </Container>
 
             </Box>
             {/*<Footer />*/}
-            {(device === 'mobile' || device === 'tablet') ? <NavigationPanel /> : <AppFooter /> }
+            <AppFooter />
         </>
     )
 }

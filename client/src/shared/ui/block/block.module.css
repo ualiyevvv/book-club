@@ -6,3 +6,11 @@
 .block--center {
     align-items: center;
 }
+
+.block--wrapper {
+    /*padding: 20px;*/
+    border-radius: 12px;
+    /*margin-top: 20px;*/
+    /*margin-bottom: 20px;*/
+    background: var(--color-block-bg);
+}
