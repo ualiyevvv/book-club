@@ -8,7 +8,6 @@ import Button from "../../shared/ui/button/Button";
 import Logger from "../../internal/Logger";
 import Container from "../../shared/ui/box/Container";
 import {useNavigate} from "react-router-dom";
-import OrderList from "../../widgets/order/order_list/OrderList";
 import AppBar from "../../shared/ui/app_bar/AppBar";
 import GroupInline from "../../shared/ui/group_inline/GroupInline";
 import Logo from "../../shared/ui/logo/Logo";
@@ -20,7 +19,6 @@ import EventPublishAction from "../../widgets/event/event_publish_action/EventPu
 import {useAppContext} from "../../context/AppContext";
 import EventLocationSelect from "../../widgets/event/event_location_select/EventLocationSelect";
 import ToggleButtonWrapper from "../../shared/ui/toggle_button/ToggleButtonWrapper";
-import Leaflet from "../../widgets/map/Leaflet";
 import EventCategoryTabs from "../../widgets/event/event_category_tabs/EventCategoryTabs";
 import AppFooter from "../../widgets/app_footer/AppFooter";
 import EventList from "../../widgets/event/event_list/EventList";
@@ -141,11 +139,8 @@ export default function Orders({}){
                 <GroupInline isAlignStart={true}>
                     {/*<EventConfigurator toggle={toggleTab} onChangeToggle={setToggleTab} />*/}
                     <Block>
-                        {toggleTab === 'list' ?
-                            <EventList title={'Библиотека клуба'} description={'Можно одолжить книгу из списка на определенное время'} events={filterEvents(eventsInfo, selectedCategory, false)} />
-                            : // <MapModal events={geoJson} />
-                            <Leaflet markersData={events} />
-                        }
+                        <EventList title={'Библиотека клуба'} description={'Можно одолжить книгу из списка на определенное время'} events={filterEvents(eventsInfo, selectedCategory, false)} />
+
                     </Block>
                 </GroupInline>
             </Container>

@@ -6,7 +6,7 @@ import Typography from "../../shared/ui/typography/Typography";
 import {json} from "react-router-dom";
 import Button from "../../shared/ui/button/Button";
 import Block from "../../shared/ui/block/Block";
-export default function CreateBook({onChosenBook=f=>f}) {
+export default function CreateBook({onChosenBook=f=>f, roomId = null}) {
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -99,14 +99,39 @@ export default function CreateBook({onChosenBook=f=>f}) {
 
     function sendBookOffer(item) {
         const bookOfferObjForSend = {
-            book: item,
+            info: JSON.stringify(item),
             comment: bookOfferComment,
+            user_id: null,
+            room_id: roomId,
         };
-        onChosenBook(bookOfferObjForSend)
-        setBookOffer(null)
-        setSearchTerm('')
-        setSearchResults([])
-        setIsBookOffering(false)
+
+        // Отправка POST-запроса
+        fetch(`http://localhost:3000/api/offer`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(bookOfferObjForSend),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    console.log(response)
+                    throw new Error('Произошла ошибка при отправке запроса');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Ответ от сервера:', data);
+
+                onChosenBook(bookOfferObjForSend)
+                setBookOffer(null)
+                setSearchTerm('')
+                setSearchResults([])
+                setIsBookOffering(false)
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 
 

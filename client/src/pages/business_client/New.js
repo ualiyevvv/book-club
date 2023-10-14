@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import Box from '../../shared/ui/box/Box'
 import NavigationPanel from '../../widgets/navigation_panel/NavigationPanel';
 
-import ServiceChoice from "../../widgets/service_choice/ServiceChoice";
 import Container from "../../shared/ui/box/Container";
 import Logo from "../../shared/ui/logo/Logo";
 import Block from "../../shared/ui/block/Block";
@@ -18,8 +17,6 @@ import Typography from "../../shared/ui/typography/Typography";
 import EventLocationSelect from "../../widgets/event/event_location_select/EventLocationSelect";
 import EventList from "../../widgets/event/event_list/EventList";
 import ToggleButtonWrapper from "../../shared/ui/toggle_button/ToggleButtonWrapper";
-import MapModal from "../../widgets/map/Map";
-import Leaflet from "../../widgets/map/Leaflet";
 import {useAppContext} from "../../context/AppContext";
 import Burger from "../../widgets/burger/Burger";
 import HorizontalList from "../../shared/ui/horizontal_list/HorizontalList";
@@ -33,6 +30,8 @@ import ToggleTheme from "../../widgets/toggle_them/ToggleTheme";
 import ClubUsers from "../../widgets/club_users/ClubUsers";
 import Footer from "../../shared/ui/footer/Footer";
 import GroupButtons from "../../shared/ui/group_buttons/GroupButtons";
+import Input from "../../shared/ui/input/Input";
+import CreateRoom from "../../widgets/create_room/CreateRoom";
 
 export default function New(){
 
@@ -41,23 +40,52 @@ export default function New(){
     const { user, isAuthenticated, userLoading, isOffline } = authHandler;
     const { device } = adaptiveHandler;
 
-    const eventsInfo = [
-        {id: 1, caption: 'Название', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        {id: 2, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        {id: 3, caption: 'Название мероприятия', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        {id: 4, caption: 'Название мероприятия воркшоп по анау мынау мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        {id: 5, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        // {id: 6, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-    ]
-    const eventsDonerInfo = [
-        {id: 1, caption: 'Название', start_date: '', end_date: '', registration_deadline: '', cost: null},
-        {id: 2, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-         // {id: 6, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-    ]
-    const eventsBookInfo = [
-        {id: 1, caption: 'Название', start_date: '', end_date: '', registration_deadline: '', cost: null},
-         // {id: 6, caption: 'Название мероприятия воркшоп по анау мынау', start_date: '', end_date: '', registration_deadline: '', cost: null},
-    ]
+
+    const [rooms, setRooms] = useState([]);
+
+    useEffect(() => {
+        // Отправка GET-запроса
+        fetch(`http://localhost:3000/api/room`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Произошла ошибка при отправке запроса');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Ответ от сервера:', data);
+                setRooms(data)
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+    }, []);
+
+    async function createUser() {
+
+        // Отправка POST-запроса
+        fetch(`http://localhost:3000/api/user/create/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify('room'),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Произошла ошибка при отправке запроса');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Ответ от сервера:', data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
 
     return (
         <>
@@ -88,14 +116,18 @@ export default function New(){
             </AppBar>
 
             <Box navbar={true} isDesktop={device === 'desktop'}>
-                {/*<Block top={40} bottom={20} isWrapper={true} padding={20}>*/}
-                {/*    <Typography size={24} weight={600} bottom={12}>Начать</Typography>*/}
-                {/*    <GroupButtons>*/}
-                {/*        <Button size={'small'}>Книжный обмен</Button>*/}
-                {/*        <Button size={'small'}>Выбор книги</Button>*/}
-                {/*        <Button size={'small'}>Встречу</Button>*/}
-                {/*    </GroupButtons>*/}
-                {/*</Block>*/}
+                <Block bottom={80}>
+                    <CreateRoom />
+                </Block>
+                <Block top={40} bottom={20} isWrapper={true} padding={20}>
+                    <Typography size={24} weight={600} bottom={12}>Начать</Typography>
+                    <GroupButtons>
+                        <Button size={'small'}>Книжный обмен</Button>
+                        <Button size={'small'}>Выбор книги</Button>
+                        <Button size={'small'} onClick={async () => await createUser}>user</Button>
+                        <Button size={'small'}>Встречу</Button>
+                    </GroupButtons>
+                </Block>
 
                 <Block bottom={20}></Block>
 
@@ -123,10 +155,11 @@ export default function New(){
                 {/*</Block>*/}
                 <Block isWrapper={true}>
                     <HorizontalList bottom={20} title={'Обсуждения книг'} description={'Каждый месяц встречаемся и обсуждаем книгу'}>
-                        {eventsBookInfo.map( (eventsBookInfoItem, eventIndex) => {
+                        {rooms.length < 1 && <Typography size={16} weight={500}>Обсуждений пока не было</Typography>}
+                        {rooms.map( (room, index) => {
                             return(<>
-                                <HorizontalListItem key={eventIndex}>
-                                    <EventCard item={eventsBookInfoItem} />
+                                <HorizontalListItem key={index}>
+                                    <EventCard item={room} />
                                 </HorizontalListItem>
                             </>)
                         })}

@@ -26,7 +26,7 @@ export default function EventCard({item, onClick=f=>f}) {
                 <div className={styles["event-img"]}></div>
             </div>
             <div className={styles["event-card__body"]}>
-                <div className={styles["event-card__caption"]}>{item?.caption}</div>
+                <div className={styles["event-card__caption"]}>{item?.name}</div>
                 <div className={styles["event-card--date"]}>24 сентября - 30 сентября</div>
                 {/*<div className="event-card__location"></div>*/}
             </div>

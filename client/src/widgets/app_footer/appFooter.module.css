@@ -9,3 +9,7 @@
 .appFooter__text {
     text-align: center;
 }
+
+.appFooter__link {
+    color: #0a182c;
+}

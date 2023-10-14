@@ -5,7 +5,7 @@ import NavigationPanel from '../../widgets/navigation_panel/NavigationPanel';
 
 import AppBar from "../../shared/ui/app_bar/AppBar";
 import {useAppContext} from "../../context/AppContext";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import GroupInline from "../../shared/ui/group_inline/GroupInline";
 import Logo from "../../shared/ui/logo/Logo";
 import Nav from "../../shared/ui/nav/Nav";
@@ -29,6 +29,11 @@ import Grid from "../../shared/ui/grid/Grid";
 import Typography from "../../shared/ui/typography/Typography";
 import CreateBook from "../../widgets/create_book/CreateBook";
 import Card from "../../shared/ui/card/Card";
+import BookOffers from "../../widgets/book_offers/BookOffers";
+import VoteViewSettings from "../../features/room/VoteViewSettings";
+import useToggle from "../../hooks/useToggle";
+import Link from "../../shared/ui/link/Link";
+import Button from "../../shared/ui/button/Button";
 
 export default function EventPage(){
 
@@ -37,28 +42,40 @@ export default function EventPage(){
     const { device } = adaptiveHandler;
 
     const navigate = useNavigate()
+    const { id:roomId } = useParams(); // переименовываем id в activeConversationId
 
-    const eventsInfo = {
-        caption: 'Митап для QA инженеров от KoronaPay',
-        description: `🌟 Meetup: "Визуализация данных при помощи WebGL"
-⠀
-🔍 Хочешь погрузиться в мир визуализации данных в вебе? Тогда этот митап именно для тебя! Присоединяйся к нам и узнай все об особенностях и применении WebGL.
-⠀
-🎙Эксперт в этой области – Роман Башарин поделится практическими примерами применения WebGL в проектах из сферы drug research.
-⠀
-Роман уже более 10 лет в IT, работал над десятками приложений в сферах от e-commerce до фондов благотворительности. Написал 5 собственных фреймворков, прежде чем достиг просветления и начал использовать готовые.
-⠀
-🏢 Quantori — ведущая международная IT-компания в области здравоохранения и медицинской биологии, создает интеллектуальные проекты, применяя инновационные технологии и научную экспертизу.
-⠀
-Не упусти шанс узнать о популярных способах визуализации данных в web, научиться работать с 3D и WebGL, а также погрузиться в мир Life Science разработки.
-⠀
-❗️ Регистрируйся на митап по ссылке https://forms.amocrm.ru/rrdwvxm`,
-        start_date: '21 сентября',
-        address: "Astana Hub (Астана, пр-т. Мангилик Ел. 55/8, павильон С4.6), зал Event hall",
-        end_date: '31 октября',
-        registration_deadline: '',
-        cost: null
-    }
+    const [roomData, setRoomData] = useState(null)
+
+
+    const [isActiveModal, toggle] = useToggle(false);
+    const [voteViewSettingValue, setVoteViewSettingValue] = useState(localStorage.getItem('voteViewSettingValue') || null)
+
+
+    useEffect(() => {
+
+        // Отправка GET-запроса
+        fetch(`http://localhost:3000/api/room/${roomId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Произошла ошибка при отправке запроса');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Ответ от сервера:', data);
+                setRoomData(data)
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        // if (voteViewSettingValue === null) {
+        //     toggle(true)
+        // }
+
+        // console.log("VOTEEEE", voteViewSettingValue)
+    }, []);
+
 
     function toDisplayedLinkText(text) {
         if (text) {
@@ -82,16 +99,14 @@ export default function EventPage(){
         }
     }
 
-    const [books, setBooks] = useState([])
 
     function onBookOffered(bookOffer) {
-        const newBooksArray = [...books, bookOffer];
-        setBooks(newBooksArray)
+
+
+
     }
 
-    useEffect(() => {
-        console.log(books)
-    }, [books])
+
 
 
     return (<>
@@ -122,44 +137,24 @@ export default function EventPage(){
 
 
             <Container>
+                { (isActiveModal || voteViewSettingValue === null) && <VoteViewSettings title={'Настройте отображение количества голосов'} onClick={setVoteViewSettingValue} onClose={toggle}/> }
+
                 <div className="event-page">
 
 
                     <Block>
-                        <VoteTimer />
+                        <VoteTimer data={roomData} />
                     </Block>
 
                     <Block isAlignCenter={true} bottom={30}>
-                        <Block maxWidth={600}>
-                            <CreateBook onChosenBook={onBookOffered} />
+                        <Block maxWidth={600} isAlignCenter={true}>
+                            <Button bottom={10} onClick={toggle} width={'fit-content'} variant={'outline'} size={'small'}>Настройки</Button>
+                            <CreateBook roomId={roomId} onChosenBook={onBookOffered} />
                         </Block>
                     </Block>
 
                     <Block isAlignCenter={true}>
-                        <Block isAlignCenter={true}>
-                            <span>
-                                <Typography align={'center'} size={16} color={'grey'} weight={500}>Предложено книг: </Typography>
-                                <Typography align={'center'} size={16} color={'black'} weight={500}>{books.length}</Typography>
-                            </span>
-                        </Block>
-
-                        {books.length > 0 &&
-                            <Block bottom={10}></Block>
-                        }
-                        {books.length < 1 &&
-                            <Block isAlignCenter={true} bottom={15}>
-                                <Block bottom={20}></Block>
-                                <Typography align={'center'} size={21} weight={500} color={'grey'}>Будьте первым! Предложите книгу</Typography>
-                            </Block>
-                        }
-
-                        <Grid isForBooks={true}>
-                            {books.map((book, index) => {
-                                return (
-                                    <ChooseBook item={book} key={index} />
-                                )
-                            })}
-                        </Grid>
+                        <BookOffers voteViewSettingValue={voteViewSettingValue} roomId={roomId}/>
                     </Block>
 
                     {/*<div className="event-page__title">{eventsInfo?.caption}</div>*/}

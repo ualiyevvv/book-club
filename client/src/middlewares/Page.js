@@ -4,16 +4,7 @@ import {useAppContext} from "../context/AppContext";
 
 import Logger from '../internal/Logger';
 import Alert from "../shared/ui/alert/Alert";
-import Loader from "../shared/ui/loader/Loader";
-import Block from "../shared/ui/block/Block";
-import Overlay from "../shared/ui/overlay/Overlay";
 import Loading from "../shared/loading/Loading";
-import ComingSoon from "../features/order/coming_soon/ComingSoon";
-import Modal from "../shared/ui/modal/Modal";
-import LogoutForm from "../features/auth/logout/LogoutForm";
-import Typography from "../shared/ui/typography/Typography";
-import GroupButtons from "../shared/ui/group_buttons/GroupButtons";
-import Button from "../shared/ui/button/Button";
 
 /**
  * Скопировано из ProtectedPage.js

@@ -11,10 +11,8 @@ import {useAppContext} from "../../context/AppContext";
 import GroupInline from "../../shared/ui/group_inline/GroupInline";
 import Block from "../../shared/ui/block/Block";
 import LogoutAction from "../../widgets/logout_action/LogoutAction";
-import Chat from "../../widgets/chat/Chat";
 import HotelCrudAction from "../../widgets/manager/hotel_crud_action/HotelCrudAction";
-import OrderList from "../../widgets/order/order_list/OrderList";
-import HotelAdminPage from "./HotelAdminPage";
+// import HotelAdminPage from "./HotelAdminPage";
 
 export default function AdminDashboard() {
 
@@ -49,9 +47,7 @@ export default function AdminDashboard() {
             </AppBar>
             <Box>
                 <Container padding={'20px 0'}>
-                    {activeTab === 'orders' && <OrderList />}
-                    {activeTab === 'hotels' && <HotelAdminPage />}
-                    {activeTab === 'messenger' && <Chat />}
+                    {/*{activeTab === 'hotels' && <HotelAdminPage />}*/}
                     {activeTab === 'employees' && <>employees</>}
                 </Container>
             </Box>

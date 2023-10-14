@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import Button from "../../../shared/ui/button/Button";
 import Modal from "../../../shared/ui/modal/Modal";
-import HotelCrudForm from "../../../features/hotel/hotel_crud_form/HotelCrudForm";
+// import HotelCrudForm from "../../../features/hotel/hotel_crud_form/HotelCrudForm";
 
 export default function useHotelCrudAction({hotel}) {
 
@@ -10,7 +10,7 @@ export default function useHotelCrudAction({hotel}) {
 
         return (<>
                 {isModalActive && <Modal minWidth={680} maxWidth={1100} onClose={e => setIsModalActive(false)}>
-                    <HotelCrudForm item={hotel} cancelClick={e => setIsModalActive(false)} />
+                    {/*<HotelCrudForm item={hotel} cancelClick={e => setIsModalActive(false)} />*/}
                 </Modal>}
         </>)
     }

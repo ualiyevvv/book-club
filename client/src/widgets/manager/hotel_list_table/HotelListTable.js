@@ -6,9 +6,7 @@ import Loader from "../../../shared/ui/loader/Loader";
 import TableRow from "../../../shared/ui/table/TableRow";
 import HotelCrudAction from "../hotel_crud_action/HotelCrudAction";
 import useToggle from "../../../hooks/useToggle";
-import HotelCrudForm from "../../../features/hotel/hotel_crud_form/HotelCrudForm";
 import Link from "../../../shared/ui/link/Link";
-import HotelRoomForm from "../../../features/hotel/hotel_room_form/HotelRoomForm";
 
 
 function HotelTableItem({item, key}){
@@ -17,8 +15,8 @@ function HotelTableItem({item, key}){
 
     return (<>
         <TableRow key={key}>
-            { isActive && <HotelCrudForm title={'Информация об отеле'} item={item} onClose={toggle}/> }
-            { isRoomActive && <HotelRoomForm title={'Номера'} item={item} onClose={roomToggle}/> }
+            {/*{ isActive && <HotelCrudForm title={'Информация об отеле'} item={item} onClose={toggle}/> }*/}
+            {/*{ isRoomActive && <HotelRoomForm title={'Номера'} item={item} onClose={roomToggle}/> }*/}
 
             <td>{item.id}</td>
             <td>{item.name}</td>

@@ -19,13 +19,10 @@ import NoName from "./pages/auth/status/NoName";
 
 import New from './pages/business_client/New';
 import Orders from './pages/business_client/Orders';
-import OrderInfo from './pages/business_client/order-info/OrderInfo';
 import Profile from './pages/business_client/profile/Profile';
-import HotelOrderFlow from "./pages/business_client/hotel/HotelOrderFlow";
 import NotFound404 from "./pages/NotFound404";
 import AdminPage from "./middlewares/AdminPage";
 import AdminDashboard from "./pages/manager/AdminDashboard";
-import ChatPage from "./pages/business_client/chat/ChatPage";
 import EventPage from "./pages/business_client/EventPage";
 
 
@@ -92,11 +89,6 @@ export default function Router(){
 						<New />
 					/*</ProtectedPage>*/
 				}/>
-				<Route path='hotel' element={
-					// <ProtectedPage>
-						<HotelOrderFlow />
-					// </ProtectedPage>
-				}/>
 			</Route>
 
 
@@ -125,12 +117,12 @@ export default function Router(){
 			<Route path={'/chat'}>
 				<Route index element={
 					<ProtectedPage>
-						<ChatPage />
+						{/*<ChatPage />*/}
 					</ProtectedPage>
 				}/>
 				<Route path={':id'} element={
 					<ProtectedPage>
-						<ChatPage />
+						{/*<ChatPage />*/}
 					</ProtectedPage>
 				}/>
 			</Route>
