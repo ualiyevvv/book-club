@@ -34,6 +34,11 @@ import VoteViewSettings from "../../features/room/VoteViewSettings";
 import useToggle from "../../hooks/useToggle";
 import Link from "../../shared/ui/link/Link";
 import Button from "../../shared/ui/button/Button";
+import SwiperCard from "../../widgets/SwiperCard/SwiperCard";
+import FullScrollPage from "../../shared/ui/fullscroll/FullScrollPage";
+import FullScrollPageContainer from "../../shared/ui/fullscroll/FullScrollPageContainer";
+import Drawer from "../../shared/ui/drawer/Drawer";
+import GroupButtons from "../../shared/ui/group_buttons/GroupButtons";
 
 export default function EventPage(){
 
@@ -49,6 +54,36 @@ export default function EventPage(){
 
     const [isActiveModal, toggle] = useToggle(false);
     const [voteViewSettingValue, setVoteViewSettingValue] = useState(localStorage.getItem('voteViewSettingValue') || null)
+
+    const [isInViewport, setIsInViewport] = useState(false);
+
+
+    const [books, setBooks] = useState([])
+    const [isBooksLoaded, setIsBooksLoaded] = useState(false)
+    function getAllOffers() {
+        // Отправка GET-запроса
+        fetch(`http://localhost:3000/api/offer/${roomId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Произошла ошибка при отправке запроса');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Ответ от сервера BOOOOOKS:', data);
+                const strinfiedBooks = []
+                data.map(book => {
+                    const newBook = {...book, info: JSON.parse(book.info)}
+                    console.log('NEWEW BOOK', newBook)
+                    strinfiedBooks.push(newBook);
+                })
+                setBooks(strinfiedBooks)
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        setIsBooksLoaded(true)
+    }
 
 
     useEffect(() => {
@@ -69,6 +104,32 @@ export default function EventPage(){
                 console.error(error);
             });
 
+        getAllOffers()
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                // Обработчик события, вызывается при вхождении или выходе из зоны видимости
+                setIsInViewport(entry.isIntersecting);
+            },
+            {
+                root: null, // null означает viewport
+                rootMargin: '0px', // Может быть настроено на ваши нужды
+                threshold: 0.5, // Минимальное количество видимых пикселей, необходимое для активации
+            }
+        );
+
+        // Укажите элемент, который вы хотите отслеживать
+        const target = document.getElementById('section-with-drawer'); // Замените 'your-section-id' на ID вашей секции
+        if (target) {
+            observer.observe(target);
+        }
+
+        // Отмените наблюдение при размонтировании компонента
+        return () => {
+            if (target) {
+                observer.unobserve(target);
+            }
+        };
         // if (voteViewSettingValue === null) {
         //     toggle(true)
         // }
@@ -77,37 +138,10 @@ export default function EventPage(){
     }, []);
 
 
-    function toDisplayedLinkText(text) {
-        if (text) {
-            // Регулярное выражение для поиска ссылки
-            const linkRegex = /(https?:\/\/[^\s]+)/g;
+    // useEffect(() => {
+    // }, []);
 
-            // Замена ссылок в тексте на ссылки с тегом <a>
-            let replacedText = text.replace(linkRegex, function (url) {
-                return '<a href="' + url + '">' + url + '</a>';
-            });
-            // // Замена символа новой строки (\n) на тег <br>
-            // replacedText = replacedText.replace(/\n/g, '<br>');
-            //
-            // // Замена символа табуляции (\t) на тег <span> с CSS классом для отступа
-            // replacedText = replacedText.replace(/\t/g, '<span class="tab"></span>');
-            //
-            // // Замена символа возврата каретки (\b) на тег <span> с CSS классом для удаления символа
-            // replacedText = replacedText.replace(/\b/g, '<span class="backspace"></span>');
-
-            return replacedText
-        }
-    }
-
-
-    function onBookOffered(bookOffer) {
-
-
-
-    }
-
-
-
+    const [activeSlide, setActiveSlide] = useState(0);
 
     return (<>
         <AppBar padding={'10px'}>
@@ -141,21 +175,60 @@ export default function EventPage(){
 
                 <div className="event-page">
 
+                    <FullScrollPageContainer>
+                        <FullScrollPage>
+                            <Block>
+                                <VoteTimer data={roomData} />
+                            </Block>
 
-                    <Block>
-                        <VoteTimer data={roomData} />
-                    </Block>
+                            <Block isAlignCenter={true} bottom={30}>
+                                <Block maxWidth={600} isAlignCenter={true}>
+                                    <Button bottom={10} onClick={toggle} width={'fit-content'} variant={'outline'} size={'small'}>Настройки</Button>
+                                    <CreateBook roomId={roomId} />
+                                </Block>
+                            </Block>
+                        </FullScrollPage>
 
-                    <Block isAlignCenter={true} bottom={30}>
-                        <Block maxWidth={600} isAlignCenter={true}>
-                            <Button bottom={10} onClick={toggle} width={'fit-content'} variant={'outline'} size={'small'}>Настройки</Button>
-                            <CreateBook roomId={roomId} onChosenBook={onBookOffered} />
-                        </Block>
-                    </Block>
 
-                    <Block isAlignCenter={true}>
-                        <BookOffers voteViewSettingValue={voteViewSettingValue} roomId={roomId}/>
-                    </Block>
+
+                        <FullScrollPage id={'section-with-drawer'}>
+                            <Block isAlignCenter={true}>
+
+
+                                {isBooksLoaded && <>
+                                    <SwiperCard books={books} onChangeActiveSlide={setActiveSlide} />
+
+                                    {isInViewport &&
+                                        <Drawer>
+                                            {/*{books.map((book, index) => {*/}
+                                            {/*    return (<>*/}
+                                            {/*        {book.info}*/}
+                                            {/*    </>)*/}
+                                            {/*})}*/}
+                                            <Block isAlignCenter={true}>
+                                                <Block bottom={20} isAlignCenter={true}>
+                                                    <Typography align={'center'} weight={700} size={21} bottom={8}>{books[activeSlide].info.title}</Typography>
+                                                    <Typography align={'center'} weight={500} color={'grey'} size={16}>{books[activeSlide].info.authors.map(author => { return <span>{author}</span>})}</Typography>
+                                                </Block>
+
+                                                <Block bottom={20} maxWidth={200} isAlignCenter={true}>
+                                                    <img src={books[activeSlide].info.img.src} alt={books[activeSlide].info.img.alt} />
+                                                </Block>
+
+                                                <Block>
+                                                    {books[activeSlide].info.description}
+                                                </Block>
+                                            </Block>
+                                            {/*{books[activeSlide].info}*/}
+                                        </Drawer>
+                                    }
+                                </>}
+                                {/*<BookOffers voteViewSettingValue={voteViewSettingValue} roomId={roomId}/>*/}
+
+                            </Block>
+                        </FullScrollPage>
+                    </FullScrollPageContainer>
+
 
                     {/*<div className="event-page__title">{eventsInfo?.caption}</div>*/}
                     {/*<TagsGroup>*/}

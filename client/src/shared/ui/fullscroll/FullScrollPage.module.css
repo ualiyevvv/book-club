@@ -1,0 +1,12 @@
+.FullScrollPage {
+    position: relative;
+    height: 100vh;
+    padding-top: 65px;
+    scroll-snap-align: start;
+}
+.FullScrollPageContainer {
+    height: 100vh;
+    scroll-snap-type: y mandatory;
+    overflow: auto;
+
+}

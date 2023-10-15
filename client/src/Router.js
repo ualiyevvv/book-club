@@ -41,11 +41,11 @@ const Router = () => {
 		}
 	}, []);
 
-	if (!store.isAuth) {
-		return (<>
-			<LoginForm />
-		</>)
-	}
+	// if (!store.isAuth) {
+	// 	return (<>
+	// 		<LoginForm />
+	// 	</>)
+	// }
 
 	if (store.isLoading) {
 		return (<Loader />)
@@ -63,9 +63,9 @@ const Router = () => {
 
 	return (<>
 
-		<h1>{store.isAuth ? `User ${store.user.email} authorized` : 'Authorization'}</h1>
-		<h1>{!store.user.isActivated ? `User ${store.user.email} not activated` : 'Please activate the account'}</h1>
-		<button onClick={() => {store.logout()}}>Logout</button>
+		{/*<h1>{store.isAuth ? `User ${store.user.email} authorized` : 'Authorization'}</h1>*/}
+		{/*<h1>{!store.user.isActivated ? `User ${store.user.email} not activated` : 'Please activate the account'}</h1>*/}
+		{/*<button onClick={() => {store.logout()}}>Logout</button>*/}
 		<Routes>
 			{/** Landing Page */}
 			{/*<Route path="/" element={*/}

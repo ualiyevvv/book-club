@@ -92,6 +92,7 @@ body {
 	color: var(--color-text);
 	height: 100vh;
 	transition: background-color 200ms linear, color 500ms linear, border-color 500ms linear;
+	overflow: hidden;
 }
 
 /*body::-webkit-scrollbar {*/
