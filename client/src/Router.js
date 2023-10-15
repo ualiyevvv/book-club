@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {Link, Routes, Route, Navigate, useSearchParams, useNavigate, useLocation} from "react-router-dom";
 
@@ -24,10 +24,48 @@ import NotFound404 from "./pages/NotFound404";
 import AdminPage from "./middlewares/AdminPage";
 import AdminDashboard from "./pages/manager/AdminDashboard";
 import EventPage from "./pages/business_client/EventPage";
+import {Context} from "./index";
+import {observer} from "mobx-react-lite";
+import LoginForm from "./app/components/LoginForm";
+import Loader from "./shared/ui/loader/Loader";
+import UserService from "./app/services/UserService";
 
 
-export default function Router(){
+const Router = () => {
+
+
+	const {store} = useContext(Context)
+	useEffect(() => {
+		if (localStorage.getItem('token')) {
+			store.checkAuth()
+		}
+	}, []);
+
+	if (!store.isAuth) {
+		return (<>
+			<LoginForm />
+		</>)
+	}
+
+	if (store.isLoading) {
+		return (<Loader />)
+	}
+
+	const [users, setUsers] = useState([])
+	async function getUsers() {
+		try {
+			const response = await UserService.getUsers();
+			setUsers(response.data);
+		} catch (e) {
+			console.log(e)
+		}
+	}
+
 	return (<>
+
+		<h1>{store.isAuth ? `User ${store.user.email} authorized` : 'Authorization'}</h1>
+		<h1>{!store.user.isActivated ? `User ${store.user.email} not activated` : 'Please activate the account'}</h1>
+		<button onClick={() => {store.logout()}}>Logout</button>
 		<Routes>
 			{/** Landing Page */}
 			{/*<Route path="/" element={*/}
@@ -138,6 +176,8 @@ export default function Router(){
 		</Routes>
 	</>);
 }
+
+export default observer(Router);
 
 /*
 ▄───▄
