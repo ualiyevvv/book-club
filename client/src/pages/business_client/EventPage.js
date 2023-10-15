@@ -170,29 +170,30 @@ export default function EventPage(){
             {/*<EventSlider photos={[1,2,3,4]}/>*/}
 
 
-            <Container>
                 { (isActiveModal || voteViewSettingValue === null) && <VoteViewSettings title={'Настройте отображение количества голосов'} onClick={setVoteViewSettingValue} onClose={toggle}/> }
 
                 <div className="event-page">
 
                     <FullScrollPageContainer>
                         <FullScrollPage>
-                            <Block>
-                                <VoteTimer data={roomData} />
-                            </Block>
-
-                            <Block isAlignCenter={true} bottom={30}>
-                                <Block maxWidth={600} isAlignCenter={true}>
-                                    <Button bottom={10} onClick={toggle} width={'fit-content'} variant={'outline'} size={'small'}>Настройки</Button>
-                                    <CreateBook roomId={roomId} />
+                            <Container>
+                                <Block>
+                                    <VoteTimer data={roomData} />
                                 </Block>
-                            </Block>
+
+                                <Block isAlignCenter={true} bottom={30}>
+                                    <Block maxWidth={600} isAlignCenter={true}>
+                                        <Button bottom={10} onClick={toggle} width={'fit-content'} variant={'outline'} size={'small'}>Настройки</Button>
+                                        <CreateBook roomId={roomId} />
+                                    </Block>
+                                </Block>
+                            </Container>
                         </FullScrollPage>
 
 
 
                         <FullScrollPage id={'section-with-drawer'}>
-                            <Block isAlignCenter={true}>
+                            {/*<Block isAlignCenter={true}>*/}
 
 
                                 {isBooksLoaded && <>
@@ -225,7 +226,7 @@ export default function EventPage(){
                                 </>}
                                 {/*<BookOffers voteViewSettingValue={voteViewSettingValue} roomId={roomId}/>*/}
 
-                            </Block>
+                            {/*</Block>*/}
                         </FullScrollPage>
                     </FullScrollPageContainer>
 
@@ -279,7 +280,6 @@ export default function EventPage(){
                     {/*</div>*/}
                     {/*/!*<EventPageHeader />*!/*/}
                 </div>
-            </Container>
         </Box>
         <AppFooter />
     </>)

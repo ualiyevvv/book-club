@@ -18,7 +18,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    padding: 5px;
     background-color: silver;
 }
 .Drawer--extended .Drawer__content {

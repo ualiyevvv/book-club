@@ -1,4 +1,6 @@
 .box {
+    max-width: 600px;
+    margin: 0 auto;
     /*height: 100%;*/
     /*padding: 0 20px;*/
     /*padding-bottom: 155px;*/
@@ -7,6 +9,9 @@
     /*overflow: auto;*/
     padding-bottom: 40px;
 }
+
+
+
 .box--navbar {
     padding-top: 63px;
 }
