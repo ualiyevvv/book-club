@@ -12,7 +12,10 @@ import { EffectCards } from 'swiper/modules';
 import { Virtual } from 'swiper/modules';
 import styles from './SwiperCard.module.css';
 import { useSwiper, useSwiperSlide } from 'swiper/react';
-export default function SwiperCard({books, onChangeActiveSlide=f=>f}){
+import useToggle from "../../hooks/useToggle";
+import Modal from "../../shared/ui/modal/Modal";
+import CreatBookForm from "../../features/book/CreatBookForm";
+export default function SwiperCard({funcForAddCard=f=>f, roomId, books, onChangeActiveSlide=f=>f}){
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
@@ -24,9 +27,16 @@ export default function SwiperCard({books, onChangeActiveSlide=f=>f}){
         setActiveBg(bg)
     }
 
+    const [isCreateBookModal, toggle] = useToggle()
+
     return (<div className={styles.swiperDiv}>
         <div className={styles.swiperBg} style={{background: `url(${activeBg && activeBg}) center center/cover no-repeat`}}>
         </div>
+
+        {isCreateBookModal && <Modal minWidth={360} maxWidth={480} height={'80%'} onClose={toggle}>
+            <CreatBookForm roomId={roomId} setIsBookOffering={toggle} />
+        </Modal>}
+
         <div className={styles.swiperContainer}>
             <Swiper
                 effect={'cards'}
@@ -47,8 +57,7 @@ export default function SwiperCard({books, onChangeActiveSlide=f=>f}){
                                     <img style={{height: '100%'}} src={book.info.img.src} alt={book.info.img.alt} />
                                     // <div>Current slide is {isActive ? index : 'not active'}</div>
                                 )
-                            }
-                            }
+                            }}
                             {/*{({isActive}) => (isActive && <h1>slide tata ${index} </h1>)}*/}
                         </SwiperSlide>
                     )
@@ -60,13 +69,21 @@ export default function SwiperCard({books, onChangeActiveSlide=f=>f}){
                 {/*<SwiperSlide>Slide 6</SwiperSlide>*/}
                 {/*<SwiperSlide>Slide 7</SwiperSlide>*/}
                 {/*<SwiperSlide>Slide 8</SwiperSlide>*/}
-                <SwiperSlide>
-                    <div className={styles.swiper__addbook}>
-                        <span className={styles.swiper__plus}>+</span>
-                        <br/>
-                        <br/>
-                        Предложить <br/> книгу
-                    </div>
+                <SwiperSlide onClick={toggle}>
+                    {({ isActive }) => {
+
+                        isActive ? funcForAddCard(false) : funcForAddCard(true)
+
+                        return (
+                            <div className={styles.swiper__addbook}>
+                                <span className={styles.swiper__plus}>+</span>
+                                <br/>
+                                <br/>
+                                Предложить <br/> книгу
+                            </div>
+                        )
+
+                    }}
                 </SwiperSlide>
             </Swiper>
         </div>

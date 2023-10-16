@@ -235,14 +235,14 @@ export default function EventPage(){
                                     <BooksCounter booksLength={books?.length} currentCounter={books?.length > 0 ? activeSlide+1 : 0} />
 
                                     {isBooksLoaded && <>
-                                        <SwiperCard books={books} onChangeActiveSlide={setActiveSlide} />
+                                        <SwiperCard funcForAddCard={setIsDrawerActive} roomId={roomId} books={books} onChangeActiveSlide={setActiveSlide} />
 
-                                        {!isDrawerActive &&
-                                            <Container isWrapper={true}>
-                                                <Button width={'100%'} bottom={20}>Проголосовать</Button>
-                                                <Button width={'100%'} variant={'outline'} onClick={() => setIsDrawerActive(!isDrawerActive)}>Подробнее</Button>
-                                            </Container>
-                                        }
+                                        {/*{!isDrawerActive &&*/}
+                                        {/*    <Container isWrapper={true}>*/}
+                                        {/*        <Button width={'100%'} bottom={20}>Проголосовать</Button>*/}
+                                        {/*        <Button width={'100%'} variant={'outline'} onClick={() => setIsDrawerActive(!isDrawerActive)}>Подробнее</Button>*/}
+                                        {/*    </Container>*/}
+                                        {/*}*/}
 
                                         {isDrawerActive && books?.length > 0 && isInViewport &&
                                             <Drawer
