@@ -10,6 +10,7 @@
     /*transition: bottom .8s;*/
 }
 .Drawer__wrapper {
+    height: 100%;
     /*width: 100%;*/
     border-radius: 25px 25px 0 0;
     padding: 0 15px 15px 15px;

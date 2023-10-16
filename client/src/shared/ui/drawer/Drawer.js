@@ -62,7 +62,7 @@ export default function Drawer({title, onClose=f=>f, children, isDrawerActive=fa
                 if (!isExtended) {
                 // if (drawerStatus === 'medium-extend') {
                     // setDrawerStatus('hidden')
-                    onClose(false)
+                    // onClose(false)
                     return
                 }
                 // setDrawerStatus('medium-extend')
