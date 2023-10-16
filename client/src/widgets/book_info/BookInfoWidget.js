@@ -17,7 +17,7 @@ export default function BookInfoWidget({book}) {
         <Block isAlignCenter={true}>
             <Block bottom={20} isAlignCenter={true}>
                 <Typography align={'center'} weight={700} size={21} bottom={8}>{book.info.title}</Typography>
-                <Typography align={'center'} weight={500} color={'grey'} size={16}>{book.info.authors.map(author => { return <span>{author}</span>})}</Typography>
+                <Typography align={'center'} weight={500} color={'grey'} size={16}>{book.info.authors.map(author => { return <span>{author} </span>})}</Typography>
             </Block>
 
             <Block bottom={20} maxWidth={200} isAlignCenter={true}>

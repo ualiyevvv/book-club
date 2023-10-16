@@ -221,7 +221,7 @@ export default function EventPage(){
                                 <FullScrollPage id={'section-with-drawer'}>
                                     {/*<Block isAlignCenter={true}>*/}
 
-                                    <BooksCounter booksLength={books.length} currentCounter={activeSlide+1} />
+                                    <BooksCounter booksLength={books?.length} currentCounter={books?.length > 0 ? activeSlide+1 : 0} />
 
                                     {isBooksLoaded && <>
                                         <SwiperCard books={books} onChangeActiveSlide={setActiveSlide} />
@@ -233,8 +233,15 @@ export default function EventPage(){
                                             </Container>
                                         }
 
-                                        {isDrawerActive && isInViewport &&
-                                            <Drawer onClose={setIsDrawerActive} isDrawerActive={isDrawerActive}>
+                                        {isDrawerActive && books?.length > 0 && isInViewport &&
+                                            <Drawer
+                                                onClose={setIsDrawerActive}
+                                                isDrawerActive={isDrawerActive}
+                                                Buttons={<>
+                                                    <BooksCounter isVote={true} currentCounter={books[activeSlide]?.votes_count} />
+                                                    <Button width={'100%'} isBgLight={true} variant={'yellow'}>Проголосовать ✋</Button>
+                                                </>}
+                                            >
                                                 {/*{books.map((book, index) => {*/}
                                                 {/*    return (<>*/}
                                                 {/*        {book.info}*/}

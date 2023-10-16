@@ -4,8 +4,9 @@ import styles from './Drawer.module.css'
 import CloseIcon from "../../../assets/icons/close.svg";
 import Button from "../button/Button";
 import Container from "../box/Container";
+import BooksCounter from "../../../widgets/books_counter/BooksCounter";
 
-export default function Drawer({title, onClose=f=>f, children, isDrawerActive=false}){
+export default function Drawer({title, onClose=f=>f, children, isDrawerActive=false, Buttons}){
 
     const containerHeight = window.innerHeight;
 
@@ -101,7 +102,7 @@ export default function Drawer({title, onClose=f=>f, children, isDrawerActive=fa
             `}
         >
             <div className={styles.Drawer__buttons}>
-                <Button width={'100%'} isBgLight={true} variant={'yellow'}>Проголосовать</Button>
+                {Buttons}
                 {/*<Button width={'100%'} variant={'outline'} onClick={() => setIsDrawerActive(!isDrawerActive)}>Подробнее</Button>*/}
             </div>
             <div className={styles.Drawer__wrapper}>
