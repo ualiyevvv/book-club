@@ -101,12 +101,12 @@ export default function New(){
                                 <NavLink text={'Блог'}/>
                             </Nav>
                         </>
-                        : <Burger />
+                        : <Logo />
                     }
                 </GroupInline>
 
                 <GroupInline>
-                    <ToggleTheme />
+                    {/*<ToggleTheme />*/}
                     {/*<Block left={20} width={'auto'}><EventPublishAction /></Block>*/}
                     <Nav left={20}>
                         <NavLink text={'Войти/Зарегистрироваться'} onClick={e => navigate('/authn', {replace: true,})}/>

@@ -32,6 +32,9 @@ export default function Button({children, isBgLight=false, type='', variant='mai
             case('cancel'):
                 setBtnVariant('cancel');
                 break;
+            case('yellow'):
+                setBtnVariant('yellow');
+                break;
             default:
                 setBtnVariant('main');
                 break;

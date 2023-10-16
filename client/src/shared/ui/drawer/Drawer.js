@@ -26,16 +26,17 @@ export default function Drawer({title, onClose=f=>f, children, isDrawerActive=fa
     };
 
     const handleTouchStart = (event) => {
+        console.log('TOOOUCH DRAWER HEADER')
         // scrollableComponent.style.overflowY = 'hidden';
-        event.preventDefault(); // Предотвращаем прокрутку страницы
+        // event.preventDefault(); // Предотвращаем прокрутку страницы
         setStartY(event.touches[0].clientY);
         setCurrentY(event.touches[0].clientY);
-        event.preventDefault(); // Предотвращаем прокрутку страницы
+        // event.preventDefault(); // Предотвращаем прокрутку страницы
 
     };
 
     const handleTouchMove = (event) => {
-        event.preventDefault(); // Предотвращаем прокрутку страницы
+        // event.preventDefault(); // Предотвращаем прокрутку страницы
         setCurrentY(event.touches[0].clientY);
         // if (startY) {
         //     const deltaY = event.touches[0].clientY - startY;
@@ -55,10 +56,10 @@ export default function Drawer({title, onClose=f=>f, children, isDrawerActive=fa
     const handleTouchEnd = () => {
         if (startY && currentY) {
             const deltaY = currentY - startY;
-            if (deltaY < -40) {
+            if (deltaY < -20) {
                 // setDrawerStatus('full-extend')
                 toggleDrawer(); // Раскрываем панель при свайпе вверх
-            } else if (deltaY > 40) {
+            } else if (deltaY > 20) {
                 if (!isExtended) {
                 // if (drawerStatus === 'medium-extend') {
                     // setDrawerStatus('hidden')
@@ -100,7 +101,7 @@ export default function Drawer({title, onClose=f=>f, children, isDrawerActive=fa
             `}
         >
             <div className={styles.Drawer__buttons}>
-                <Button width={'100%'} isBgLight={true}>Проголосовать</Button>
+                <Button width={'100%'} isBgLight={true} variant={'yellow'}>Проголосовать</Button>
                 {/*<Button width={'100%'} variant={'outline'} onClick={() => setIsDrawerActive(!isDrawerActive)}>Подробнее</Button>*/}
             </div>
             <div className={styles.Drawer__wrapper}>

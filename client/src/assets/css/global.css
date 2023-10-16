@@ -103,3 +103,10 @@ body {
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
+
+
+@media (max-width:770px){
+	body {
+		background: #0050c3;
+	}
+}

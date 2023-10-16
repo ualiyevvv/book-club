@@ -34,17 +34,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    /*padding: 20px;*/
+    height: 60px;
+    /*padding-bottom: 20px;*/
     /*background-color: silver;*/
 }
 .Drawer--extended .Drawer__content {
     height: 100%;
     overflow: auto;
-    padding-bottom: 70px;
+    padding-bottom: 130px;
 }
 .Drawer__line {
     position: absolute;
-    top: 12px;
+    top: 18px;
     left: 50%;
     transform: translateX(-50%);
     width: 60px;

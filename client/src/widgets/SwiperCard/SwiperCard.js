@@ -60,7 +60,14 @@ export default function SwiperCard({books, onChangeActiveSlide=f=>f}){
                 {/*<SwiperSlide>Slide 6</SwiperSlide>*/}
                 {/*<SwiperSlide>Slide 7</SwiperSlide>*/}
                 {/*<SwiperSlide>Slide 8</SwiperSlide>*/}
-                <SwiperSlide>Add new book</SwiperSlide>
+                <SwiperSlide>
+                    <div className={styles.swiper__addbook}>
+                        <span className={styles.swiper__plus}>+</span>
+                        <br/>
+                        <br/>
+                        Предложить <br/> книгу
+                    </div>
+                </SwiperSlide>
             </Swiper>
         </div>
     </div>);

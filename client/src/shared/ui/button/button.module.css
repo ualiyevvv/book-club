@@ -94,5 +94,9 @@
 }
 
 .btn--bglight {
-    box-shadow: #0052bb42 0px 8px 24px;
+    box-shadow: rgba(255, 255, 255, 0.26) 0px 5px 15px;
+}
+.btn--yellow {
+    background-color: #eb6900;
+    color: white;
 }

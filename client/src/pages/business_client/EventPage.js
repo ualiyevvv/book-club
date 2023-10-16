@@ -39,6 +39,10 @@ import FullScrollPage from "../../shared/ui/fullscroll/FullScrollPage";
 import FullScrollPageContainer from "../../shared/ui/fullscroll/FullScrollPageContainer";
 import Drawer from "../../shared/ui/drawer/Drawer";
 import GroupButtons from "../../shared/ui/group_buttons/GroupButtons";
+import ToggleButtonWrapper from "../../shared/ui/toggle_button/ToggleButtonWrapper";
+import ToggleButton from "../../shared/ui/toggle_button/ToggleButton";
+import BookInfoWidget from "../../widgets/book_info/BookInfoWidget";
+import BooksCounter from "../../widgets/books_counter/BooksCounter";
 
 export default function EventPage(){
 
@@ -158,13 +162,11 @@ export default function EventPage(){
                         <NavLink text={'Библиотека'} onClick={e => navigate('/event', {replace: true,})}/>
                         <NavLink text={'Блог'}/>
                     </Nav>
-                </GroupInline> : <>
-                    <button onClick={e => {navigate(-1)}}>back</button>
-                </>
+                </GroupInline> : <Logo />
             }
 
             <GroupInline>
-                <ToggleTheme />
+                {/*<ToggleTheme />*/}
                 {/*<Block left={20} width={'auto'}><EventPublishAction /></Block>*/}
                 <Nav left={20}>
                     <NavLink text={'Войти/Зарегистрироваться'} onClick={e => navigate('/authn', {replace: true,})}/>
@@ -219,6 +221,7 @@ export default function EventPage(){
                                 <FullScrollPage id={'section-with-drawer'}>
                                     {/*<Block isAlignCenter={true}>*/}
 
+                                    <BooksCounter booksLength={books.length} currentCounter={activeSlide+1} />
 
                                     {isBooksLoaded && <>
                                         <SwiperCard books={books} onChangeActiveSlide={setActiveSlide} />
@@ -237,20 +240,8 @@ export default function EventPage(){
                                                 {/*        {book.info}*/}
                                                 {/*    </>)*/}
                                                 {/*})}*/}
-                                                <Block isAlignCenter={true}>
-                                                    <Block bottom={20} isAlignCenter={true}>
-                                                        <Typography align={'center'} weight={700} size={21} bottom={8}>{books[activeSlide].info.title}</Typography>
-                                                        <Typography align={'center'} weight={500} color={'grey'} size={16}>{books[activeSlide].info.authors.map(author => { return <span>{author}</span>})}</Typography>
-                                                    </Block>
+                                                <BookInfoWidget book={books[activeSlide]} />
 
-                                                    <Block bottom={20} maxWidth={200} isAlignCenter={true}>
-                                                        <img src={books[activeSlide].info.img.src} alt={books[activeSlide].info.img.alt} />
-                                                    </Block>
-
-                                                    <Block>
-                                                        {books[activeSlide].info.description}
-                                                    </Block>
-                                                </Block>
                                                 {/*{books[activeSlide].info}*/}
                                             </Drawer>
                                         }
