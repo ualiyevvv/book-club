@@ -10,11 +10,9 @@ export default function VoteTimer({data=null}) {
 
     return (
         <div className={styles['VoteTimer']}>
-            <Block isAlignCenter={true}>
-                <Typography align={'center'} size={28} color={'black'} weight={700} bottom={14}>{data?.name}</Typography>
-                <Typography align={'center'} size={16} color={'black'} weight={500} bottom={2}>До конца голосования осталось:</Typography>
-                <Typography align={'center'} size={28} color={'black'} weight={800}>16:05:37</Typography>
-            </Block>
+            <div className={styles.VoteTimer__title}>{data?.name}</div>
+            <div className={styles.VoteTimer__description}>До конца голосования осталось:</div>
+            <div className={styles.VoteTimer__timer}>16:05:37</div>
         </div>
     )
 }

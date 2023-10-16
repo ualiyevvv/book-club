@@ -100,3 +100,8 @@
     background-color: #eb6900;
     color: white;
 }
+.btn--outline-white {
+    background: none;
+    border: 1px solid white;
+    color: white;
+}

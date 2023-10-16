@@ -1,4 +1,5 @@
 .CreateBook {
+    width: 100%;
 }
 .CreateBook__book {
     display: flex;

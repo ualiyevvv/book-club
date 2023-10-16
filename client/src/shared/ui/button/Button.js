@@ -12,6 +12,8 @@ export default function Button({children, isBgLight=false, type='', variant='mai
 
     const [btnVariant, setBtnVariant] = useState('main')
 
+
+    // присваивать динамически, как в том шортсе из ютуба когда я сидел в лУне
     useEffect(()=> {
         switch(variant){
             case('second'):
@@ -22,6 +24,9 @@ export default function Button({children, isBgLight=false, type='', variant='mai
                 break;
             case('outline'):
                 setBtnVariant('outline');
+                break;
+            case('outline-white'):
+                setBtnVariant('outline-white');
                 break;
             case('outline-inverse'):
                 setBtnVariant('outline-inverse');

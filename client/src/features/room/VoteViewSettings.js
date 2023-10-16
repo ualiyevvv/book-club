@@ -22,8 +22,8 @@ export default function VoteViewSettings({title='', onClick=f=>f, onClose, item}
                     <Typography align={'center'} weight={700} size={24}>{title}</Typography>
                 </Block>
                 <GroupButtons top={20}>
-                    <Button type={'submit'} onClick={() => onSubmit(1)}>Показывать</Button>
-                    <Button variant={'cancel'} onClick={() => onSubmit(2)}>Не показывать</Button>
+                    <Button type={'submit'} onClick={() => onSubmit(1)}>Показывать 👀</Button>
+                    <Button variant={'cancel'} onClick={() => onSubmit(2)}>Не показывать 🧿</Button>
                 </GroupButtons>
             </form>
         </Modal>

@@ -43,6 +43,9 @@ import ToggleButtonWrapper from "../../shared/ui/toggle_button/ToggleButtonWrapp
 import ToggleButton from "../../shared/ui/toggle_button/ToggleButton";
 import BookInfoWidget from "../../widgets/book_info/BookInfoWidget";
 import BooksCounter from "../../widgets/books_counter/BooksCounter";
+import Badge from "../../shared/ui/badge/Badge";
+import Modal from "../../shared/ui/modal/Modal";
+import CreatBookForm from "../../features/book/CreatBookForm";
 
 export default function EventPage(){
 
@@ -153,6 +156,8 @@ export default function EventPage(){
     const [activeSlide, setActiveSlide] = useState(0);
     const [isDrawerActive, setIsDrawerActive] = useState(true)
 
+    const [isCreateBookModal, toggleCreateBookModal] = useToggle();
+
     return (<>
         <AppBar padding={'10px'}>
             {device !== 'mobile' ? <GroupInline>
@@ -181,7 +186,7 @@ export default function EventPage(){
                 {/*<EventSlider photos={[1,2,3,4]}/>*/}
 
 
-                    { (isActiveModal || voteViewSettingValue === null) && <VoteViewSettings title={'Настройте отображение количества голосов'} onClick={setVoteViewSettingValue} onClose={toggle}/> }
+                    { (isActiveModal || voteViewSettingValue === null) && <VoteViewSettings title={'Настройте отображение голосов'} onClick={setVoteViewSettingValue} onClose={toggle}/> }
 
                     <div className="event-page">
 
@@ -209,11 +214,17 @@ export default function EventPage(){
                                     </Block>
 
                                     <Block isAlignCenter={true} bottom={30}>
-                                        <Block maxWidth={600} isAlignCenter={true}>
-                                            <Button bottom={10} onClick={toggle} width={'fit-content'} variant={'outline'} size={'small'}>Настройки</Button>
-                                            <CreateBook roomId={roomId} />
+                                        <Block maxWidth={600} isAlignCenter={true} padding={20}>
+                                            <Button bottom={10} onClick={toggle} variant={'outline-white'}>Настройки</Button>
+
+                                            {isCreateBookModal && <Modal minWidth={360} maxWidth={480} height={'80%'} onClose={toggleCreateBookModal}>
+                                                <CreatBookForm roomId={roomId} setIsBookOffering={toggleCreateBookModal} />
+                                            </Modal>}
+                                            <Button onClick={toggleCreateBookModal} isBgLight={true}>Предложить книгу</Button>
                                         </Block>
                                     </Block>
+
+                                    <Badge bottom={50} text={'Листай вниз 👇'} air={true} left={0} right={0}/>
                                 </FullScrollPage>
 
 
@@ -238,7 +249,7 @@ export default function EventPage(){
                                                 onClose={setIsDrawerActive}
                                                 isDrawerActive={isDrawerActive}
                                                 Buttons={<>
-                                                    <BooksCounter isVote={true} currentCounter={books[activeSlide]?.votes_count} />
+                                                    { voteViewSettingValue == 1 && <BooksCounter isVote={true} currentCounter={books[activeSlide]?.votes_count} /> }
                                                     <Button width={'100%'} isBgLight={true} variant={'yellow'}>Проголосовать ✋</Button>
                                                 </>}
                                             >
