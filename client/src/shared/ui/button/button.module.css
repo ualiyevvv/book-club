@@ -92,3 +92,7 @@
 .btn--badge {
     position: relative;
 }
+
+.btn--bglight {
+    box-shadow: #0052bb42 0px 8px 24px;
+}

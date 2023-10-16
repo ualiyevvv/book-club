@@ -91,7 +91,8 @@ export default function CreateBook({onChosenBook=f=>f, roomId = null}) {
     }
 
     const scrollToTop = () => {
-        window.scrollTo({
+        const scrollContainer = document.getElementById('scroll-container')
+        scrollContainer.scrollTo({
             top: 0,
             behavior: 'smooth', // Добавляем плавную анимацию прокрутки
         });

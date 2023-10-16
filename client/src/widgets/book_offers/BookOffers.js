@@ -8,6 +8,7 @@ import Button from "../../shared/ui/button/Button";
 import Block from "../../shared/ui/block/Block";
 import Grid from "../../shared/ui/grid/Grid";
 import ChooseBook from "../choose_book/ChooseBook";
+import Container from "../../shared/ui/box/Container";
 export default function BookOffers({ voteViewSettingValue, roomId = null}) {
 
     const [isLoading, setIsLoading] = useState(false);
@@ -40,10 +41,10 @@ export default function BookOffers({ voteViewSettingValue, roomId = null}) {
 
     return (<>
         <Block isAlignCenter={true}>
-            <span>
-                <Typography align={'center'} size={16} color={'grey'} weight={500}>Предложено книг: </Typography>
-                <Typography align={'center'} size={16} color={'black'} weight={500}>{books.length}</Typography>
-            </span>
+        <span>
+            <Typography align={'center'} size={16} color={'grey'} weight={500}>Предложено книг: </Typography>
+            <Typography align={'center'} size={16} color={'black'} weight={500}>{books.length}</Typography>
+        </span>
         </Block>
 
         {books.length > 0 &&

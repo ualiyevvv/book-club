@@ -1,6 +1,6 @@
 .box {
-    max-width: 600px;
-    margin: 0 auto;
+    /*max-width: 600px;*/
+    /*margin: 0 auto;*/
     /*height: 100%;*/
     /*padding: 0 20px;*/
     /*padding-bottom: 155px;*/
@@ -45,5 +45,19 @@
 
 }
 .container--wrapper {
-    padding: 10px;
+    /*padding: 10px;*/
+    position: relative;
+    z-index: 3;
+}
+
+.container--scrollable {
+    padding: 0;
+}
+
+@media (min-width:770px){
+    .container--scrollable {
+        /*padding: 10px;*/
+        overflow: auto;
+        padding-top: 80px;
+    }
 }

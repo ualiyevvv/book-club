@@ -1,6 +1,6 @@
 :global(.swiper) {
-    width: 32vh;
-    height: 52vh;
+    width: 36vh;
+    height: 57vh;
     /*width: 70%;*/
     /*height: 44%;*/
     /*width: 44%;*/
@@ -66,6 +66,8 @@
     justify-content: center;
 }
 .swiperContainer {
+    position: relative;
+    /*height: 52vh;*/
     z-index: 8;
 }
 .swiperBg {
@@ -75,4 +77,5 @@
     width: 100%;
     height: 100%;
     z-index: 1;
+    transition: all .4s;
 }

@@ -1,16 +1,18 @@
 .FullScrollPage {
     position: relative;
     height: 100vh;
-    padding-top: 10px;
+    padding-top: 85px;
     scroll-snap-align: start;
+    /*background-color: #0a182c;*/
 }
 .FullScrollPage:first-child {
-    background-color: var(--color-main);
+    /*background-color: var(--color-main);*/
 }
 .FullScrollPageContainer {
     height: 100vh;
     scroll-snap-type: y mandatory;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 

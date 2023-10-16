@@ -115,78 +115,83 @@ export default function New(){
                 </GroupInline>
             </AppBar>
 
-            <Box navbar={true} isDesktop={device === 'desktop'}>
-                <Block bottom={80}>
-                    <CreateRoom />
-                </Block>
-                <Block top={40} bottom={20} isWrapper={true} padding={20}>
-                    <Typography size={24} weight={600} bottom={12}>Начать</Typography>
-                    <GroupButtons>
-                        <Button size={'small'}>Книжный обмен</Button>
-                        <Button size={'small'}>Выбор книги</Button>
-                        <Button size={'small'} onClick={async () => await createUser}>user</Button>
-                        <Button size={'small'}>Встречу</Button>
-                    </GroupButtons>
-                </Block>
+            <Container scrollable={true}>
 
-                <Block bottom={20}></Block>
+                <Box navbar={false} isDesktop={device === 'desktop'}>
 
-                {/*<Block isWrapper={true}>*/}
-                {/*    <HorizontalList bottom={20} title={'Миссии'} description={'Выполняйте миссии, зарабатываете баллы и обменивайте их в магазине'}>*/}
-                {/*        {eventsDonerInfo.map( (eventsDonerInfoItem, eventIndex) => {*/}
-                {/*            return(<>*/}
-                {/*                <HorizontalListItem key={eventIndex}>*/}
-                {/*                    <EventCard item={eventsDonerInfoItem} />*/}
-                {/*                </HorizontalListItem>*/}
-                {/*            </>)*/}
-                {/*        })}*/}
-                {/*    </HorizontalList>*/}
-                {/*</Block>*/}
-                {/*<Block isWrapper={true}>*/}
-                {/*    <HorizontalList bottom={20} title={'Благотворительность'} description={'Периодически проводим благотворительные мероприятия'}>*/}
-                {/*        {eventsDonerInfo.map( (eventsDonerInfoItem, eventIndex) => {*/}
-                {/*            return(<>*/}
-                {/*                <HorizontalListItem key={eventIndex}>*/}
-                {/*                    <EventCard item={eventsDonerInfoItem} />*/}
-                {/*                </HorizontalListItem>*/}
-                {/*            </>)*/}
-                {/*        })}*/}
-                {/*    </HorizontalList>*/}
-                {/*</Block>*/}
-                <Block isWrapper={true}>
-                    <HorizontalList bottom={20} title={'Обсуждения книг'} description={'Каждый месяц встречаемся и обсуждаем книгу'}>
-                        {rooms.length < 1 && <Typography size={16} weight={500}>Обсуждений пока не было</Typography>}
-                        {rooms.map( (room, index) => {
-                            return(<>
-                                <HorizontalListItem key={index}>
-                                    <EventCard item={room} />
-                                </HorizontalListItem>
-                            </>)
-                        })}
-                    </HorizontalList>
-                </Block>
-                {/*<Block isWrapper={true}>*/}
-                {/*    <HorizontalList bottom={20} title={'Библиотека клуба'} description={'Можно одолжить книгу из списка на определенное время'} isShowAllBtn={true}>*/}
-                {/*        {eventsInfo.map( (eventInfo, eventIndex) => {*/}
-                {/*            return(<>*/}
-                {/*                <HorizontalListItem key={eventIndex}>*/}
-                {/*                    <EventCard item={eventInfo} />*/}
-                {/*                </HorizontalListItem>*/}
-                {/*            </>)*/}
-                {/*        })}*/}
-                {/*    </HorizontalList>*/}
-                {/*</Block>*/}
+                    <Block bottom={80}>
+                        <CreateRoom />
+                    </Block>
+                    <Block top={40} bottom={20} isWrapper={true} padding={20}>
+                        <Typography size={24} weight={600} bottom={12}>Начать</Typography>
+                        <GroupButtons>
+                            <Button size={'small'}>Книжный обмен</Button>
+                            <Button size={'small'}>Выбор книги</Button>
+                            <Button size={'small'} onClick={async () => await createUser}>user</Button>
+                            <Button size={'small'}>Встречу</Button>
+                        </GroupButtons>
+                    </Block>
 
-                {/*<Container>*/}
-                {/*    <Block bottom={20}>*/}
-                {/*        <ClubUsers />*/}
-                {/*    </Block>*/}
-                {/*</Container>*/}
-                {/*<Banner slides={[1,2,3,4,5]} />*/}
+                    <Block bottom={20}></Block>
 
-            </Box>
-            {/*<Footer />*/}
-            <AppFooter />
+                    {/*<Block isWrapper={true}>*/}
+                    {/*    <HorizontalList bottom={20} title={'Миссии'} description={'Выполняйте миссии, зарабатываете баллы и обменивайте их в магазине'}>*/}
+                    {/*        {eventsDonerInfo.map( (eventsDonerInfoItem, eventIndex) => {*/}
+                    {/*            return(<>*/}
+                    {/*                <HorizontalListItem key={eventIndex}>*/}
+                    {/*                    <EventCard item={eventsDonerInfoItem} />*/}
+                    {/*                </HorizontalListItem>*/}
+                    {/*            </>)*/}
+                    {/*        })}*/}
+                    {/*    </HorizontalList>*/}
+                    {/*</Block>*/}
+                    {/*<Block isWrapper={true}>*/}
+                    {/*    <HorizontalList bottom={20} title={'Благотворительность'} description={'Периодически проводим благотворительные мероприятия'}>*/}
+                    {/*        {eventsDonerInfo.map( (eventsDonerInfoItem, eventIndex) => {*/}
+                    {/*            return(<>*/}
+                    {/*                <HorizontalListItem key={eventIndex}>*/}
+                    {/*                    <EventCard item={eventsDonerInfoItem} />*/}
+                    {/*                </HorizontalListItem>*/}
+                    {/*            </>)*/}
+                    {/*        })}*/}
+                    {/*    </HorizontalList>*/}
+                    {/*</Block>*/}
+                    <Block isWrapper={true}>
+                        <HorizontalList bottom={20} title={'Обсуждения книг'} description={'Каждый месяц встречаемся и обсуждаем книгу'}>
+                            {rooms.length < 1 && <Typography size={16} weight={500}>Обсуждений пока не было</Typography>}
+                            {rooms.map( (room, index) => {
+                                return(<>
+                                    <HorizontalListItem key={index}>
+                                        <EventCard item={room} />
+                                    </HorizontalListItem>
+                                </>)
+                            })}
+                        </HorizontalList>
+                    </Block>
+                    {/*<Block isWrapper={true}>*/}
+                    {/*    <HorizontalList bottom={20} title={'Библиотека клуба'} description={'Можно одолжить книгу из списка на определенное время'} isShowAllBtn={true}>*/}
+                    {/*        {eventsInfo.map( (eventInfo, eventIndex) => {*/}
+                    {/*            return(<>*/}
+                    {/*                <HorizontalListItem key={eventIndex}>*/}
+                    {/*                    <EventCard item={eventInfo} />*/}
+                    {/*                </HorizontalListItem>*/}
+                    {/*            </>)*/}
+                    {/*        })}*/}
+                    {/*    </HorizontalList>*/}
+                    {/*</Block>*/}
+
+                    {/*<Container>*/}
+                    {/*    <Block bottom={20}>*/}
+                    {/*        <ClubUsers />*/}
+                    {/*    </Block>*/}
+                    {/*</Container>*/}
+                    {/*<Banner slides={[1,2,3,4,5]} />*/}
+
+                </Box>
+                {/*<Footer />*/}
+                <AppFooter />
+        </Container>
+
         </>
     )
 }

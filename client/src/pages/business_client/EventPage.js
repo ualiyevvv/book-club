@@ -142,6 +142,7 @@ export default function EventPage(){
     // }, []);
 
     const [activeSlide, setActiveSlide] = useState(0);
+    const [isDrawerActive, setIsDrawerActive] = useState(true)
 
     return (<>
         <AppBar padding={'10px'}>
@@ -166,17 +167,19 @@ export default function EventPage(){
                 </Nav>
             </GroupInline>
         </AppBar>
-        <Box navbar={true} isDesktop={device === 'desktop'}>
-            {/*<EventSlider photos={[1,2,3,4]}/>*/}
+
+        <Container scrollable={true}>
+
+            <Box navbar={false} isDesktop={device === 'desktop'}>
+                {/*<EventSlider photos={[1,2,3,4]}/>*/}
 
 
-                { (isActiveModal || voteViewSettingValue === null) && <VoteViewSettings title={'Настройте отображение количества голосов'} onClick={setVoteViewSettingValue} onClose={toggle}/> }
+                    { (isActiveModal || voteViewSettingValue === null) && <VoteViewSettings title={'Настройте отображение количества голосов'} onClick={setVoteViewSettingValue} onClose={toggle}/> }
 
-                <div className="event-page">
+                    <div className="event-page">
 
-                    <FullScrollPageContainer>
-                        <FullScrollPage>
-                            <Container>
+                        {device === 'desktop'
+                            ? <>
                                 <Block>
                                     <VoteTimer data={roomData} />
                                 </Block>
@@ -187,100 +190,127 @@ export default function EventPage(){
                                         <CreateBook roomId={roomId} />
                                     </Block>
                                 </Block>
-                            </Container>
-                        </FullScrollPage>
+
+                                <Block maxWidth={'100%'} isAlignCenter={true}>
+                                    <BookOffers voteViewSettingValue={voteViewSettingValue} roomId={roomId}/>
+                                </Block>
+                            </>
+                            : <FullScrollPageContainer>
+                                <FullScrollPage>
+                                    <Block>
+                                        <VoteTimer data={roomData} />
+                                    </Block>
+
+                                    <Block isAlignCenter={true} bottom={30}>
+                                        <Block maxWidth={600} isAlignCenter={true}>
+                                            <Button bottom={10} onClick={toggle} width={'fit-content'} variant={'outline'} size={'small'}>Настройки</Button>
+                                            <CreateBook roomId={roomId} />
+                                        </Block>
+                                    </Block>
+                                </FullScrollPage>
 
 
 
-                        <FullScrollPage id={'section-with-drawer'}>
-                            {/*<Block isAlignCenter={true}>*/}
+                                <FullScrollPage id={'section-with-drawer'}>
+                                    {/*<Block isAlignCenter={true}>*/}
 
 
-                                {isBooksLoaded && <>
-                                    <SwiperCard books={books} onChangeActiveSlide={setActiveSlide} />
+                                    {isBooksLoaded && <>
+                                        <SwiperCard books={books} onChangeActiveSlide={setActiveSlide} />
 
-                                    {isInViewport &&
-                                        <Drawer>
-                                            {/*{books.map((book, index) => {*/}
-                                            {/*    return (<>*/}
-                                            {/*        {book.info}*/}
-                                            {/*    </>)*/}
-                                            {/*})}*/}
-                                            <Block isAlignCenter={true}>
-                                                <Block bottom={20} isAlignCenter={true}>
-                                                    <Typography align={'center'} weight={700} size={21} bottom={8}>{books[activeSlide].info.title}</Typography>
-                                                    <Typography align={'center'} weight={500} color={'grey'} size={16}>{books[activeSlide].info.authors.map(author => { return <span>{author}</span>})}</Typography>
+                                        {!isDrawerActive &&
+                                            <Container isWrapper={true}>
+                                                <Button width={'100%'} bottom={20}>Проголосовать</Button>
+                                                <Button width={'100%'} variant={'outline'} onClick={() => setIsDrawerActive(!isDrawerActive)}>Подробнее</Button>
+                                            </Container>
+                                        }
+
+                                        {isDrawerActive && isInViewport &&
+                                            <Drawer onClose={setIsDrawerActive} isDrawerActive={isDrawerActive}>
+                                                {/*{books.map((book, index) => {*/}
+                                                {/*    return (<>*/}
+                                                {/*        {book.info}*/}
+                                                {/*    </>)*/}
+                                                {/*})}*/}
+                                                <Block isAlignCenter={true}>
+                                                    <Block bottom={20} isAlignCenter={true}>
+                                                        <Typography align={'center'} weight={700} size={21} bottom={8}>{books[activeSlide].info.title}</Typography>
+                                                        <Typography align={'center'} weight={500} color={'grey'} size={16}>{books[activeSlide].info.authors.map(author => { return <span>{author}</span>})}</Typography>
+                                                    </Block>
+
+                                                    <Block bottom={20} maxWidth={200} isAlignCenter={true}>
+                                                        <img src={books[activeSlide].info.img.src} alt={books[activeSlide].info.img.alt} />
+                                                    </Block>
+
+                                                    <Block>
+                                                        {books[activeSlide].info.description}
+                                                    </Block>
                                                 </Block>
+                                                {/*{books[activeSlide].info}*/}
+                                            </Drawer>
+                                        }
+                                    </>}
 
-                                                <Block bottom={20} maxWidth={200} isAlignCenter={true}>
-                                                    <img src={books[activeSlide].info.img.src} alt={books[activeSlide].info.img.alt} />
-                                                </Block>
-
-                                                <Block>
-                                                    {books[activeSlide].info.description}
-                                                </Block>
-                                            </Block>
-                                            {/*{books[activeSlide].info}*/}
-                                        </Drawer>
-                                    }
-                                </>}
-                                {/*<BookOffers voteViewSettingValue={voteViewSettingValue} roomId={roomId}/>*/}
-
-                            {/*</Block>*/}
-                        </FullScrollPage>
-                    </FullScrollPageContainer>
+                                    {/*</Block>*/}
+                                </FullScrollPage>
+                            </FullScrollPageContainer>
+                        }
 
 
-                    {/*<div className="event-page__title">{eventsInfo?.caption}</div>*/}
-                    {/*<TagsGroup>*/}
-                    {/*    <TagsItem label={'category1'}/>*/}
-                    {/*    <TagsItem label={'category2'}/>*/}
-                    {/*    <TagsItem label={'category3'}/>*/}
-                    {/*    <TagsItem label={'category4'}/>*/}
-                    {/*    <TagsItem label={'category5'}/>*/}
-                    {/*</TagsGroup>*/}
-                    {/*/!*<BookCrossing />*!/*/}
-                    {/*<div className="event-page-row">*/}
-                    {/*    <div className="event-page-block">*/}
-                    {/*        <div className="event-page-block__icon">*/}
-                    {/*            <IconLocation width={25} height={25} />*/}
-                    {/*        </div>*/}
-                    {/*        <div className="event-page-block__text">*/}
-                    {/*            {eventsInfo?.address}*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="event-page-block">*/}
-                    {/*        <div className="event-page-block__icon">*/}
-                    {/*            <IconCalendar width={25} height={25} />*/}
-                    {/*        </div>*/}
-                    {/*        <div className="event-page-block__text">*/}
-                    {/*            {eventsInfo?.start_date} {eventsInfo?.end_date && ' - '+eventsInfo?.end_date}*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*/!*<div className="event-page-block">*!/*/}
-                    {/*/!*    <div className="event-page-block__icon">*!/*/}
 
-                    {/*/!*    </div>*!/*/}
-                    {/*/!*    <div className="event-page-block__text">*!/*/}
 
-                    {/*/!*    </div>*!/*/}
-                    {/*/!*</div>*!/*/}
-                    {/*<div className="event-page-description">*/}
-                    {/*    <div className="event-page-description__title">*/}
-                    {/*        Описание*/}
-                    {/*    </div>*/}
-                    {/*    <div className="event-page-description__text"*/}
-                    {/*         dangerouslySetInnerHTML={{ __html: toDisplayedLinkText(eventsInfo?.description) }}*/}
-                    {/*    >*/}
-                    {/*        /!*<pre>*!/*/}
-                    {/*        /!*    {toDisplayedLinkText(eventsInfo?.description)}*!/*/}
-                    {/*        /!*</pre>*!/*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*/!*<EventPageHeader />*!/*/}
-                </div>
-        </Box>
-        <AppFooter />
+
+                        {/*<div className="event-page__title">{eventsInfo?.caption}</div>*/}
+                        {/*<TagsGroup>*/}
+                        {/*    <TagsItem label={'category1'}/>*/}
+                        {/*    <TagsItem label={'category2'}/>*/}
+                        {/*    <TagsItem label={'category3'}/>*/}
+                        {/*    <TagsItem label={'category4'}/>*/}
+                        {/*    <TagsItem label={'category5'}/>*/}
+                        {/*</TagsGroup>*/}
+                        {/*/!*<BookCrossing />*!/*/}
+                        {/*<div className="event-page-row">*/}
+                        {/*    <div className="event-page-block">*/}
+                        {/*        <div className="event-page-block__icon">*/}
+                        {/*            <IconLocation width={25} height={25} />*/}
+                        {/*        </div>*/}
+                        {/*        <div className="event-page-block__text">*/}
+                        {/*            {eventsInfo?.address}*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="event-page-block">*/}
+                        {/*        <div className="event-page-block__icon">*/}
+                        {/*            <IconCalendar width={25} height={25} />*/}
+                        {/*        </div>*/}
+                        {/*        <div className="event-page-block__text">*/}
+                        {/*            {eventsInfo?.start_date} {eventsInfo?.end_date && ' - '+eventsInfo?.end_date}*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        {/*/!*<div className="event-page-block">*!/*/}
+                        {/*/!*    <div className="event-page-block__icon">*!/*/}
+
+                        {/*/!*    </div>*!/*/}
+                        {/*/!*    <div className="event-page-block__text">*!/*/}
+
+                        {/*/!*    </div>*!/*/}
+                        {/*/!*</div>*!/*/}
+                        {/*<div className="event-page-description">*/}
+                        {/*    <div className="event-page-description__title">*/}
+                        {/*        Описание*/}
+                        {/*    </div>*/}
+                        {/*    <div className="event-page-description__text"*/}
+                        {/*         dangerouslySetInnerHTML={{ __html: toDisplayedLinkText(eventsInfo?.description) }}*/}
+                        {/*    >*/}
+                        {/*        /!*<pre>*!/*/}
+                        {/*        /!*    {toDisplayedLinkText(eventsInfo?.description)}*!/*/}
+                        {/*        /!*</pre>*!/*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        {/*/!*<EventPageHeader />*!/*/}
+                    </div>
+            </Box>
+            <AppFooter />
+        </Container>
     </>)
 }

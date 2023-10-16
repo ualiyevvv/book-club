@@ -3,7 +3,7 @@ import React from "react";
 
 export default function FullScrollPageContainer({children}) {
 
-    return (<div className={styles.FullScrollPageContainer}>
+    return (<div className={styles.FullScrollPageContainer} id={'fullPageContainer'}>
         {children}
     </div>)
 }

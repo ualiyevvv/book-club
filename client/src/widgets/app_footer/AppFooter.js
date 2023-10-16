@@ -6,9 +6,7 @@ import Container from "../../shared/ui/box/Container";
 export default function AppFooter() {
     return (
         <footer className={styles['appFooter']}>
-            <Container>
-                <div  className={styles['appFooter__text']}>2023. Разработчик <a className={styles.appFooter__link} href="https://t.me/mitxp">@mitxp</a></div>
-            </Container>
+            <div  className={styles['appFooter__text']}>2023. Разработчик <a className={styles.appFooter__link} href="https://t.me/mitxp">@mitxp</a></div>
         </footer>
     )
 }
