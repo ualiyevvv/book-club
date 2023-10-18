@@ -38,4 +38,8 @@
         margin: 0 auto;
         color: black;
     }
+
+    .VoteTimer__title {
+        text-align: center;
+    }
 }

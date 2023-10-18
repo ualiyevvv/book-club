@@ -15,7 +15,7 @@ import { useSwiper, useSwiperSlide } from 'swiper/react';
 import useToggle from "../../hooks/useToggle";
 import Modal from "../../shared/ui/modal/Modal";
 import CreatBookForm from "../../features/book/CreatBookForm";
-export default function SwiperCard({funcForAddCard=f=>f, roomId, books, onChangeActiveSlide=f=>f}){
+export default function SwiperCard({funcForAddCard=f=>f, roomHash, books, onChangeActiveSlide=f=>f}){
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
@@ -34,7 +34,7 @@ export default function SwiperCard({funcForAddCard=f=>f, roomId, books, onChange
         </div>
 
         {isCreateBookModal && <Modal minWidth={360} maxWidth={480} height={'80%'} onClose={toggle}>
-            <CreatBookForm roomId={roomId} setIsBookOffering={toggle} />
+            <CreatBookForm roomHash={roomHash} setIsBookOffering={toggle} />
         </Modal>}
 
         <div className={styles.swiperContainer}>

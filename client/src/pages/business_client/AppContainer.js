@@ -9,22 +9,27 @@ import {useNavigate} from "react-router-dom";
 import Container from "../../shared/ui/box/Container";
 import Box from "../../shared/ui/box/Box";
 import {useAuth} from "../../app/AuthProvider";
+import useToggle from "../../hooks/useToggle";
+import ProfileFeatureModal from "../../features/profile/ProfileFeatureModal";
 
-const AppContainer = ({isHorizontalCenter=false, children, isBoxCentered}) => {
+const AppContainer = ({isContainer=false, isNavbar=false, isHorizontalCenter=false, children, isBoxCentered, isScrollable=false}) => {
 
     const navigate = useNavigate();
     const { adaptiveHandler, user, isAuth, logout} = useAuth();
     const { device } = adaptiveHandler;
 
+    const [isProfileModal, toggleProfileModal] = useToggle(false)
+
 
     return (<>
+        {isProfileModal && <ProfileFeatureModal user={user} toggle={toggleProfileModal}/>}
         <AppBar padding={'10px'}>
             {device !== 'mobile' ? <GroupInline>
                 <Logo />
                 <Nav left={35}>
                     <NavLink text={'Главная'} onClick={e => navigate('/', {replace: true,})}/>
-                    <NavLink text={'Библиотека'} onClick={e => navigate('/event', {replace: true,})}/>
-                    <NavLink text={'Блог'} onClick={e => navigate('/authn', {replace: true,})}/>
+                    {/*<NavLink text={'Библиотека'} onClick={e => navigate('/event', {replace: true,})}/>*/}
+                    {/*<NavLink text={'Блог'} onClick={e => navigate('/authn', {replace: true,})}/>*/}
                 </Nav>
             </GroupInline> : <Logo />
             }
@@ -33,7 +38,7 @@ const AppContainer = ({isHorizontalCenter=false, children, isBoxCentered}) => {
                 {/*<ToggleTheme />*/}
                 {/*<Block left={20} width={'auto'}><EventPublishAction /></Block>*/}
                 <Nav left={20}>
-                    {isAuth && <NavLink text={'Выйти'} onClick={() => logout()}/>}
+                    {isAuth && <NavLink text={'Профиль'} onClick={toggleProfileModal}/>}
                     {!isAuth && <NavLink text={'Войти/Зарегистрироваться'} onClick={e => navigate('/authn', {replace: true,})}/>}
 
                     {/*<NavLink text={''} onClick={e => navigate('/event', {replace: true,})}/>*/}
@@ -43,7 +48,7 @@ const AppContainer = ({isHorizontalCenter=false, children, isBoxCentered}) => {
 
         <Container scrollable={true}>
 
-            <Box isHorizontalCenter={isHorizontalCenter} navbar={false} center={isBoxCentered} isDesktop={device === 'desktop'}>
+            <Box isScrollable={isScrollable} isContainer={isContainer} isHorizontalCenter={isHorizontalCenter} navbar={isNavbar} center={isBoxCentered} isDesktop={device === 'desktop'}>
                 {children}
             </Box>
         </Container>

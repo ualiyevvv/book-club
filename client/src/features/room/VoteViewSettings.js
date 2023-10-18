@@ -18,7 +18,7 @@ export default function VoteViewSettings({title='', onClick=f=>f, onClose, item}
     return(<>
         <Modal minWidth={360} maxWidth={450} onClose={onClose}>
             <form>
-                <Block bottom={40} isAlignCenter={true}>
+                <Block bottom={30} isAlignCenter={true}>
                     <Typography align={'center'} weight={700} size={24}>{title}</Typography>
                 </Block>
                 <GroupButtons top={20}>

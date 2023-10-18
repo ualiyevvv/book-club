@@ -3,6 +3,7 @@ import Authentication from "../pages/auth/main/Authentication";
 import Loader from "../shared/ui/loader/Loader";
 import AppContainer from "../pages/business_client/AppContainer";
 import {useAuth} from "../app/AuthProvider";
+import Overlay from "../shared/ui/overlay/Overlay";
 
 export default function PageNew({children}) {
 
@@ -21,7 +22,7 @@ export default function PageNew({children}) {
     }, [user]);
 
     if (isLoading) {
-        return (<Loader />)
+        return (<Overlay><Loader /></Overlay>)
     }
     // else if (!isAuth) {
     //     return (<Authentication />)

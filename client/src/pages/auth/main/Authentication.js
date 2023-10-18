@@ -40,7 +40,7 @@ const Authentication = () => {
     } else {
 
         // SignUp/SignIn должны быть в одном компоненте и OAuth тоже, все должно быть в одном Authentication page
-        return (<AppContainer isBoxCentered={true}>
+        return (<AppContainer isBoxCentered={true} isContainer={true}>
 
             <Block isAlignCenter={true} top={60}>
                 <Card maxWidth={600}>
@@ -62,8 +62,8 @@ const Authentication = () => {
                         {tabType === 'signup' && <TextWithLink text="Уже есть аккаунт?" linktext="Авторизация" onClick={() => setTabType('signin')} />}
                         {tabType === 'signin' && <>
                             <TextWithLink text="Нет аккаунта?" linktext="Регистрация" onClick={() => setTabType('signup')} />
-                            <br/>
-                            <TextWithLink linktext="Забыли пароль?" onClick={e => navigate('/authn/send-reset')} />
+                            {/*<br/>*/}
+                            {/*<TextWithLink linktext="Забыли пароль?" onClick={e => navigate('/authn/send-reset')} />*/}
                         </>}
                     </CardFooter>
                 </Card>

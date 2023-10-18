@@ -5,7 +5,7 @@ import Button from "../../shared/ui/button/Button";
 import Input from "../../shared/ui/input/Input";
 import Typography from "../../shared/ui/typography/Typography";
 
-export default function CreatBookForm({roomId=null, setIsBookOffering=f=>f}) {
+export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
 
     // TO DO !!!!! for searchResults если ничего не найдено обработать ошибку
     const [isLoading, setIsLoading] = useState(false);
@@ -102,7 +102,7 @@ export default function CreatBookForm({roomId=null, setIsBookOffering=f=>f}) {
             info: JSON.stringify(item),
             comment: bookOfferComment,
             user_id: null,
-            room_id: roomId,
+            roomHash: roomHash,
         };
 
         // Отправка POST-запроса

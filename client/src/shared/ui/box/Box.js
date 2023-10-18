@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './box.module.css' 
 
-export default function Box({isHorizontalCenter, children, center=false, navbar=false, menu=false, yummy=false, isDesktop=false}){
+export default function Box({isScrollable=false,isHorizontalCenter, children, center=false, navbar=false, menu=false, yummy=false, isDesktop=false, isContainer=false}){
     return (
         <div className={`
             ${styles.box} 
@@ -12,6 +12,8 @@ export default function Box({isHorizontalCenter, children, center=false, navbar=
             ${yummy ? styles['box--yummy'] : ''}
             ${isDesktop && styles['box--desktop'] }
             ${isHorizontalCenter && styles['box--horizontal-center']}
+            ${isContainer && styles['box--container']}
+            ${isScrollable && styles['box--scroll']}
         `}>
             {/*<div className={styles.container}>*/}
                 {children}

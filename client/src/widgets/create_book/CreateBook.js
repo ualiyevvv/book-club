@@ -4,7 +4,7 @@ import Button from "../../shared/ui/button/Button";
 import Block from "../../shared/ui/block/Block";
 import Modal from "../../shared/ui/modal/Modal";
 import CreatBookForm from "../../features/book/CreatBookForm";
-export default function CreateBook({roomId = null}) {
+export default function CreateBook({roomHash = null}) {
 
     const [isBookOffering, setIsBookOffering] = useState(false)
 
@@ -17,7 +17,7 @@ export default function CreateBook({roomId = null}) {
         </Block>
 
         {isBookOffering &&
-            <CreatBookForm setIsBookOffering={setIsBookOffering} roomId={roomId} />
+            <CreatBookForm setIsBookOffering={setIsBookOffering} roomHash={roomHash} />
         }
 
     </>)

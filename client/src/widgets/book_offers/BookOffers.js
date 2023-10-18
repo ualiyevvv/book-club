@@ -9,7 +9,7 @@ import Block from "../../shared/ui/block/Block";
 import Grid from "../../shared/ui/grid/Grid";
 import ChooseBook from "../choose_book/ChooseBook";
 import Container from "../../shared/ui/box/Container";
-export default function BookOffers({ voteViewSettingValue, roomId = null}) {
+export default function BookOffers({ voteViewSettingValue, roomHash = null}) {
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -18,7 +18,7 @@ export default function BookOffers({ voteViewSettingValue, roomId = null}) {
     function getAllOffers() {
 
         // Отправка GET-запроса
-        fetch(`http://localhost:3000/api/offer/${roomId}`)
+        fetch(`http://localhost:3000/api/offer/${roomHash}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Произошла ошибка при отправке запроса');

@@ -18,7 +18,7 @@ export default function SendResetPasswordMail(){
     const navigate = useNavigate();
 
     return (<>
-        <Box center={true}>
+        <Box center={true} isContainer={true}>
             <Block isAlignCenter={true}>
                 <Card maxWidth={600}>
                     <CardHeader>

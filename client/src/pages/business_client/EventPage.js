@@ -32,7 +32,7 @@ const EventPage = () => {
     const { device } = adaptiveHandler;
 
     const navigate = useNavigate()
-    const { id:roomId } = useParams(); // переименовываем id в activeConversationId
+    const { roomHash } = useParams(); // переименовываем id в activeConversationId
 
     const [roomData, setRoomData] = useState(null)
 
@@ -51,10 +51,9 @@ const EventPage = () => {
 
     const [isCreateBookModal, toggleCreateBookModal] = useToggle();
 
-    const widthWindow = window.innerWidth;
     function getAllOffers() {
         // Отправка GET-запроса
-        fetch(`http://localhost:3000/api/offer/${roomId}`)
+        fetch(`http://localhost:3000/api/offer/${roomHash}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Произошла ошибка при отправке запроса');
@@ -81,7 +80,7 @@ const EventPage = () => {
     useEffect(() => {
 
         // Отправка GET-запроса
-        fetch(`http://localhost:3000/api/room/${roomId}`)
+        fetch(`http://localhost:3000/api/room/${roomHash}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Произошла ошибка при отправке запроса');
@@ -99,12 +98,6 @@ const EventPage = () => {
         getAllOffers()
 
 
-
-        // if (voteViewSettingValue === null) {
-        //     toggle(true)
-        // }
-
-        // console.log("VOTEEEE", voteViewSettingValue)
     }, []);
 
     useEffect(() => {
@@ -161,12 +154,12 @@ const EventPage = () => {
                         <Block isAlignCenter={true} bottom={30}>
                             <Block maxWidth={600} isAlignCenter={true}>
                                 <Button bottom={10} onClick={toggle} width={'fit-content'} variant={'outline'} size={'small'}>Настройки</Button>
-                                <CreateBook roomId={roomId} />
+                                <CreateBook roomHash={roomHash} />
                             </Block>
                         </Block>
 
                         <Block maxWidth={'100%'} isAlignCenter={true}>
-                            <BookOffers voteViewSettingValue={voteViewSettingValue} roomId={roomId}/>
+                            <BookOffers voteViewSettingValue={voteViewSettingValue} roomHash={roomHash}/>
                         </Block>
                     </>
                     : <FullScrollPageContainer>
@@ -180,7 +173,7 @@ const EventPage = () => {
                                     <Button bottom={10} onClick={toggle} variant={'outline-white'}>Настройки</Button>
 
                                     {isCreateBookModal && <Modal minWidth={360} maxWidth={480} height={'80%'} onClose={toggleCreateBookModal}>
-                                        <CreatBookForm roomId={roomId} setIsBookOffering={toggleCreateBookModal} />
+                                        <CreatBookForm roomHash={roomHash} setIsBookOffering={toggleCreateBookModal} />
                                     </Modal>}
                                     <Button onClick={toggleCreateBookModal} isBgLight={true}>Предложить книгу</Button>
                                 </Block>
@@ -197,7 +190,7 @@ const EventPage = () => {
                             <BooksCounter booksLength={books?.length} currentCounter={books?.length > 0 ? activeSlide+1 : 0} />
 
                             {isBooksLoaded && <>
-                                <SwiperCard funcForAddCard={setIsDrawerActive} roomId={roomId} books={books} onChangeActiveSlide={setActiveSlide} />
+                                <SwiperCard funcForAddCard={setIsDrawerActive} roomHash={roomHash} books={books} onChangeActiveSlide={setActiveSlide} />
 
                                 {/*{!isDrawerActive &&*/}
                                 {/*    <Container isWrapper={true}>*/}

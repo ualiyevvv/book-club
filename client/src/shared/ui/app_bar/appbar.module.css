@@ -31,6 +31,17 @@
         /*background: rgba(249,249,250,.8);*/
     }
 }
+@media(max-width: 770px) {
+    .app-bar {
+        /*border-bottom: 1px solid var(--color-devider);*/
+        backdrop-filter: blur(40px);
+        /*-webkit-backdrop-filter: blur(40px);*/
+        /*background: rgba(249,249,250,.8);*/
+        border-bottom: 1px solid #7497ca;
+        background: rgb(249 249 250 / 0%);
+        color: white;
+    }
+}
 
 .app-bar-left {
     flex-direction: column;

@@ -111,7 +111,7 @@ const Router = () => {
 			</Route>
 
 
-			<Route path='/event'>
+			<Route path='/room'>
 				{/*<Route index element={*/}
 				{/*	<PageNew>*/}
 				{/*		<Orders />*/}
@@ -120,7 +120,7 @@ const Router = () => {
 				{/*	// </ProtectedPage>*/}
 				{/*}/>*/}
 
-				<Route path={':id'} element={
+				<Route path={':hash'} element={
 					// <ProtectedPage>
 					<PageNew>
 						<EventPage />

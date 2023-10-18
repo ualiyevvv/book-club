@@ -46,7 +46,7 @@ const New = () => {
 
 
     return (
-        <AppContainer>
+        <AppContainer isScrollable={true} isNavbar={true} isContainer={true}>
             <Block bottom={80}>
                 <CreateRoom />
             </Block>

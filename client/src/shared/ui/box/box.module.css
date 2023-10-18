@@ -12,9 +12,6 @@
 
 
 
-.box--navbar {
-    padding-top: 63px;
-}
 .box--menu {
     padding-bottom: 95px;
 }
@@ -57,11 +54,23 @@
 .box--horizontal-center {
     align-items: center;
 }
+.box--container {
+    padding: 0 20px;
+    padding-bottom: 30px;
+}
+.box--scroll {
+    overflow-y: auto;
+}
 
 @media (min-width:770px){
     .container--scrollable {
         /*padding: 10px;*/
         overflow: auto;
         padding-top: 80px;
+    }
+}
+@media (max-width:770px){
+    .box--navbar {
+        padding-top: 78px;
     }
 }
