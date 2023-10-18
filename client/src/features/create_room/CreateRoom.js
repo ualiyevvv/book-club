@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 import Input from "../../shared/ui/input/Input";
-import Typography from "../../shared/ui/typography/Typography";
-import {json} from "react-router-dom";
 import Button from "../../shared/ui/button/Button";
 import Block from "../../shared/ui/block/Block";
-export default function CreateRoom({onChosenBook=f=>f}) {
+import {useAuth} from "../../app/AuthProvider";
+const CreateRoom = ({onChosenBook=f=>f}) => {
 
 
     const [roomName, setRoomName] = useState('')
@@ -13,12 +12,13 @@ export default function CreateRoom({onChosenBook=f=>f}) {
     const [roomTgGroupId, setTgGroupId] = useState('')
     const [roomAuthor, setAuthor] = useState(null)
 
+    const {user} = useAuth()
     function createRoom() {
 
         const room = {
             name: roomName,
             tg_group_id: roomTgGroupId,
-            user_id: roomAuthor,
+            user_id: user.id,
             end_date: roomEndDate
         }
 
@@ -54,3 +54,5 @@ export default function CreateRoom({onChosenBook=f=>f}) {
         </Block>
     </>)
 }
+
+export default CreateRoom;

@@ -17,26 +17,30 @@ function AppContextProvider({ children }){
 
     const URLStateHandler = useURLState();
     const adaptiveHandler = useAdaptive();
-    const socketHandler = useSocket();
-    const authHandler = useAuth({socketHandler});
+    // const socketHandler = useSocket();
+    // const authHandler = useAuth({socketHandler});
 
-    const chatHandler = useChat({socketHandler, authHandler});
-    const orderHandler = useOrder({socketHandler, authHandler});
+    // const chatHandler = useChat({socketHandler, authHandler});
+    // const orderHandler = useOrder({socketHandler, authHandler});
 
-    const dataHandler = useData({ socketHandler });
+    // const dataHandler = useData({ socketHandler });
 
     const notificationsHandler = useNotifications();
+
+    const authState = {
+    }
 
     return (
         <Context.Provider value={{
             URLStateHandler,
             adaptiveHandler,
-            socketHandler,
-            authHandler,
-            chatHandler,
-            orderHandler,
-            dataHandler,
-            notificationsHandler
+            // socketHandler,
+            // authHandler,
+            // chatHandler,
+            // orderHandler,
+            // dataHandler,
+            notificationsHandler,
+            authState
         }}>
             {children}
         </Context.Provider>

@@ -4,7 +4,7 @@ import {Link, Routes, Route, Navigate, useSearchParams, useNavigate, useLocation
 
 import {AppContextProvider, useAppContext} from './context/AppContext';
 
-import ProtectedPage from "./middlewares/ProtectedPage";
+// import ProtectedPage from "./middlewares/ProtectedPage";
 import Page from "./middlewares/Page";
 
 import Landing from "./pages/landing/Landing"
@@ -24,48 +24,27 @@ import NotFound404 from "./pages/NotFound404";
 import AdminPage from "./middlewares/AdminPage";
 import AdminDashboard from "./pages/manager/AdminDashboard";
 import EventPage from "./pages/business_client/EventPage";
-import {Context} from "./index";
-import {observer} from "mobx-react-lite";
-import LoginForm from "./app/components/LoginForm";
-import Loader from "./shared/ui/loader/Loader";
-import UserService from "./app/services/UserService";
+import PageNew from "./middlewares/PageNew";
+import PageAuthed from "./middlewares/PageAuthed";
 
 
 const Router = () => {
 
 
-	const {store} = useContext(Context)
-	useEffect(() => {
-		if (localStorage.getItem('token')) {
-			store.checkAuth()
-		}
-	}, []);
 
-	// if (!store.isAuth) {
-	// 	return (<>
-	// 		<LoginForm />
-	// 	</>)
+
+	// const [users, setUsers] = useState([])
+	// async function getUsers() {
+	// 	try {
+	// 		const response = await UserService.getUsers();
+	// 		setUsers(response.data);
+	// 	} catch (e) {
+	// 		console.log(e)
+	// 	}
 	// }
-
-	if (store.isLoading) {
-		return (<Loader />)
-	}
-
-	const [users, setUsers] = useState([])
-	async function getUsers() {
-		try {
-			const response = await UserService.getUsers();
-			setUsers(response.data);
-		} catch (e) {
-			console.log(e)
-		}
-	}
 
 	return (<>
 
-		{/*<h1>{store.isAuth ? `User ${store.user.email} authorized` : 'Authorization'}</h1>*/}
-		{/*<h1>{!store.user.isActivated ? `User ${store.user.email} not activated` : 'Please activate the account'}</h1>*/}
-		{/*<button onClick={() => {store.logout()}}>Logout</button>*/}
 		<Routes>
 			{/** Landing Page */}
 			{/*<Route path="/" element={*/}
@@ -91,55 +70,61 @@ const Router = () => {
 			{/** Authentication Pages */}
 			<Route path='/authn'>
 				<Route index element={
-					<Page>
+					<PageNew>
 						<Authentication />
-					</Page>
+					</PageNew>
 				}/>
 
 				<Route path='logout' element={
-					<ProtectedPage>
+					<PageAuthed>
 						<Logout />
-					</ProtectedPage>
+					</PageAuthed>
 				}/>
 
-				<Route path='banned' element={
-					<ProtectedPage>
-						<Banned />
-					</ProtectedPage>
-				}/>
+				{/*<Route path='banned' element={*/}
+				{/*	<ProtectedPage>*/}
+				{/*		<Banned />*/}
+				{/*	</ProtectedPage>*/}
+				{/*}/>*/}
 
-				<Route path='no_name' element={
-					<ProtectedPage>
-						<NoName />
-					</ProtectedPage>
-				}/>
+				{/*<Route path='no_name' element={*/}
+				{/*	<ProtectedPage>*/}
+				{/*		<NoName />*/}
+				{/*	</ProtectedPage>*/}
+				{/*}/>*/}
 
-				<Route path='send-reset' element={<Page><SendResetPasswordMail /></Page>} />
-				<Route path='reset' element={<Page><ResetPassword /></Page>} />
-				<Route path='activation' element={<Page><Activation /></Page>}/>
+				{/*<Route path='send-reset' element={<Page><SendResetPasswordMail /></Page>} />*/}
+				{/*<Route path='reset' element={<Page><ResetPassword /></Page>} />*/}
+				{/*<Route path='activation' element={<Page><Activation /></Page>}/>*/}
 
 			</Route>
 
 			{/** Order-Flow */}
 			<Route path='/'>
 				<Route index element={
-					// <ProtectedPage>
+					<PageNew>
 						<New />
+					</PageNew>
+					// <ProtectedPage>
 					/*</ProtectedPage>*/
 				}/>
 			</Route>
 
 
 			<Route path='/event'>
-				<Route index element={
-					// <ProtectedPage>
-						<Orders />
-					// </ProtectedPage>
-				}/>
+				{/*<Route index element={*/}
+				{/*	<PageNew>*/}
+				{/*		<Orders />*/}
+				{/*	</PageNew>*/}
+				{/*	// <ProtectedPage>*/}
+				{/*	// </ProtectedPage>*/}
+				{/*}/>*/}
 
 				<Route path={':id'} element={
 					// <ProtectedPage>
+					<PageNew>
 						<EventPage />
+					</PageNew>
 					// </ProtectedPage>
 				}/>
 			</Route>
@@ -151,19 +136,19 @@ const Router = () => {
 				// </ProtectedPage>
 			}/>
 
-			{/** Chat: Conversations and Messenger */}
-			<Route path={'/chat'}>
-				<Route index element={
-					<ProtectedPage>
-						{/*<ChatPage />*/}
-					</ProtectedPage>
-				}/>
-				<Route path={':id'} element={
-					<ProtectedPage>
-						{/*<ChatPage />*/}
-					</ProtectedPage>
-				}/>
-			</Route>
+			{/*/!** Chat: Conversations and Messenger *!/*/}
+			{/*<Route path={'/chat'}>*/}
+			{/*	<Route index element={*/}
+			{/*		<ProtectedPage>*/}
+			{/*			/!*<ChatPage />*!/*/}
+			{/*		</ProtectedPage>*/}
+			{/*	}/>*/}
+			{/*	<Route path={':id'} element={*/}
+			{/*		<ProtectedPage>*/}
+			{/*			/!*<ChatPage />*!/*/}
+			{/*		</ProtectedPage>*/}
+			{/*	}/>*/}
+			{/*</Route>*/}
 
 
 			<Route path={'*'} element={
@@ -177,7 +162,7 @@ const Router = () => {
 	</>);
 }
 
-export default observer(Router);
+export default Router;
 
 /*
 ▄───▄

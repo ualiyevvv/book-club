@@ -11,6 +11,7 @@ import CardFooter from '../../../shared/ui/card/CardFooter'
 import Logo from '../../../shared/ui/logo/Logo'
 import TextWithLink from '../../../shared/ui/text_with_link/TextWithLink'
 import Block from "../../../shared/ui/block/Block";
+import AppFooter from "../../../widgets/app_footer/AppFooter";
 
 export default function SendResetPasswordMail(){
 
@@ -34,5 +35,6 @@ export default function SendResetPasswordMail(){
                 </Card>
             </Block>
         </Box>
+        <AppFooter />
     </>);
 }

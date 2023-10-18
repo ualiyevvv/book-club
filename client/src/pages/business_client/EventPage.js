@@ -3,54 +3,32 @@ import React, {useEffect, useState} from 'react';
 import Box from '../../shared/ui/box/Box'
 import NavigationPanel from '../../widgets/navigation_panel/NavigationPanel';
 
-import AppBar from "../../shared/ui/app_bar/AppBar";
-import {useAppContext} from "../../context/AppContext";
 import {useNavigate, useParams} from "react-router-dom";
-import GroupInline from "../../shared/ui/group_inline/GroupInline";
-import Logo from "../../shared/ui/logo/Logo";
-import Nav from "../../shared/ui/nav/Nav";
-import NavLink from "../../shared/ui/nav/NavLink";
 import Block from "../../shared/ui/block/Block";
-import EventPublishAction from "../../widgets/event/event_publish_action/EventPublishAction";
-import AppFooter from "../../widgets/app_footer/AppFooter";
-import Container from "../../shared/ui/box/Container";
-import IconLocation from '../../assets/icons/location_on_FILL0_wght400_GRAD0_opsz48.svg'
-import IconCalendar from '../../assets/icons/event_FILL0_wght400_GRAD0_opsz48.svg'
 
 import './eventPage.css'
-import EventSlider from "../../widgets/event/event_slider/EventSlider";
-import ToggleTheme from "../../widgets/toggle_them/ToggleTheme";
-import TagsGroup from "../../shared/ui/tags_group/TagsGroup";
-import TagsItem from "../../shared/ui/tags_group/TagsItem";
-import BookCrossing from "../../widgets/book_crossing/BookCrossing";
 import VoteTimer from "../../widgets/vote_timer/VoteTimer";
-import ChooseBook from "../../widgets/choose_book/ChooseBook";
-import Grid from "../../shared/ui/grid/Grid";
-import Typography from "../../shared/ui/typography/Typography";
 import CreateBook from "../../widgets/create_book/CreateBook";
-import Card from "../../shared/ui/card/Card";
 import BookOffers from "../../widgets/book_offers/BookOffers";
 import VoteViewSettings from "../../features/room/VoteViewSettings";
 import useToggle from "../../hooks/useToggle";
-import Link from "../../shared/ui/link/Link";
 import Button from "../../shared/ui/button/Button";
 import SwiperCard from "../../widgets/SwiperCard/SwiperCard";
 import FullScrollPage from "../../shared/ui/fullscroll/FullScrollPage";
 import FullScrollPageContainer from "../../shared/ui/fullscroll/FullScrollPageContainer";
 import Drawer from "../../shared/ui/drawer/Drawer";
-import GroupButtons from "../../shared/ui/group_buttons/GroupButtons";
-import ToggleButtonWrapper from "../../shared/ui/toggle_button/ToggleButtonWrapper";
-import ToggleButton from "../../shared/ui/toggle_button/ToggleButton";
 import BookInfoWidget from "../../widgets/book_info/BookInfoWidget";
 import BooksCounter from "../../widgets/books_counter/BooksCounter";
 import Badge from "../../shared/ui/badge/Badge";
 import Modal from "../../shared/ui/modal/Modal";
 import CreatBookForm from "../../features/book/CreatBookForm";
+import AppContainer from "./AppContainer";
+import {useAuth} from "../../app/AuthProvider";
 
-export default function EventPage(){
+const EventPage = () => {
 
-    const { authHandler, adaptiveHandler } = useAppContext();
-    const { user, isAuthenticated, userLoading, isOffline } = authHandler;
+    const { adaptiveHandler } = useAuth();
+    // const { user, isAuthenticated, userLoading, isOffline } = authHandler;
     const { device } = adaptiveHandler;
 
     const navigate = useNavigate()
@@ -67,6 +45,13 @@ export default function EventPage(){
 
     const [books, setBooks] = useState([])
     const [isBooksLoaded, setIsBooksLoaded] = useState(false)
+
+    const [activeSlide, setActiveSlide] = useState(0);
+    const [isDrawerActive, setIsDrawerActive] = useState(true)
+
+    const [isCreateBookModal, toggleCreateBookModal] = useToggle();
+
+    const widthWindow = window.innerWidth;
     function getAllOffers() {
         // Отправка GET-запроса
         fetch(`http://localhost:3000/api/offer/${roomId}`)
@@ -113,6 +98,17 @@ export default function EventPage(){
 
         getAllOffers()
 
+
+
+        // if (voteViewSettingValue === null) {
+        //     toggle(true)
+        // }
+
+        // console.log("VOTEEEE", voteViewSettingValue)
+    }, []);
+
+    useEffect(() => {
+
         const observer = new IntersectionObserver(
             ([entry]) => {
                 // Обработчик события, вызывается при вхождении или выходе из зоны видимости
@@ -142,189 +138,155 @@ export default function EventPage(){
                 observer.unobserve(target);
             }
         };
-        // if (voteViewSettingValue === null) {
-        //     toggle(true)
-        // }
-
-        // console.log("VOTEEEE", voteViewSettingValue)
-    }, []);
+        // console.log(widthWindow)
+    }, [device]);
 
 
     // useEffect(() => {
     // }, []);
 
-    const [activeSlide, setActiveSlide] = useState(0);
-    const [isDrawerActive, setIsDrawerActive] = useState(true)
 
-    const [isCreateBookModal, toggleCreateBookModal] = useToggle();
+    return (
+        <AppContainer>
+            { (isActiveModal || voteViewSettingValue === null) && <VoteViewSettings title={'Настройте отображение голосов'} onClick={setVoteViewSettingValue} onClose={toggle}/> }
 
-    return (<>
-        <AppBar padding={'10px'}>
-            {device !== 'mobile' ? <GroupInline>
-                    <Logo />
-                    <Nav left={35}>
-                        <NavLink text={'Главная'} onClick={e => navigate('/', {replace: true,})}/>
-                        <NavLink text={'Библиотека'} onClick={e => navigate('/event', {replace: true,})}/>
-                        <NavLink text={'Блог'}/>
-                    </Nav>
-                </GroupInline> : <Logo />
-            }
+            <div className="event-page">
 
-            <GroupInline>
-                {/*<ToggleTheme />*/}
-                {/*<Block left={20} width={'auto'}><EventPublishAction /></Block>*/}
-                <Nav left={20}>
-                    <NavLink text={'Войти/Зарегистрироваться'} onClick={e => navigate('/authn', {replace: true,})}/>
-                    {/*<NavLink text={''} onClick={e => navigate('/event', {replace: true,})}/>*/}
-                </Nav>
-            </GroupInline>
-        </AppBar>
+                {device === 'desktop'
+                    ? <>
+                        <Block>
+                            <VoteTimer data={roomData} />
+                        </Block>
 
-        <Container scrollable={true}>
+                        <Block isAlignCenter={true} bottom={30}>
+                            <Block maxWidth={600} isAlignCenter={true}>
+                                <Button bottom={10} onClick={toggle} width={'fit-content'} variant={'outline'} size={'small'}>Настройки</Button>
+                                <CreateBook roomId={roomId} />
+                            </Block>
+                        </Block>
 
-            <Box navbar={false} isDesktop={device === 'desktop'}>
-                {/*<EventSlider photos={[1,2,3,4]}/>*/}
+                        <Block maxWidth={'100%'} isAlignCenter={true}>
+                            <BookOffers voteViewSettingValue={voteViewSettingValue} roomId={roomId}/>
+                        </Block>
+                    </>
+                    : <FullScrollPageContainer>
+                        <FullScrollPage>
+                            <Block>
+                                <VoteTimer data={roomData} />
+                            </Block>
 
+                            <Block isAlignCenter={true} bottom={30}>
+                                <Block maxWidth={600} isAlignCenter={true} padding={20}>
+                                    <Button bottom={10} onClick={toggle} variant={'outline-white'}>Настройки</Button>
 
-                    { (isActiveModal || voteViewSettingValue === null) && <VoteViewSettings title={'Настройте отображение голосов'} onClick={setVoteViewSettingValue} onClose={toggle}/> }
-
-                    <div className="event-page">
-
-                        {device === 'desktop'
-                            ? <>
-                                <Block>
-                                    <VoteTimer data={roomData} />
+                                    {isCreateBookModal && <Modal minWidth={360} maxWidth={480} height={'80%'} onClose={toggleCreateBookModal}>
+                                        <CreatBookForm roomId={roomId} setIsBookOffering={toggleCreateBookModal} />
+                                    </Modal>}
+                                    <Button onClick={toggleCreateBookModal} isBgLight={true}>Предложить книгу</Button>
                                 </Block>
+                            </Block>
 
-                                <Block isAlignCenter={true} bottom={30}>
-                                    <Block maxWidth={600} isAlignCenter={true}>
-                                        <Button bottom={10} onClick={toggle} width={'fit-content'} variant={'outline'} size={'small'}>Настройки</Button>
-                                        <CreateBook roomId={roomId} />
-                                    </Block>
-                                </Block>
-
-                                <Block maxWidth={'100%'} isAlignCenter={true}>
-                                    <BookOffers voteViewSettingValue={voteViewSettingValue} roomId={roomId}/>
-                                </Block>
-                            </>
-                            : <FullScrollPageContainer>
-                                <FullScrollPage>
-                                    <Block>
-                                        <VoteTimer data={roomData} />
-                                    </Block>
-
-                                    <Block isAlignCenter={true} bottom={30}>
-                                        <Block maxWidth={600} isAlignCenter={true} padding={20}>
-                                            <Button bottom={10} onClick={toggle} variant={'outline-white'}>Настройки</Button>
-
-                                            {isCreateBookModal && <Modal minWidth={360} maxWidth={480} height={'80%'} onClose={toggleCreateBookModal}>
-                                                <CreatBookForm roomId={roomId} setIsBookOffering={toggleCreateBookModal} />
-                                            </Modal>}
-                                            <Button onClick={toggleCreateBookModal} isBgLight={true}>Предложить книгу</Button>
-                                        </Block>
-                                    </Block>
-
-                                    <Badge bottom={50} text={'Листай вниз 👇'} air={true} left={0} right={0}/>
-                                </FullScrollPage>
+                            <Badge bottom={50} text={'Листай вниз 👇'} air={true} left={0} right={0}/>
+                        </FullScrollPage>
 
 
 
-                                <FullScrollPage id={'section-with-drawer'}>
-                                    {/*<Block isAlignCenter={true}>*/}
+                        <FullScrollPage id={'section-with-drawer'}>
+                            {/*<Block isAlignCenter={true}>*/}
 
-                                    <BooksCounter booksLength={books?.length} currentCounter={books?.length > 0 ? activeSlide+1 : 0} />
+                            <BooksCounter booksLength={books?.length} currentCounter={books?.length > 0 ? activeSlide+1 : 0} />
 
-                                    {isBooksLoaded && <>
-                                        <SwiperCard funcForAddCard={setIsDrawerActive} roomId={roomId} books={books} onChangeActiveSlide={setActiveSlide} />
+                            {isBooksLoaded && <>
+                                <SwiperCard funcForAddCard={setIsDrawerActive} roomId={roomId} books={books} onChangeActiveSlide={setActiveSlide} />
 
-                                        {/*{!isDrawerActive &&*/}
-                                        {/*    <Container isWrapper={true}>*/}
-                                        {/*        <Button width={'100%'} bottom={20}>Проголосовать</Button>*/}
-                                        {/*        <Button width={'100%'} variant={'outline'} onClick={() => setIsDrawerActive(!isDrawerActive)}>Подробнее</Button>*/}
-                                        {/*    </Container>*/}
-                                        {/*}*/}
+                                {/*{!isDrawerActive &&*/}
+                                {/*    <Container isWrapper={true}>*/}
+                                {/*        <Button width={'100%'} bottom={20}>Проголосовать</Button>*/}
+                                {/*        <Button width={'100%'} variant={'outline'} onClick={() => setIsDrawerActive(!isDrawerActive)}>Подробнее</Button>*/}
+                                {/*    </Container>*/}
+                                {/*}*/}
 
-                                        {isDrawerActive && books?.length > 0 && isInViewport &&
-                                            <Drawer
-                                                onClose={setIsDrawerActive}
-                                                isDrawerActive={isDrawerActive}
-                                                Buttons={<>
-                                                    { voteViewSettingValue == 1 && <BooksCounter isVote={true} currentCounter={books[activeSlide]?.votes_count} /> }
-                                                    <Button width={'100%'} isBgLight={true} variant={'yellow'}>Проголосовать ✋</Button>
-                                                </>}
-                                            >
-                                                {/*{books.map((book, index) => {*/}
-                                                {/*    return (<>*/}
-                                                {/*        {book.info}*/}
-                                                {/*    </>)*/}
-                                                {/*})}*/}
-                                                <BookInfoWidget book={books[activeSlide]} />
+                                {isDrawerActive && books?.length > 0 && isInViewport &&
+                                    <Drawer
+                                        onClose={setIsDrawerActive}
+                                        isDrawerActive={isDrawerActive}
+                                        Buttons={<>
+                                            { voteViewSettingValue == 1 && <BooksCounter isVote={true} currentCounter={books[activeSlide]?.votes_count} /> }
+                                            <Button width={'100%'} isBgLight={true} variant={'yellow'}>Проголосовать ✋</Button>
+                                        </>}
+                                    >
+                                        {/*{books.map((book, index) => {*/}
+                                        {/*    return (<>*/}
+                                        {/*        {book.info}*/}
+                                        {/*    </>)*/}
+                                        {/*})}*/}
+                                        <BookInfoWidget book={books[activeSlide]} />
 
-                                                {/*{books[activeSlide].info}*/}
-                                            </Drawer>
-                                        }
-                                    </>}
+                                        {/*{books[activeSlide].info}*/}
+                                    </Drawer>
+                                }
+                            </>}
 
-                                    {/*</Block>*/}
-                                </FullScrollPage>
-                            </FullScrollPageContainer>
-                        }
+                            {/*</Block>*/}
+                        </FullScrollPage>
+                    </FullScrollPageContainer>
+                }
 
 
 
 
 
-                        {/*<div className="event-page__title">{eventsInfo?.caption}</div>*/}
-                        {/*<TagsGroup>*/}
-                        {/*    <TagsItem label={'category1'}/>*/}
-                        {/*    <TagsItem label={'category2'}/>*/}
-                        {/*    <TagsItem label={'category3'}/>*/}
-                        {/*    <TagsItem label={'category4'}/>*/}
-                        {/*    <TagsItem label={'category5'}/>*/}
-                        {/*</TagsGroup>*/}
-                        {/*/!*<BookCrossing />*!/*/}
-                        {/*<div className="event-page-row">*/}
-                        {/*    <div className="event-page-block">*/}
-                        {/*        <div className="event-page-block__icon">*/}
-                        {/*            <IconLocation width={25} height={25} />*/}
-                        {/*        </div>*/}
-                        {/*        <div className="event-page-block__text">*/}
-                        {/*            {eventsInfo?.address}*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*    <div className="event-page-block">*/}
-                        {/*        <div className="event-page-block__icon">*/}
-                        {/*            <IconCalendar width={25} height={25} />*/}
-                        {/*        </div>*/}
-                        {/*        <div className="event-page-block__text">*/}
-                        {/*            {eventsInfo?.start_date} {eventsInfo?.end_date && ' - '+eventsInfo?.end_date}*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                        {/*/!*<div className="event-page-block">*!/*/}
-                        {/*/!*    <div className="event-page-block__icon">*!/*/}
+                {/*<div className="event-page__title">{eventsInfo?.caption}</div>*/}
+                {/*<TagsGroup>*/}
+                {/*    <TagsItem label={'category1'}/>*/}
+                {/*    <TagsItem label={'category2'}/>*/}
+                {/*    <TagsItem label={'category3'}/>*/}
+                {/*    <TagsItem label={'category4'}/>*/}
+                {/*    <TagsItem label={'category5'}/>*/}
+                {/*</TagsGroup>*/}
+                {/*/!*<BookCrossing />*!/*/}
+                {/*<div className="event-page-row">*/}
+                {/*    <div className="event-page-block">*/}
+                {/*        <div className="event-page-block__icon">*/}
+                {/*            <IconLocation width={25} height={25} />*/}
+                {/*        </div>*/}
+                {/*        <div className="event-page-block__text">*/}
+                {/*            {eventsInfo?.address}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*    <div className="event-page-block">*/}
+                {/*        <div className="event-page-block__icon">*/}
+                {/*            <IconCalendar width={25} height={25} />*/}
+                {/*        </div>*/}
+                {/*        <div className="event-page-block__text">*/}
+                {/*            {eventsInfo?.start_date} {eventsInfo?.end_date && ' - '+eventsInfo?.end_date}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+                {/*/!*<div className="event-page-block">*!/*/}
+                {/*/!*    <div className="event-page-block__icon">*!/*/}
 
-                        {/*/!*    </div>*!/*/}
-                        {/*/!*    <div className="event-page-block__text">*!/*/}
+                {/*/!*    </div>*!/*/}
+                {/*/!*    <div className="event-page-block__text">*!/*/}
 
-                        {/*/!*    </div>*!/*/}
-                        {/*/!*</div>*!/*/}
-                        {/*<div className="event-page-description">*/}
-                        {/*    <div className="event-page-description__title">*/}
-                        {/*        Описание*/}
-                        {/*    </div>*/}
-                        {/*    <div className="event-page-description__text"*/}
-                        {/*         dangerouslySetInnerHTML={{ __html: toDisplayedLinkText(eventsInfo?.description) }}*/}
-                        {/*    >*/}
-                        {/*        /!*<pre>*!/*/}
-                        {/*        /!*    {toDisplayedLinkText(eventsInfo?.description)}*!/*/}
-                        {/*        /!*</pre>*!/*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                        {/*/!*<EventPageHeader />*!/*/}
-                    </div>
-            </Box>
-            <AppFooter />
-        </Container>
-    </>)
+                {/*/!*    </div>*!/*/}
+                {/*/!*</div>*!/*/}
+                {/*<div className="event-page-description">*/}
+                {/*    <div className="event-page-description__title">*/}
+                {/*        Описание*/}
+                {/*    </div>*/}
+                {/*    <div className="event-page-description__text"*/}
+                {/*         dangerouslySetInnerHTML={{ __html: toDisplayedLinkText(eventsInfo?.description) }}*/}
+                {/*    >*/}
+                {/*        /!*<pre>*!/*/}
+                {/*        /!*    {toDisplayedLinkText(eventsInfo?.description)}*!/*/}
+                {/*        /!*</pre>*!/*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+                {/*/!*<EventPageHeader />*!/*/}
+            </div>
+        </AppContainer>
+    )
 }
+
+export default EventPage;
