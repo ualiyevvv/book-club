@@ -6,6 +6,12 @@ import Logger from "../../../internal/Logger";
 import Input from '../../../shared/ui/input/Input';
 import Button from '../../../shared/ui/button/Button'
 import {useAuth} from "../../../app/AuthProvider";
+import Typography from "../../../shared/ui/typography/Typography";
+import Overlay from "../../../shared/ui/overlay/Overlay";
+import Loading from "../../../shared/loading/Loading";
+import Link from "../../../shared/ui/link/Link";
+import GroupInput from "../../../shared/ui/group_input/GroupInput";
+import Block from "../../../shared/ui/block/Block";
 
 /**
  * SignIn должен работать также, как и OAuth Azure Ad перенаправлять на link и redirect-ить на /?authenticated=Boolean,
@@ -15,92 +21,149 @@ const SendActivationMail = ({ }) => {
 
     const logger = useMemo(()=>new Logger('SendActivationMail'), []);
 
-    // const { authHandler } = useAppContext();
-    // const { sendActivationMail } = authHandler;
-
     const [email, setEmail] = useState('');
     const [code, setCode] = useState('')
 
-    // const [success, setSuccess] = useState(null);
-    // const [loading, setLoading] = useState(false);
-    // const [error, setError] = useState(null);
-    //
-    // const {timer, startTimer} = useTimer(()=>{}, 60);
-    //
-    // async function onSubmit(e){
-    //     e.preventDefault();
-    //
-    //     setSuccess(null);
-    //     setError(null);
-    //     setLoading(true);
-    //
-    //     sendActivationMail({ email })
-    //         .then(json => {
-    //             logger.log(json);
-    //             if(json.status === 200){
-    //                 startTimer();
-    //                 setSuccess(json);
-    //             }
-    //             else {
-    //                 setError(json);
-    //             }
-    //         })
-    //         .catch(e=>setError(e))
-    //         .finally(()=>setLoading(false));
-    // }
 
-    const {registration, checkCode} = useAuth();
-    const [tab, setTab] = useState('send-code')
+    const {status, setStatus, isLoading, user, error, setError, registration, checkCode, authState, setAuthState} = useAuth();
+    const [message, setMessage] = useState('');
+
+    const [seconds, setSeconds] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+    const [isTryLink, setIsTryLink] = useState(false);
 
     useEffect(() => {
-        // console.log('STORE USER', store.user.email_confirmed)
+        if (error !== '') {
+            startTimer(20)
+            setIsTryLink(true)
+        }
     }, []);
+    useEffect(() => {
+        let timer;
+
+        if (isRunning) {
+            timer = setInterval(() => {
+                if (seconds > 0) {
+                    setSeconds(seconds - 1);
+                    // console.log(seconds)
+                }
+            }, 1000);
+        } else {
+            clearInterval(timer);
+        }
+
+        return () => clearInterval(timer);
+    }, [seconds, isRunning]);
+
+    function startTimer (seconds) {
+        setSeconds(seconds)
+        setIsRunning(true);
+    };
+
+
+    function registrationA(e) {
+        e.preventDefault();
+        setMessage('')
+        setError('')
+
+        const numericRegex = /^[0-9]+$/;
+        const isNumericValid = numericRegex.test(code);
+        if (code === '') {
+            return setMessage('Введите код активации, отправленный на почту')
+        } else if (!isNumericValid) {
+            return setMessage('Код должен состоять из цифр')
+        } else if (code.length > 6) {
+            return setMessage('Код должен состоять из 6ти цифр')
+        }
+        checkCode(authState.email,code);
+        // if (user) {
+        //     return
+        // }
+    }
+
+    function sendCode(e) {
+        e.preventDefault();
+        setMessage('')
+        setError('')
+
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        const isEmailValid = emailRegex.test(email);
+        if (email === '') {
+            return setMessage('Введите email')
+        } else if (!isEmailValid) {
+            return setMessage('Введите валидный email')
+        }
+
+        setAuthState({
+            ...authState,
+            email,
+        });
+        const res = registration(email);
+
+        if (res.status) {
+            setStatus(res.status);
+        }
+    }
+
+    function sentTry() {
+        console.log(authState.email)
+        if (authState.email) {
+            const res = registration(email);
+            setIsTryLink(false)
+        }
+    }
 
     return (<>
-        <h1>Send activation e-mail</h1>
+        {isLoading && <Overlay><Loading /></Overlay>}
+        {error && <p>{error} <br/><br/> </p>}
+        {message && <p>{message} <br/><br/> </p>}
 
-        {/*{loading && <Loading />}*/}
-        {/*{success && <><p>{success.message}</p></>}*/}
-        {/*{error && <p>{error.message}</p>}*/}
+        <Typography bottom={20} size={18} weight={500}>Получить код активации на почту: </Typography>
 
-        {/*{success && <p>We can send again {timer > 0 ? `after ${timer} seconds`:''}</p>}*/}
+        <form onSubmit={status ? registrationA : sendCode}>
+            {!status && <>
+                <div>
+                    {/*<label>Email</label>*/}
+                    <Input
+                        type="text"
+                        name="email"
+                        value={email}
+                        placeHolder='Введите email'
+                        onChange={e => setEmail(e.target.value)}
+                        required
+                    />
+                </div>
 
-        {/*<form onSubmit={onSubmit}>*/}
-        {tab === 'send-code' && <>
-            <div>
-                <label>Email</label>
-                <Input
-                    type="text"
-                    name="email"
-                    value={email}
-                    placeHolder='Введите email'
-                    onChange={e => setEmail(e.target.value)}
-                    required
-                />
-            </div>
+                <Button type={'submit'}>Продолжить</Button>
+            </>}
 
-            <Button onClick={() => {
-                registration(email);
-                setTab('check-code')
-            }}>Продолжить</Button>
-        </>}
+            {status && <>
+                <div>
+                    <label>Verification code</label>
+                    <Input
+                        type="number"
+                        name="verificationCode"
+                        value={code}
+                        placeHolder='Введите код из почты'
+                        onChange={e => setCode(e.target.value)}
+                        required
+                    />
+                </div>
 
-        {tab === 'check-code' && <>
-            <div>
-                <label>Verification code</label>
-                <Input
-                    type="number"
-                    name="verificationCode"
-                    value={code}
-                    placeHolder='Введите код из почты'
-                    onChange={e => setCode(e.target.value)}
-                    required
-                />
-            </div>
-
-            <Button onClick={() => checkCode(email, code)}>Продолжить</Button>
-        </>}
-        {/*</form>*/}
+                <GroupInput>
+                    <Button onClick={() => {setStatus(null)}} variant={'cancel'}>Отменить</Button>
+                    {seconds < 1 && <Block isAlignCenter={true}>
+                        <Button type={'submit'}>Продолжить</Button>
+                    </Block>
+                    }
+                </GroupInput>
+                {isTryLink && <Block isAlignCenter={true}>
+                    <Link onClick={sentTry} text={'Отправить код повторно'} />
+                </Block>
+                }
+                <br/>
+            </>}
+        </form>
     </>);
 }
 export default SendActivationMail

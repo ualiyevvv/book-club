@@ -80,11 +80,14 @@
 .HorizontalList__title {
     font-size: 28px;
     font-weight: 600;
+    color: white;
 }
 .HorizontalList__description {
     font-size: 18px;
     /*color: grey;*/
     margin-top: 4px;
+    color: #f8f8f8;
+    font-weight: 400;
 }
 .HorizontalList__header {
     display: flex;
@@ -126,4 +129,10 @@
 }
 .HorizontalList-item--show-all {
     width: 200px;
+}
+
+@media (min-width:770px) {
+    .HorizontalList__title, .HorizontalList__description {
+        color: black;
+    }
 }

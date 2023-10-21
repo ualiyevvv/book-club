@@ -13,6 +13,10 @@ const CreateRoom = ({onChosenBook=f=>f}) => {
     const [roomAuthor, setAuthor] = useState(null)
 
     const {user} = useAuth()
+
+    if (!user) {
+        return (<></>)
+    }
     function createRoom() {
 
         const room = {
@@ -27,6 +31,7 @@ const CreateRoom = ({onChosenBook=f=>f}) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization' :`Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify(room),
         })

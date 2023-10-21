@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './block.module.css'
 
-export default function Block({children, top, bottom, left, right, isAlignCenter, width, maxWidth, isWrapper=false, padding}){
+export default function Block({children, top, bottom, left, right, isAlignCenter, width, maxWidth, isWrapper=false, padding, isCenteredByY=false}){
 
     const style = {
         maxWidth,
@@ -19,6 +19,7 @@ export default function Block({children, top, bottom, left, right, isAlignCenter
             ${styles['block']}
             ${isAlignCenter && styles['block--center']} 
             ${isWrapper && styles['block--wrapper']}
+            ${isCenteredByY && styles['block--centerY']}
         `}>
             {children}
         </div>

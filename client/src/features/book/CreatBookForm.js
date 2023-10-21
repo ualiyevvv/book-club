@@ -1,23 +1,28 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./CreateBook.module.css";
 import Block from "../../shared/ui/block/Block";
 import Button from "../../shared/ui/button/Button";
 import Input from "../../shared/ui/input/Input";
 import Typography from "../../shared/ui/typography/Typography";
+import TelegramAttachModal from "../telegram_attach/TelegramAttachModal";
+import {useAuth} from "../../app/AuthProvider";
 
 export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
 
-    // TO DO !!!!! for searchResults если ничего не найдено обработать ошибку
+    const {user} = useAuth()
+    // TODO !!!!! for searchResults если ничего не найдено обработать ошибку
     const [isLoading, setIsLoading] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const delay = 300; // Adjust the debounce delay in milliseconds
+    const delay = 500; // Adjust the debounce delay in milliseconds
     const [totalSearchItems, setTotalSearchItems] = useState(null);
 
     const [bookOffer, setBookOffer] = useState(null);
     const [bookOfferComment, setBookOfferComment] = useState('');
 
+
+    let abortController = new AbortController();
     const debounce = (func, wait) => {
         let timeoutId;
 
@@ -33,60 +38,69 @@ export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
         };
     };
 
-    // Create a debounced version of your search function
-    const debouncedSearch = debounce(search, delay);
+    const debouncedSearch = debounce(search, 300); // Создаем дебаунсированную версию функции search
 
-    function handleInputChange(event) {
-        const newSearchTerm = event.target.value;
-        // setIsLoading(true)
-        setSearchTerm(newSearchTerm);
-        // setIsLoading(false)
+    useEffect(() => {
+        console.log(searchTerm);
 
-        // Call the debounced search function with the updated input value
-        debouncedSearch(newSearchTerm);
-        // console.log(searchResults)
-    }
+        // Отменяем предыдущий запрос
+        abortController.abort();
 
-    // TODO сделать лоадер при поиске книг
-    // useEffect(() => {
-    //     console.log(isLoading)
-    // }, [isLoading])
+        abortController = new AbortController();
 
-    function search(term) {
-        // Replace this with your actual search logic
-        // For example, you can make an API request here
-        fetch(`https://www.googleapis.com/books/v1/volumes?q=${term}`)
-            .then((response) => response.json())
-            .then((result) => {
-                // console.log(result)
-                setTotalSearchItems(result.totalItems)
-                const items = result.items;
-                const bookSearchResultItems = [];
+        if (searchTerm) {
+            // Вызываем дебаунсированную функцию
+            debouncedSearch(searchTerm);
+        }
 
-                items.forEach((item) => {
-                    if (item.volumeInfo.imageLinks) {
-                        const img = {
-                            src: item.volumeInfo.imageLinks.smallThumbnail,
-                            alt: item.volumeInfo.title,
-                        };
-                        const bookSearchResultObj = {
-                            title: item.volumeInfo.title,
-                            authors: (item.volumeInfo.authors?.length > 0) ? [...item.volumeInfo.authors] : [] ,
-                            description: item.volumeInfo.description,
-                            img,
-                        };
-                        bookSearchResultItems.push(bookSearchResultObj);
-                    }
-                }); // Closing parenthesis for forEach
+        // Очищаем AbortController при размонтировании компонента
+        return () => {
+            abortController.abort();
+        };
+    }, [searchTerm]);
 
-                setSearchResults(bookSearchResultItems);
-            })
-            .catch((error) => {
-                // console.error('Ошибка при загрузке данных:', error);
+    async function search(term) {
+        // Отменяем предыдущий запрос перед новым
+        // abortController.abort();
+
+        // Здесь ваша логика поиска
+        setIsLoading(true);
+        setSearchResults([])
+        try {
+            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?maxResults=40&q=${term}`, {
+                signal: abortController.signal
             });
-        // console.log('Searching for:', term);
-        // // Simulating search results
-        // setSearchResults([`Result 1 for "${term}"`, `Result 2 for "${term}"`]);
+
+            const result = await response.json();
+            console.log(result);
+            setTotalSearchItems(result.totalItems);
+
+            const items = result.items;
+            const bookSearchResultItems = [];
+
+            items.forEach((item) => {
+                if (item.volumeInfo.imageLinks) {
+                    const img = {
+                        src: item.volumeInfo.imageLinks.thumbnail,
+                        alt: item.volumeInfo.title,
+                    };
+                    const bookSearchResultObj = {
+                        title: item.volumeInfo.title,
+                        authors: item.volumeInfo.authors?.length > 0 ? [...item.volumeInfo.authors] : [],
+                        description: item.volumeInfo.description,
+                        img,
+                        pageCount: item.volumeInfo.pageCount
+                    };
+                    bookSearchResultItems.push(bookSearchResultObj);
+                }
+            });
+
+            setSearchResults(bookSearchResultItems);
+        } catch (error) {
+            console.error('Ошибка при загрузке данных:', error);
+        }
+
+        setIsLoading(false);
     }
 
     const scrollToTop = () => {
@@ -97,19 +111,21 @@ export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
         });
     };
 
-    function sendBookOffer(item) {
+    async function sendBookOffer(item) {
+        // console.log('ROOM HASH', roomHash)
         const bookOfferObjForSend = {
             info: JSON.stringify(item),
             comment: bookOfferComment,
-            user_id: null,
+            user_id: user.id,
             roomHash: roomHash,
         };
 
         // Отправка POST-запроса
-        fetch(`http://localhost:3000/api/offer`, {
+        await fetch(`http://localhost:3000/api/offer`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization' :`Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify(bookOfferObjForSend),
         })
@@ -179,7 +195,7 @@ export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
                 <Input
                     type="text"
                     value={searchTerm}
-                    onChange={handleInputChange}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                     placeHolder={'Введите название'}
                 />
                 {searchResults.length > 0 && <Typography size={12} color={'grey'} weight={500} bottom={10}>Отображено {searchResults.length} из {totalSearchItems} книг. Выберите из списка или уточните запрос.</Typography>}

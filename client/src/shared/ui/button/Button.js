@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styles from './button.module.css'
 
-export default function Button({children, isBgLight=false, type='', variant='main', size='', top, bottom, badge=false, onClick=f=>f, width}){
+export default function Button({children, isBgLight=false, type='button', variant='main', size='', disabled=false, top, bottom, badge=false, onClick=f=>f, width}){
 
     const style = {
         width,
@@ -56,7 +56,9 @@ export default function Button({children, isBgLight=false, type='', variant='mai
                 ${styles['btn--'+ size] }
                 ${badge ? styles['btn--badge'] : ''}
                 ${isBgLight && styles['btn--bglight']}
+                ${disabled && styles['btn--disabled']}
             `}
+            disabled={disabled}
             onClick={onClick}
             type={type}
             style={style}

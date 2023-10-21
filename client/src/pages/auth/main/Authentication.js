@@ -1,23 +1,19 @@
 import React, {useContext, useEffect, useMemo, useState} from 'react';
-import {useNavigate, Redirect} from "react-router-dom";
-import {useAppContext} from "../../../context/AppContext";
 
 import Logger from '../../../internal/Logger';
 
 import SignIn from '../../../features/auth/signin/Signin';
 import SendActivationMail from "../../../features/auth/activation_send/SendActivationMail";
 
-import Box from '../../../shared/ui/box/Box'
 import Card from '../../../shared/ui/card/Card';
 import CardHeader from '../../../shared/ui/card/CardHeader';
-import Logo from '../../../shared/ui/logo/Logo';
 import CardBody from '../../../shared/ui/card/CardBody';
 import CardFooter from '../../../shared/ui/card/CardFooter';
 import TextWithLink from '../../../shared/ui/text_with_link/TextWithLink'
 import Block from "../../../shared/ui/block/Block";
-import Container from "../../../shared/ui/box/Container";
 import AppContainer from "../../business_client/AppContainer";
 import {useAuth} from "../../../app/AuthProvider";
+import Typography from "../../../shared/ui/typography/Typography";
 /*
 * 1) Не всегда при OAuth2 имеется имя, а в приложении хотелось бы иметь имя всегда.
 * Для этого нужно, если нет имени пользователя, перенаправлять на страницу
@@ -27,13 +23,22 @@ import {useAuth} from "../../../app/AuthProvider";
  * */
 const Authentication = () => {
 
-    const navigate = useNavigate();
-    const { adaptiveHandler, isAuth } = useAuth();
-    const { device } = adaptiveHandler;
+    // const navigate = useNavigate();
+    const { setError, authState, isAuth } = useAuth();
 
     // const logger = useMemo(()=>new Logger('Authentication'), []);
 
     const [tabType, setTabType] = useState('signin');
+
+    useEffect(() => {
+        if (authState.type === 'signin') {
+            setTabType('signin')
+        } else if (authState.type === 'signup') {
+            setTabType('signup')
+        } else {
+            setTabType('signin')
+        }
+    }, []);
 
     if (isAuth) {
         return window.location.replace('/');
@@ -45,10 +50,11 @@ const Authentication = () => {
             <Block isAlignCenter={true} top={60}>
                 <Card maxWidth={600}>
                     <CardHeader>
-                        <Logo />
-                        {/*<Block isAlignCenter={true}>*/}
-                        {/*    <Typography align={'center'} size={28} weight={600}>Добро пожаловать</Typography>*/}
-                        {/*</Block>*/}
+                        {/*<Logo />*/}
+                        <Block isAlignCenter={true}>
+                            {tabType === 'signup' && <Typography align={'center'} size={28} weight={600}>Регистрация</Typography>}
+                            {tabType === 'signin' && <Typography align={'center'} size={28} weight={600}>Войти в клуб</Typography>}
+                        </Block>
                     </CardHeader>
 
                     <CardBody>
@@ -59,9 +65,15 @@ const Authentication = () => {
                     </CardBody>
 
                     <CardFooter>
-                        {tabType === 'signup' && <TextWithLink text="Уже есть аккаунт?" linktext="Авторизация" onClick={() => setTabType('signin')} />}
+                        {tabType === 'signup' && <TextWithLink text="Уже есть аккаунт?" linktext="Авторизация" onClick={() => {
+                            setTabType('signin');
+                            setError('')
+                        }} />}
                         {tabType === 'signin' && <>
-                            <TextWithLink text="Нет аккаунта?" linktext="Регистрация" onClick={() => setTabType('signup')} />
+                            <TextWithLink text="Нет аккаунта?" linktext="Регистрация" onClick={() => {
+                                setTabType('signup');
+                                setError('')
+                            }} />
                             {/*<br/>*/}
                             {/*<TextWithLink linktext="Забыли пароль?" onClick={e => navigate('/authn/send-reset')} />*/}
                         </>}

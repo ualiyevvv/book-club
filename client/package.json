@@ -27,6 +27,7 @@
   "dependencies": {
     "add-to-calendar-button-react": "^2.2.7",
     "axios": "^1.5.1",
+    "date-fns": "^2.30.0",
     "file-loader": "^6.2.0",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.1",

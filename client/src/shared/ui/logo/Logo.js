@@ -10,7 +10,7 @@ export default function Logo(){
 
     return (
         <div className={styles.logo}
-             // onClick={e => navigate("/")}
+             onClick={e => navigate("/")}
         >
             {/*<LogoIcon width={45} height={45} />*/}
             {/*<a href="/main">LOGO</a>*/}

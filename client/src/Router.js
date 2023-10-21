@@ -120,7 +120,7 @@ const Router = () => {
 				{/*	// </ProtectedPage>*/}
 				{/*}/>*/}
 
-				<Route path={':hash'} element={
+				<Route path={':roomHash'} element={
 					// <ProtectedPage>
 					<PageNew>
 						<EventPage />

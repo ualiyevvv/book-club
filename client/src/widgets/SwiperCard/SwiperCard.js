@@ -15,14 +15,15 @@ import { useSwiper, useSwiperSlide } from 'swiper/react';
 import useToggle from "../../hooks/useToggle";
 import Modal from "../../shared/ui/modal/Modal";
 import CreatBookForm from "../../features/book/CreatBookForm";
+import CreateBookModal from "../../features/create_book/CreateBookModal";
+import useRoom from "../../app/hooks/useRoom";
 export default function SwiperCard({funcForAddCard=f=>f, roomHash, books, onChangeActiveSlide=f=>f}){
     const navigate = useNavigate();
     const { pathname } = useLocation();
-
     // const swiperSlide = useSwiperSlide();
     const [activeBg, setActiveBg] = useState('');
 
-    function onActiveSlide(index, bg) {
+    function onActiveSlide(index, offerId, bg) {
         onChangeActiveSlide(index);
         setActiveBg(bg)
     }
@@ -33,9 +34,7 @@ export default function SwiperCard({funcForAddCard=f=>f, roomHash, books, onChan
         <div className={styles.swiperBg} style={{background: `url(${activeBg && activeBg}) center center/cover no-repeat`}}>
         </div>
 
-        {isCreateBookModal && <Modal minWidth={360} maxWidth={480} height={'80%'} onClose={toggle}>
-            <CreatBookForm roomHash={roomHash} setIsBookOffering={toggle} />
-        </Modal>}
+        {isCreateBookModal && <CreateBookModal toggle={toggle} roomHash={roomHash} />}
 
         <div className={styles.swiperContainer}>
             <Swiper
@@ -50,7 +49,7 @@ export default function SwiperCard({funcForAddCard=f=>f, roomHash, books, onChan
                             {/*{swiperSlide.isActive && <h1>ACTIVE</h1>}*/}
                             {({ isActive }) => {
 
-                                isActive && onActiveSlide(index, book.info.img.src)
+                                isActive && onActiveSlide(index, book.id, book.info.img.src)
 
                                 return (
 

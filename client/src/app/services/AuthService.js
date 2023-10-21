@@ -24,4 +24,7 @@ export default class AuthService {
     static async checkAuth() {
         return $api.get('/user/refresh')
     }
+    static async updateName(name, userId) {
+        return $api.post(`/user/update/${userId}`, {name})
+    }
 }

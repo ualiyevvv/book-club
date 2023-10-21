@@ -3,7 +3,6 @@ import React, {useState, useEffect, useContext} from 'react';
 import Block from "../../shared/ui/block/Block";
 import Button from "../../shared/ui/button/Button";
 import Typography from "../../shared/ui/typography/Typography";
-import {useAppContext} from "../../context/AppContext";
 import HorizontalList from "../../shared/ui/horizontal_list/HorizontalList";
 import EventCard from "../../widgets/event/event_card/EventCard";
 import HorizontalListItem from "../../shared/ui/horizontal_list/HorizontalListItem";
@@ -12,52 +11,43 @@ import GroupButtons from "../../shared/ui/group_buttons/GroupButtons";
 import CreateRoom from "../../features/create_room/CreateRoom";
 import AppContainer from "./AppContainer";
 import {useAuth} from "../../app/AuthProvider";
+import Overlay from "../../shared/ui/overlay/Overlay";
+import Loader from "../../shared/ui/loader/Loader";
+import useRoom from "../../app/hooks/useRoom";
 
 const New = () => {
 
     const navigate = useNavigate();
-    const { adaptiveHandler } = useAuth();
-    // const { user, isAuthenticated, userLoading, isOffline } = authHandler;
-    const { device } = adaptiveHandler;
-
-
-
-    const [rooms, setRooms] = useState([]);
+    const { user, isAuth } = useAuth();
+    const {isLoading, rooms, getRooms} = useRoom();
 
     useEffect(() => {
-        // Отправка GET-запроса
-        fetch(`http://localhost:3000/api/room`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Произошла ошибка при отправке запроса');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Ответ от сервера:', data);
-                setRooms(data)
-            })
-            .catch(error => {
-                console.error(error);
-            });
-
+        getRooms()
     }, []);
 
-
+    if (isLoading) {
+        return (<Overlay><Loader /></Overlay>)
+    }
 
     return (
-        <AppContainer isScrollable={true} isNavbar={true} isContainer={true}>
-            <Block bottom={80}>
-                <CreateRoom />
-            </Block>
-            <Block top={40} bottom={20} isWrapper={true} padding={20}>
-                <Typography size={24} weight={600} bottom={12}>Начать</Typography>
-                <GroupButtons>
-                    <Button size={'small'}>Книжный обмен</Button>
-                    <Button size={'small'}>Выбор книги</Button>
-                    <Button size={'small'}>Встречу</Button>
-                </GroupButtons>
-            </Block>
+        <AppContainer isScrollable={true} isNavbar={true}>
+
+            {isAuth && user?.role === 'ADMIN' &&
+                <Block bottom={80}>
+                    <CreateRoom />
+                </Block>
+            }
+
+            {isAuth && user?.role === 'ADMIN' &&
+                <Block top={40} bottom={20} isWrapper={true} padding={20}>
+                    <Typography size={24} weight={600} bottom={12}>Начать</Typography>
+                    <GroupButtons>
+                        <Button size={'small'}>Книжный обмен</Button>
+                        <Button size={'small'}>Выбор книги</Button>
+                        <Button size={'small'}>Встречу</Button>
+                    </GroupButtons>
+                </Block>
+            }
 
             <Block bottom={20}></Block>
 
@@ -83,10 +73,10 @@ const New = () => {
             {/*        })}*/}
             {/*    </HorizontalList>*/}
             {/*</Block>*/}
-            <Block isWrapper={true}>
+            <Block>
                 <HorizontalList bottom={20} title={'Обсуждения книг'} description={'Каждый месяц встречаемся и обсуждаем книгу'}>
                     {rooms.length < 1 && <Typography size={16} weight={500}>Обсуждений пока не было</Typography>}
-                    {rooms.map( (room, index) => {
+                    {rooms.length > 0 && rooms.map( (room, index) => {
                         return(<>
                             <HorizontalListItem key={index}>
                                 <EventCard item={room} />

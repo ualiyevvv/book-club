@@ -1,69 +1,60 @@
 import React, {useEffect, useState} from "react";
 
 import styles from './ChooseBook.module.css'
-import Typography from "../../shared/ui/typography/Typography";
 import Button from "../../shared/ui/button/Button";
 import Block from "../../shared/ui/block/Block";
-import GroupInline from "../../shared/ui/group_inline/GroupInline";
 import Badge from "../../shared/ui/badge/Badge";
 import Link from "../../shared/ui/link/Link";
 import useToggle from "../../hooks/useToggle";
 import BookInfo from "../../features/book/BookInfo";
 import Loading from "../../shared/loading/Loading";
-export default function ChooseBook({voteViewSettingValue, item}) {
+import {formatRelative} from "date-fns";
+import ruLocale from "date-fns/locale/ru";
+import useVote from "../../app/hooks/useVote";
+import Overlay from "../../shared/ui/overlay/Overlay";
+import {useAuth} from "../../app/AuthProvider";
+import TelegramAttachModal from "../../features/telegram_attach/TelegramAttachModal";
+
+export default function ChooseBook({item, roomHash}) {
 
     useEffect(() => {
         console.log('CHOOOSEE VOOTE', item)
     }, []);
 
+    const {isAuth, user, voteViewSettingValue, offerHandler} = useAuth();
+    const {getOffersByRoomHash, currentOffer, setCurrentOffer} = offerHandler
 
     const [isActive, toggle] = useToggle(false);
-    const [isLoading, setIsLoading] = useState(false)
+    const {isVoteLoading, sendVote} = useVote();
+    const [isVoteSent, setIsVoteSent] = useState()
 
-    function sendVote() {
-        setIsLoading(true)
-        // Отправка POST-запроса
-        fetch(`http://localhost:3000/api/vote`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(item),
+    useEffect(() => {
+        setIsVoteSent(item.votes?.find(vote => vote.userId === user.id))
+        console.log('ChooseBook', item)
+    }, [item]);
+    
+    function onSendVote() {
+        if (!isAuth || !user || !user?.tg_confirmed) {
+            return (<TelegramAttachModal/>)
+        }
+        sendVote(item.id, roomHash, user.id).then(r => {
+            getOffersByRoomHash(roomHash)
+            // console.log(r)
         })
-            .then(response => {
-                if (!response.ok) {
-                    console.log(response)
-                    throw new Error('Произошла ошибка при отправке запроса');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Ответ от сервера:', data);
-                item = data
-                // onChosenBook(bookOfferObjForSend)
-                // setBookOffer(null)
-                // setSearchTerm('')
-                // setSearchResults([])
-                // setIsBookOffering(false)
-            })
-            .catch(error => {
-                console.error(error);
-            });
-        setIsLoading(false)
     }
 
     return (<>
 
         { isActive && <BookInfo item={item} onClose={toggle}/> }
-        {isLoading && <Loading />}
+        {isVoteLoading && <Overlay><Loading /></Overlay>}
 
         <div className={styles['ChooseBook']}>
             <div className={styles['ChooseBook__row']}>
                 <div className={styles['ChooseBook__user']}>
                     {/*<div className="author__avatar"></div>*/}
                     <div className={styles['user__name']}>
-                        <strong>Ayan Ualiyev </strong>
-                        <span>предложил книгу {item.createdAt}</span>
+                        <strong>{item.user.email} </strong>
+                        <span>предложил книгу {formatRelative(new Date(item.createdAt), new Date(), {locale: ruLocale})}</span>
                     </div>
                     {item?.comment &&
                         <div className={styles['user__comment']}>
@@ -87,8 +78,13 @@ export default function ChooseBook({voteViewSettingValue, item}) {
                     <Link text={'Узнать подробнее'} onClick={toggle} />
                 </Block>
             </div>
-            <Button badge={true} size={'small'} variant={'outline'} onClick={sendVote}>
-                Проголосовать
+
+            <Button badge={true} size={'small'} variant={'outline'} onClick={onSendVote}>
+
+                {isVoteSent
+                    ? 'Отменить голос'
+                    : 'Проголосовать ✋'
+                }
                 {voteViewSettingValue == 1 && <Badge top={-15}  air={true} text={'Голосов ' + item.votes_count} />}
             </Button>
         </div>
