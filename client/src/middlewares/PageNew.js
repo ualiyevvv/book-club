@@ -5,6 +5,7 @@ import AppContainer from "../pages/business_client/AppContainer";
 import {useAuth} from "../app/AuthProvider";
 import Overlay from "../shared/ui/overlay/Overlay";
 import SetNameModal from "../features/set_name/SetNameModal";
+import AdminPage from "../pages/manager/AdminAllInOne";
 
 export default function PageNew({children}) {
 

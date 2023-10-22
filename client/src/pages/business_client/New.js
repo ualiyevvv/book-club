@@ -8,12 +8,13 @@ import EventCard from "../../widgets/event/event_card/EventCard";
 import HorizontalListItem from "../../shared/ui/horizontal_list/HorizontalListItem";
 import {useNavigate} from "react-router-dom";
 import GroupButtons from "../../shared/ui/group_buttons/GroupButtons";
-import CreateRoom from "../../features/create_room/CreateRoom";
+import CreateRoom from "../../features/admin/create_room/CreateRoom";
 import AppContainer from "./AppContainer";
 import {useAuth} from "../../app/AuthProvider";
 import Overlay from "../../shared/ui/overlay/Overlay";
 import Loader from "../../shared/ui/loader/Loader";
 import useRoom from "../../app/hooks/useRoom";
+import AdminPage from "../manager/AdminAllInOne";
 
 const New = () => {
 
@@ -25,29 +26,16 @@ const New = () => {
         getRooms()
     }, []);
 
+    useEffect(() => {
+        console.log('ROOMS',rooms)
+    }, [rooms])
+
     if (isLoading) {
         return (<Overlay><Loader /></Overlay>)
     }
 
     return (
         <AppContainer isScrollable={true} isNavbar={true}>
-
-            {isAuth && user?.role === 'ADMIN' &&
-                <Block bottom={80}>
-                    <CreateRoom />
-                </Block>
-            }
-
-            {isAuth && user?.role === 'ADMIN' &&
-                <Block top={40} bottom={20} isWrapper={true} padding={20}>
-                    <Typography size={24} weight={600} bottom={12}>Начать</Typography>
-                    <GroupButtons>
-                        <Button size={'small'}>Книжный обмен</Button>
-                        <Button size={'small'}>Выбор книги</Button>
-                        <Button size={'small'}>Встречу</Button>
-                    </GroupButtons>
-                </Block>
-            }
 
             <Block bottom={20}></Block>
 
@@ -79,7 +67,7 @@ const New = () => {
                     {rooms.length > 0 && rooms.map( (room, index) => {
                         return(<>
                             <HorizontalListItem key={index}>
-                                <EventCard item={room} />
+                                <EventCard item={room} key={room.id} />
                             </HorizontalListItem>
                         </>)
                     })}

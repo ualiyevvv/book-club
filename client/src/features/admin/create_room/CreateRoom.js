@@ -1,16 +1,18 @@
 import React, {useContext, useEffect, useState} from "react";
 
-import Input from "../../shared/ui/input/Input";
-import Button from "../../shared/ui/button/Button";
-import Block from "../../shared/ui/block/Block";
-import {useAuth} from "../../app/AuthProvider";
-const CreateRoom = ({onChosenBook=f=>f}) => {
+import Input from "../../../shared/ui/input/Input";
+import Button from "../../../shared/ui/button/Button";
+import Block from "../../../shared/ui/block/Block";
+import {useAuth} from "../../../app/AuthProvider";
+import Typography from "../../../shared/ui/typography/Typography";
+const CreateRoom = ({toggle}) => {
 
+    const {roomHandler} = useAuth();
+    const {getRooms} = roomHandler
 
     const [roomName, setRoomName] = useState('')
     const [roomEndDate, setRoomEndDate] = useState('')
     const [roomTgGroupId, setTgGroupId] = useState('')
-    const [roomAuthor, setAuthor] = useState(null)
 
     const {user} = useAuth()
 
@@ -39,6 +41,8 @@ const CreateRoom = ({onChosenBook=f=>f}) => {
                 if (!response.ok) {
                     throw new Error('Произошла ошибка при отправке запроса');
                 }
+                getRooms()
+                toggle()
                 return response.json();
             })
             .then(data => {
@@ -52,10 +56,11 @@ const CreateRoom = ({onChosenBook=f=>f}) => {
 
     return (<>
         <Block isAlignCenter={true} bottom={15}>
+            <Typography size={24} weight={600} bottom={20}>Create a room</Typography>
             <Input type={'text'} value={roomName} placeHolder={'room name'} name={'name'} onChange={(e) => setRoomName(e.target.value)} />
             <Input type={'date'} value={roomEndDate} placeHolder={'room end date'} name={'end_date'} onChange={(e) => setRoomEndDate(e.target.value)} />
             <Input type={'text'} value={roomTgGroupId} placeHolder={'room tg id'} name={'tg_group_id'} onChange={(e) => setTgGroupId(e.target.value)} />
-            <Button onClick={createRoom}>Create a room</Button>
+            <Button onClick={createRoom}>Отправить</Button>
         </Block>
     </>)
 }

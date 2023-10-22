@@ -14,8 +14,13 @@ import useVote from "../../app/hooks/useVote";
 import Overlay from "../../shared/ui/overlay/Overlay";
 import {useAuth} from "../../app/AuthProvider";
 import TelegramAttachModal from "../../features/telegram_attach/TelegramAttachModal";
+import Modal from "../../shared/ui/modal/Modal";
+import TelegramAttach from "../../features/telegram_attach/TelegramAttach";
+import {useNavigate} from "react-router-dom";
 
-export default function ChooseBook({item, roomHash}) {
+export default function ChooseBook({item, roomHash, isRoomEnd}) {
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         console.log('CHOOOSEE VOOTE', item)
@@ -25,26 +30,32 @@ export default function ChooseBook({item, roomHash}) {
     const {getOffersByRoomHash, currentOffer, setCurrentOffer} = offerHandler
 
     const [isActive, toggle] = useToggle(false);
+    const [isTgActive, toggleTg] = useToggle(false);
     const {isVoteLoading, sendVote} = useVote();
     const [isVoteSent, setIsVoteSent] = useState()
 
     useEffect(() => {
-        setIsVoteSent(item.votes?.find(vote => vote.userId === user.id))
+        setIsVoteSent(item.votes?.find(vote => vote.userId === user?.id))
         console.log('ChooseBook', item)
     }, [item]);
     
     function onSendVote() {
-        if (!isAuth || !user || !user?.tg_confirmed) {
-            return (<TelegramAttachModal/>)
+        if (!isAuth) {
+            navigate('/authn', {replace: true})
+        } else if (isAuth && !user.tg_confirmed) {
+            toggleTg()
+        } else {
+            sendVote(item.id, roomHash, user?.id).then(r => {
+                getOffersByRoomHash(roomHash)
+                // console.log(r)
+            })
         }
-        sendVote(item.id, roomHash, user.id).then(r => {
-            getOffersByRoomHash(roomHash)
-            // console.log(r)
-        })
     }
 
     return (<>
-
+        {isTgActive && <Modal minWidth={340} maxWidth={480} height={'80%'} onClose={toggleTg}>
+            <TelegramAttach tg_startHash={user?.tg_startHash} onClose={toggleTg} />
+        </Modal>}
         { isActive && <BookInfo item={item} onClose={toggle}/> }
         {isVoteLoading && <Overlay><Loading /></Overlay>}
 
@@ -79,14 +90,19 @@ export default function ChooseBook({item, roomHash}) {
                 </Block>
             </div>
 
-            <Button badge={true} size={'small'} variant={'outline'} onClick={onSendVote}>
+            {isRoomEnd ? <div style={{position: "relative"}}>
+                Голосование завершено
+                {voteViewSettingValue == 1 && <Badge right={0} bottom={0} air={true} text={'Голосов ' + item.votes_count} />}
+            </div> : <>
+                <Button badge={true} size={'small'} variant={'outline'} onClick={onSendVote}>
 
-                {isVoteSent
-                    ? 'Отменить голос'
-                    : 'Проголосовать ✋'
-                }
-                {voteViewSettingValue == 1 && <Badge top={-15}  air={true} text={'Голосов ' + item.votes_count} />}
-            </Button>
+                        {isVoteSent
+                            ? 'Отменить голос'
+                            : 'Проголосовать ✋'
+                        }
+                    {voteViewSettingValue == 1 && <Badge top={-15}  air={true} text={'Голосов ' + item.votes_count} />}
+                </Button>
+            </>}
         </div>
     </>)
 }

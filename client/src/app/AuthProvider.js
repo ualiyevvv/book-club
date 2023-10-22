@@ -7,6 +7,8 @@ import useAdaptive from "../context/hooks/adaptive/useAdaptive";
 import useRoom from "./hooks/useRoom";
 import useOffer from "./hooks/useOffer";
 import useVote from "./hooks/useVote";
+import useAdmin from "./hooks/useAdmin";
+import UserService from "./services/UserService";
 
 const AuthContext = createContext();
 
@@ -141,6 +143,19 @@ export function AuthProvider({ children }) {
             setLoading(false)
         }
     }
+    const makeAttendee = async (userId, qrHash) => {
+        setLoading(true)
+        try {
+            const response = await UserService.makeAttendee(userId, qrHash);
+
+            return response.data
+        } catch (e) {
+            // console.log(e.response?.data?.message)
+            setError(e.response?.data?.message)
+        } finally {
+            setLoading(false)
+        }
+    }
 
 
 
@@ -149,11 +164,20 @@ export function AuthProvider({ children }) {
     const roomHandler = useRoom();
     const offerHandler = useOffer();
     const voteHandler = useVote();
+    const adminHandler = useAdmin();
 
     const [voteViewSettingValue, setVoteViewSettingValue] = useState(localStorage.getItem('voteViewSettingValue') || null)
 
     return (
-        <AuthContext.Provider value={{ user, error, setError, isAuth, isLoading, setLoading, status, setStatus, authState, setAuthState, login, logout, checkAuth, checkCode, registration, setName, adaptiveHandler, URLStateHandler, roomHandler, voteHandler, offerHandler, voteViewSettingValue, setVoteViewSettingValue }}>
+        <AuthContext.Provider
+            value={{ user, error, setError, isAuth, isLoading, setLoading,
+                status, setStatus, authState, setAuthState,
+                login, logout, checkAuth, checkCode, registration, setName,
+                adaptiveHandler, URLStateHandler, roomHandler, voteHandler,
+                offerHandler, voteViewSettingValue, setVoteViewSettingValue,
+                adminHandler, makeAttendee
+            }
+        }>
             {children}
         </AuthContext.Provider>
     );

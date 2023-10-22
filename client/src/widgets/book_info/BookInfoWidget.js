@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ToggleButtonWrapper from "../../shared/ui/toggle_button/ToggleButtonWrapper";
 import ToggleButton from "../../shared/ui/toggle_button/ToggleButton";
 import Typography from "../../shared/ui/typography/Typography";
 import Block from "../../shared/ui/block/Block";
 import {formatRelative} from "date-fns";
 import ruLocale from "date-fns/locale/ru";
+import VoteList from "../../features/vote_list/VoteList";
 
 export default function BookInfoWidget({book, votes}) {
 
@@ -14,7 +15,7 @@ export default function BookInfoWidget({book, votes}) {
         about: <Block isAlignCenter={true}>
             <Block bottom={20} isAlignCenter={true}>
                 <Typography align={'center'} weight={700} size={21} bottom={8}>{book.info.title}</Typography>
-                <Typography align={'center'} weight={500} color={'grey'} size={16} bottom={8}>{book.info.authors?.map(author => { return <span>{author} </span>})}</Typography>
+                <Typography align={'center'} weight={500} color={'grey'} size={16} bottom={8}>{book.info.authors?.map(author => { return <span key={author}>{author} </span>})}</Typography>
                 {book.info?.pageCount && <Typography align={'center'} weight={500} color={'grey'} size={16}>{book.info.pageCount} страниц</Typography>}
             </Block>
 
@@ -26,13 +27,18 @@ export default function BookInfoWidget({book, votes}) {
                 {book.info.description}
             </Block>
         </Block>,
-        votes: <Block isAlignCenter={true} isCenteredByY={true}>
-            {votes?.length < 1 && 'Пока нет голосов, будь первым!'}
-        </Block>,
+        votes: <>
+            {votes?.length < 1 && <Block isAlignCenter={true} isCenteredByY={true}>Пока нет голосов, будь первым!</Block>}
+            {votes.length > 0 && <VoteList votes={votes}/>}
+        </>,
         comments: <Block isAlignCenter={true} isCenteredByY={true}>
             <Typography align={'center'} weight={500} size={21} bottom={8}>В разработке</Typography>
         </Block>
     }
+
+    useEffect(() => {
+        console.log('book info widg',book, votes)
+    }, []);
 
     return (<>
 

@@ -9,7 +9,8 @@ import {useAuth} from "../../app/AuthProvider";
 
 export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
 
-    const {user} = useAuth()
+    const {user, offerHandler} = useAuth()
+    const {getOffersByRoomHash} = offerHandler
     // TODO !!!!! for searchResults если ничего не найдено обработать ошибку
     const [isLoading, setIsLoading] = useState(false);
 
@@ -142,6 +143,7 @@ export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
                 setSearchTerm('')
                 setSearchResults([])
                 setIsBookOffering(false)
+                getOffersByRoomHash(roomHash)
             })
             .catch(error => {
                 console.error(error);

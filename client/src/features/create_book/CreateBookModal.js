@@ -4,6 +4,7 @@ import Modal from "../../shared/ui/modal/Modal";
 import {useAuth} from "../../app/AuthProvider";
 import useToggle from "../../hooks/useToggle";
 import TelegramAttach from "../telegram_attach/TelegramAttach";
+import {useNavigate} from "react-router-dom";
 
 export default function CreateBookModal({toggle, roomHash}) {
 

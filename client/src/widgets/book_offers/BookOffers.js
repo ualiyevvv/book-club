@@ -4,7 +4,7 @@ import Typography from "../../shared/ui/typography/Typography";
 import Block from "../../shared/ui/block/Block";
 import Grid from "../../shared/ui/grid/Grid";
 import ChooseBook from "../choose_book/ChooseBook";
-export default function BookOffers({ offers=[], roomHash = null}) {
+export default function BookOffers({ isRoomEnd, offers=[], roomHash = null}) {
 
     return (<>
         <Block isAlignCenter={true}>
@@ -27,7 +27,7 @@ export default function BookOffers({ offers=[], roomHash = null}) {
         <Grid isForBooks={true}>
             {offers.map((offer, index) => {
                 return (
-                    <ChooseBook roomHash={roomHash} item={offer} key={index} />
+                    <ChooseBook isRoomEnd={isRoomEnd} roomHash={roomHash} item={offer} key={index} />
                 )
             })}
         </Grid>

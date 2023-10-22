@@ -26,6 +26,9 @@ import AdminDashboard from "./pages/manager/AdminDashboard";
 import EventPage from "./pages/business_client/EventPage";
 import PageNew from "./middlewares/PageNew";
 import PageAuthed from "./middlewares/PageAuthed";
+import PageAdmin from "./middlewares/PageAdmin";
+import AdminAllInOne from "./pages/manager/AdminAllInOne";
+import AttendeePage from "./pages/business_client/AttendeePage";
 
 
 const Router = () => {
@@ -61,9 +64,12 @@ const Router = () => {
 			{/** Admin:  */}
 			<Route path={'/admin'}>
 				<Route index element={
-					<AdminPage>
-						<AdminDashboard />
-					</AdminPage>
+					// <AdminPage>
+					// 	<AdminDashboard />
+					// </AdminPage>
+					<PageAdmin>
+						<AdminAllInOne />
+					</PageAdmin>
 				}/>
 			</Route>
 
@@ -124,6 +130,25 @@ const Router = () => {
 					// <ProtectedPage>
 					<PageNew>
 						<EventPage />
+					</PageNew>
+					// </ProtectedPage>
+				}/>
+			</Route>
+
+
+			<Route path='/attendee'>
+				{/*<Route index element={*/}
+				{/*	<PageNew>*/}
+				{/*		<Orders />*/}
+				{/*	</PageNew>*/}
+				{/*	// <ProtectedPage>*/}
+				{/*	// </ProtectedPage>*/}
+				{/*}/>*/}
+
+				<Route path={':qrHash'} element={
+					// <ProtectedPage>
+					<PageNew>
+						<AttendeePage />
 					</PageNew>
 					// </ProtectedPage>
 				}/>

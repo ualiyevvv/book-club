@@ -17,7 +17,7 @@ export default function EventCard({item, onClick=f=>f}) {
         <div className={styles["event-card"]} data-id="event-card" onClick={e => navigate(`/room/${item?.roomHash}`)}>
             <div className={styles["event-card__header"]}>
                 {/*<div className={styles["event-card__free"]}>{item?.cost ? item?.cost : 'Бесплатно'}</div>*/}
-                <div className={styles["event-card__deadline"]}>{item?.isDone ? `Завершен` : `Закроется ${formatRelative(new Date(item?.end_date), new Date(), {locale: ruLocale})}`}</div>
+                <div className={styles["event-card__deadline"]}>{new Date() > new Date(item?.end_date) ? `Завершен` : `Закроется ${formatRelative(new Date(item?.end_date), new Date(), {locale: ruLocale})}`}</div>
                 {/*<img src="" alt=""/>*/}
                 <div className={styles["event-img"]}></div>
             </div>

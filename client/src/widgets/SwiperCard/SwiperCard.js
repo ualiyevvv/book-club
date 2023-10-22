@@ -1,7 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
-
-
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
@@ -9,18 +7,15 @@ import 'swiper/css';
 import 'swiper/css/effect-cards';
 // import required modules
 import { EffectCards } from 'swiper/modules';
-import { Virtual } from 'swiper/modules';
 import styles from './SwiperCard.module.css';
-import { useSwiper, useSwiperSlide } from 'swiper/react';
 import useToggle from "../../hooks/useToggle";
-import Modal from "../../shared/ui/modal/Modal";
-import CreatBookForm from "../../features/book/CreatBookForm";
 import CreateBookModal from "../../features/create_book/CreateBookModal";
-import useRoom from "../../app/hooks/useRoom";
-export default function SwiperCard({funcForAddCard=f=>f, roomHash, books, onChangeActiveSlide=f=>f}){
+import {useAuth} from "../../app/AuthProvider";
+export default function SwiperCard({funcForAddCard=f=>f, roomHash, books, onChangeActiveSlide=f=>f, isRoomEnd}){
+
     const navigate = useNavigate();
-    const { pathname } = useLocation();
-    // const swiperSlide = useSwiperSlide();
+    const { isAuth } = useAuth();
+
     const [activeBg, setActiveBg] = useState('');
 
     function onActiveSlide(index, offerId, bg) {
@@ -28,7 +23,20 @@ export default function SwiperCard({funcForAddCard=f=>f, roomHash, books, onChan
         setActiveBg(bg)
     }
 
+    useEffect(() => {
+
+    }, [])
+
     const [isCreateBookModal, toggle] = useToggle()
+
+
+    function onCreateOffer() {
+        if (!isAuth) {
+            navigate('/authn', {replace: true})
+        } else {
+            toggle()
+        }
+    }
 
     return (<div className={styles.swiperDiv}>
         <div className={styles.swiperBg} style={{background: `url(${activeBg && activeBg}) center center/cover no-repeat`}}>
@@ -45,7 +53,7 @@ export default function SwiperCard({funcForAddCard=f=>f, roomHash, books, onChan
             >
                 {books.map((book, index) => {
                     return (
-                        <SwiperSlide>
+                        <SwiperSlide key={book.id}>
                             {/*{swiperSlide.isActive && <h1>ACTIVE</h1>}*/}
                             {({ isActive }) => {
 
@@ -68,22 +76,24 @@ export default function SwiperCard({funcForAddCard=f=>f, roomHash, books, onChan
                 {/*<SwiperSlide>Slide 6</SwiperSlide>*/}
                 {/*<SwiperSlide>Slide 7</SwiperSlide>*/}
                 {/*<SwiperSlide>Slide 8</SwiperSlide>*/}
-                <SwiperSlide onClick={toggle}>
-                    {({ isActive }) => {
+                {!isRoomEnd &&
+                    <SwiperSlide onClick={onCreateOffer}>
+                        {({ isActive }) => {
 
-                        isActive ? funcForAddCard(false) : funcForAddCard(true)
+                            isActive ? funcForAddCard(false) : funcForAddCard(true)
 
-                        return (
-                            <div className={styles.swiper__addbook}>
-                                <span className={styles.swiper__plus}>+</span>
-                                <br/>
-                                <br/>
-                                Предложить <br/> книгу
-                            </div>
-                        )
+                            return (
+                                <div className={styles.swiper__addbook}>
+                                    <span className={styles.swiper__plus}>+</span>
+                                    <br/>
+                                    <br/>
+                                    Предложить <br/> книгу
+                                </div>
+                            )
 
-                    }}
-                </SwiperSlide>
+                        }}
+                    </SwiperSlide>
+                }
             </Swiper>
         </div>
     </div>);

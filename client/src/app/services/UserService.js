@@ -4,4 +4,8 @@ export default class UserService {
     static async getUsers() {
         return $api.get('/user');
     }
+
+    static async makeAttendee(userId, qrHash) {
+        return $api.post('/attendee', {userId, qrHash});
+    }
 }

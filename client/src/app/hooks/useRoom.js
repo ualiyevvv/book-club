@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import RoomService from "../services/RoomService";
+import UserService from "../services/UserService";
 
 
 export default function useRoom() {
@@ -15,7 +16,7 @@ export default function useRoom() {
             const response = await RoomService.getRooms()
             setRooms(response.data)
         } catch (e) {
-            console.error(error);
+            console.error(e);
             // setError(e.response?.data?.message)
         } finally {
             setIsLoading(false)

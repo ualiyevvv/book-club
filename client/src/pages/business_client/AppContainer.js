@@ -28,6 +28,8 @@ const AppContainer = ({isContainer=false, isNavbar=false, isHorizontalCenter=fal
                 <Logo />
                 <Nav left={35}>
                     <NavLink text={'Главная'} onClick={e => navigate('/', {replace: true,})}/>
+                    { isAuth && user?.role === 'ADMIN' && <NavLink text={'AdminDDD'} onClick={e => navigate('/admin', {replace: true,})}/> }
+
                     {/*<NavLink text={'Библиотека'} onClick={e => navigate('/event', {replace: true,})}/>*/}
                     {/*<NavLink text={'Блог'} onClick={e => navigate('/authn', {replace: true,})}/>*/}
                 </Nav>

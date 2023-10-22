@@ -12,11 +12,15 @@ import FullScrollPageContainer from "../../shared/ui/fullscroll/FullScrollPageCo
 import useToggle from "../../hooks/useToggle";
 import {useAuth} from "../../app/AuthProvider";
 import VoteViewSettingButton from "../vote_view_setting_button/VoteViewSettingButton";
+import {useNavigate} from "react-router-dom";
+import VoteStatisticsButton from "../vote_statistics_button/VoteStatisticsButton";
 
 
 export default function MobileRoom({roomHash, roomData, offers=[]}) {
 
-    const { adaptiveHandler } = useAuth();
+    const navigate = useNavigate()
+
+    const { isAuth, adaptiveHandler } = useAuth();
     const { device } = adaptiveHandler;
 
     const [isInViewport, setIsInViewport] = useState(false);
@@ -26,16 +30,16 @@ export default function MobileRoom({roomHash, roomData, offers=[]}) {
     const [activeSlide, setActiveSlide] = useState(0);
     const {offerHandler} = useAuth()
     const {currentOffer} = offerHandler
-
+    const [isRoomEnd, setIsRoomEnd] = useState(new Date() > new Date(roomData.end_date))
 
     useEffect(() => {
         intersectionObserver()
         // setCurrentOffer(offers[activeSlide])
-        console.log('OFFERS UPDATED')
+        // console.log('OFFERS UPDATED')
     }, [offers]);
 
     useEffect(() => {
-        console.log('currentOffer', currentOffer)
+        // console.log('currentOffer', currentOffer)
     }, [currentOffer])
 
     function intersectionObserver() {
@@ -74,18 +78,30 @@ export default function MobileRoom({roomHash, roomData, offers=[]}) {
         intersectionObserver()
     }, [device]);
 
+    function onCreateOffer() {
+        if (!isAuth) {
+            navigate('/authn', {replace: true})
+            console.log('IS AUTH', isAuth)
+        } else {
+            toggleCreateBookModal()
+        }
+    }
+
     return (<FullScrollPageContainer>
         <FullScrollPage>
             <Block>
-                <VoteTimer data={roomData} />
+                <VoteTimer isRoomEnd={isRoomEnd} data={roomData} />
             </Block>
 
             <Block isAlignCenter={true} bottom={30}>
                 <Block maxWidth={600} isAlignCenter={true} padding={20}>
+                    <VoteStatisticsButton offers={offers} variant={'mobile'}/>
                     <VoteViewSettingButton variant={'mobile'}/>
 
-                    {isCreateBookModal && <CreateBookModal toggle={toggleCreateBookModal} roomHash={roomHash}/>}
-                    <Button onClick={toggleCreateBookModal} isBgLight={true}>Предложить книгу</Button>
+                    {!isRoomEnd && <>
+                        {isCreateBookModal && <CreateBookModal toggle={toggleCreateBookModal} roomHash={roomHash}/>}
+                        <Button onClick={onCreateOffer} isBgLight={true}>Предложить книгу</Button>
+                    </>}
                 </Block>
             </Block>
 
@@ -97,7 +113,7 @@ export default function MobileRoom({roomHash, roomData, offers=[]}) {
 
             <BooksCounter booksLength={offers?.length} currentCounter={offers?.length > 0 ? activeSlide+1 : 0} />
 
-            <SwiperCard funcForAddCard={setIsDrawerActive} roomHash={roomHash} books={offers} onChangeActiveSlide={setActiveSlide} />
+            <SwiperCard isRoomEnd={isRoomEnd} funcForAddCard={setIsDrawerActive} roomHash={roomHash} books={offers} onChangeActiveSlide={setActiveSlide} />
 
             {/*{!isDrawerActive &&*/}
             {/*    <Container isWrapper={true}>*/}
@@ -107,7 +123,7 @@ export default function MobileRoom({roomHash, roomData, offers=[]}) {
             {/*}*/}
 
             {offers[activeSlide] && isDrawerActive && offers?.length > 0 && isInViewport &&
-                <OfferDrawer roomHash={roomHash} isDrawerActive={isDrawerActive} setIsDrawerActive={setIsDrawerActive} offer={offers[activeSlide]}  />
+                <OfferDrawer isRoomEnd={isRoomEnd} roomHash={roomHash} isDrawerActive={isDrawerActive} setIsDrawerActive={setIsDrawerActive} offer={offers[activeSlide]}  />
             }
 
         </FullScrollPage>
