@@ -22,6 +22,7 @@ export function AuthProvider({ children }) {
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [status, setStatus] = useState(null);
+    const [timeOut, setTimeOut] = useState(false);
     const [authState, setAuthState] = useState({
         type: '',
         email: '',
@@ -30,21 +31,23 @@ export function AuthProvider({ children }) {
 
     // сделать норм обработку ошибок, чтобы каждая функция не затирала состояние, а создать объект и положить в соответ свойства и по ним уже проверять в форме
     const login = async (email) => {
-        setStatus(null);
-        setAuthState({
-            email: email,
-            type: 'signin',
-        });
-        setLoading(true)
-        try {
-            const response = await AuthService.login(email);
-            // console.log(response)
-            setStatus(response.data); // Предполагается, что сервер вернул данные пользователя
-        } catch (e) {
-            // console.error('Ошибка аутентификации', e);
-            setError(e.response?.data?.message)
-        } finally {
-            setLoading(false)
+        if (!timeOut) {
+            setStatus(null);
+            // setAuthState({
+            //     email: email,
+            //     type: 'signin',
+            // });
+            setLoading(true)
+            try {
+                const response = await AuthService.login(email);
+                setStatus(response.data.status); // Предполагается, что сервер вернул данные пользователя
+                setTimeOut(true)
+            } catch (e) {
+                // console.error('Ошибка аутентификации', e);
+                setError(e.response?.data?.message)
+            } finally {
+                setLoading(false)
+            }
         }
     };
 
@@ -175,7 +178,8 @@ export function AuthProvider({ children }) {
                 login, logout, checkAuth, checkCode, registration, setName,
                 adaptiveHandler, URLStateHandler, roomHandler, voteHandler,
                 offerHandler, voteViewSettingValue, setVoteViewSettingValue,
-                adminHandler, makeAttendee
+                adminHandler, makeAttendee,
+                timeOut, setTimeOut
             }
         }>
             {children}

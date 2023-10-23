@@ -24,7 +24,7 @@ import Typography from "../../../shared/ui/typography/Typography";
 const Authentication = () => {
 
     // const navigate = useNavigate();
-    const { setError, authState, isAuth } = useAuth();
+    const { setError, authState, isAuth,status } = useAuth();
 
     // const logger = useMemo(()=>new Logger('Authentication'), []);
 
@@ -58,18 +58,18 @@ const Authentication = () => {
                     </CardHeader>
 
                     <CardBody>
-                        {tabType === 'signup' && <SendActivationMail />}
+                        {tabType === 'signup' && <SignIn />}
                         {tabType === 'signin' && <SignIn />}
                         <br />
                         {/*<Button variant='second'><a href={"/auth/azure"}>OpenID Connect</a></Button>*/}
                     </CardBody>
 
                     <CardFooter>
-                        {tabType === 'signup' && <TextWithLink text="Уже есть аккаунт?" linktext="Авторизация" onClick={() => {
+                        {tabType === 'signup' && status === null && <TextWithLink text="Уже есть аккаунт?" linktext="Авторизация" onClick={() => {
                             setTabType('signin');
                             setError('')
                         }} />}
-                        {tabType === 'signin' && <>
+                        {tabType === 'signin' && status === null && <>
                             <TextWithLink text="Нет аккаунта?" linktext="Регистрация" onClick={() => {
                                 setTabType('signup');
                                 setError('')
