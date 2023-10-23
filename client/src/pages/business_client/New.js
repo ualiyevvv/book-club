@@ -15,6 +15,7 @@ import Overlay from "../../shared/ui/overlay/Overlay";
 import Loader from "../../shared/ui/loader/Loader";
 import useRoom from "../../app/hooks/useRoom";
 import AdminPage from "../manager/AdminAllInOne";
+import MyConfetti from "../../shared/confetti/Confetti";
 
 const New = () => {
 

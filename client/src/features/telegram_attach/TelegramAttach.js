@@ -4,7 +4,7 @@ import Block from "../../shared/ui/block/Block";
 import Button from "../../shared/ui/button/Button";
 import {useAuth} from "../../app/AuthProvider";
 import {useNavigate} from "react-router-dom";
-export default function TelegramAttach({tg_startHash, onClose}) {
+export default function TelegramAttach({tg_startHash, onClose=f=>f}) {
 
 
     function onClick() {

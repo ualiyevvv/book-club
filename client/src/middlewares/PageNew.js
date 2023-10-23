@@ -19,6 +19,7 @@ export default function PageNew({children}) {
             } else {
                 setLoading(false)
             }
+
         // }
         // console.log(user)
         // console.log(isAuth)

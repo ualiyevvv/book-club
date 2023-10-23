@@ -6,8 +6,11 @@ import Typography from "../../../shared/ui/typography/Typography";
 import Overlay from "../../../shared/ui/overlay/Overlay";
 import Loader from "../../../shared/ui/loader/Loader";
 import Button from "../../../shared/ui/button/Button";
+import {useNavigate} from "react-router-dom";
 
 export default function GetQr({roomHash}) {
+
+    const navigate = useNavigate()
 
     const {adminHandler, user} = useAuth()
     const {getQrhash, createQrhash, isQRLoaded, isLoading, qrHash} = adminHandler
@@ -65,9 +68,10 @@ export default function GetQr({roomHash}) {
         <Block isAlignCenter={true} bottom={15}>
             <Typography size={18} weight={600} bottom={20}>{roomHash}</Typography>
             {/*{JSON.stringify(qrHash)}*/}
-            {QR && qrHash && <>
-                <img style={{width:'100%'}} src={QR}  alt={qrHash}/>
-                <a href={QR} download="qrcode.png">Download</a>
+            {QR && qrHash && qrHash?.qrcode !== null && <>
+                <img style={{width:'100%'}} src={QR}  alt={qrHash.qrcode.hash}/>
+                <a href={QR} download={`qrcode_${roomHash.split('-')[0]}.png`}>Download</a>
+                <Button onClick={()=> navigate(`/attendee/${qrHash.qrcode.hash}`, {replace: true})}>Перейти (тест)</Button>
             </>}
 
             {!qrHash || qrHash?.qrcode === null && <Button onClick={onCreate}>Create a QR</Button>}

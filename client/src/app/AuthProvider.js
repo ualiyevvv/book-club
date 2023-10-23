@@ -146,7 +146,7 @@ export function AuthProvider({ children }) {
     const makeAttendee = async (userId, qrHash) => {
         setLoading(true)
         try {
-            const response = await UserService.makeAttendee(userId, qrHash);
+            const response = await UserService.attend(userId, qrHash);
 
             return response.data
         } catch (e) {

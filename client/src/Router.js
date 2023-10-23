@@ -28,7 +28,7 @@ import PageNew from "./middlewares/PageNew";
 import PageAuthed from "./middlewares/PageAuthed";
 import PageAdmin from "./middlewares/PageAdmin";
 import AdminAllInOne from "./pages/manager/AdminAllInOne";
-import AttendeePage from "./pages/business_client/AttendeePage";
+import AttendancePage from "./pages/business_client/AttendancePage";
 
 
 const Router = () => {
@@ -148,7 +148,7 @@ const Router = () => {
 				<Route path={':qrHash'} element={
 					// <ProtectedPage>
 					<PageNew>
-						<AttendeePage />
+						<AttendancePage />
 					</PageNew>
 					// </ProtectedPage>
 				}/>

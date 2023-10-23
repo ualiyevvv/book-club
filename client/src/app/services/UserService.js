@@ -5,7 +5,7 @@ export default class UserService {
         return $api.get('/user');
     }
 
-    static async makeAttendee(userId, qrHash) {
+    static async attend(userId, qrHash) {
         return $api.post('/attendee', {userId, qrHash});
     }
 }
