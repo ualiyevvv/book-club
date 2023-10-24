@@ -77,7 +77,7 @@ export default function AttendancePage() {
         return navigate('/authn')
     }
 
-    if (isLoading) {
+    if (isLoading || !attendeeResponse) {
         return <Overlay><Loader /></Overlay>
     }
 
@@ -97,7 +97,8 @@ export default function AttendancePage() {
                         <Typography align={'center'} size={24} weight={700}>🥳 Поздравляем у тебя новый уровень 🥳</Typography>
                     </Block>
                     <Block isAlignCenter={true} bottom={40}>
-                        <Typography align={'center'} size={18} weight={500}>Теперь твой голос весит <b>{attendeeResponse?.level.level_score}</b> очков. Продолжай в том же духе 🌟</Typography>
+                        <Typography align={'center'} size={18} weight={500} bottom={10}>Теперь твой голос весит <b>{attendeeResponse?.level.level_score}</b> очков.</Typography>
+                        <Typography align={'center'} size={18} weight={500}>Продолжай в том же духе 🌟</Typography>
                     </Block>
                     <Block>
                         <Button onClick={() => navigate('/')} isBgLight={true} bottom={10}>На главную</Button>

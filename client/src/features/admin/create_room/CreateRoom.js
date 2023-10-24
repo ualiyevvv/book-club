@@ -58,7 +58,7 @@ const CreateRoom = ({toggle}) => {
         <Block isAlignCenter={true} bottom={15}>
             <Typography size={24} weight={600} bottom={20}>Create a room</Typography>
             <Input type={'text'} value={roomName} placeHolder={'room name'} name={'name'} onChange={(e) => setRoomName(e.target.value)} />
-            <Input type={'date'} value={roomEndDate} placeHolder={'room end date'} name={'end_date'} onChange={(e) => setRoomEndDate(e.target.value)} />
+            <Input type={'datetime-local'} value={roomEndDate} placeHolder={'room end date'} name={'end_date'} onChange={(e) => setRoomEndDate(e.target.value)} />
             <Input type={'text'} value={roomTgGroupId} placeHolder={'room tg id'} name={'tg_group_id'} onChange={(e) => setTgGroupId(e.target.value)} />
             <Button onClick={createRoom}>Отправить</Button>
         </Block>

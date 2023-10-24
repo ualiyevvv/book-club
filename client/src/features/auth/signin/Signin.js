@@ -25,7 +25,7 @@ export default function SignIn({ }){
 
     const {seconds, isRunning, startTimer} = useTimer()
     const [isTryLink, setIsTryLink] = useState(false);
-    const timeOutConfig = 20; // seconds for timeout
+    const timeOutConfig = 60; // seconds for timeout
 
     // useEffect(() => {
     //     if (error !== '') {
@@ -54,7 +54,7 @@ export default function SignIn({ }){
                 return setMessage('Введите код активации, отправленный на почту')
             } else if (!isNumericValid) {
                 return setMessage('Код должен состоять из цифр')
-            } else if (code.length > 6) {
+            } else if (code.length !== 6) {
                 return setMessage('Код должен состоять из 6ти цифр')
             }
 
