@@ -1,4 +1,4 @@
-## Book Club Front-end
+## Book App Front-end
 
 ## Installation
 [README.md](README.md)
