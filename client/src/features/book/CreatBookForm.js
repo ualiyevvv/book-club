@@ -42,7 +42,7 @@ export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
     const debouncedSearch = debounce(search, 300); // Создаем дебаунсированную версию функции search
 
     useEffect(() => {
-        console.log(searchTerm);
+        // console.log(searchTerm);
 
         // Отменяем предыдущий запрос
         abortController.abort();
@@ -73,7 +73,7 @@ export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
             });
 
             const result = await response.json();
-            console.log(result);
+            // console.log(result);
             setTotalSearchItems(result.totalItems);
 
             const items = result.items;
@@ -98,7 +98,7 @@ export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
 
             setSearchResults(bookSearchResultItems);
         } catch (error) {
-            console.error('Ошибка при загрузке данных:', error);
+            // console.error('Ошибка при загрузке данных:', error);
         }
 
         setIsLoading(false);
@@ -132,13 +132,13 @@ export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
         })
             .then(response => {
                 if (!response.ok) {
-                    console.log(response)
+                    // console.log(response)
                     throw new Error('Произошла ошибка при отправке запроса');
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('Ответ от сервера:', data);
+                // console.log('Ответ от сервера:', data);
                 setBookOffer(null)
                 setSearchTerm('')
                 setSearchResults([])
@@ -146,7 +146,7 @@ export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
                 getOffersByRoomHash(roomHash)
             })
             .catch(error => {
-                console.error(error);
+                // console.error(error);
             });
     }
 

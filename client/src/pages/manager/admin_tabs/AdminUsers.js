@@ -42,7 +42,7 @@ export default function AdminUsers() {
                         <TableRow key={user.id}>
                             <td>{user.id}</td>
                             <td>{user.name}</td>
-                            <td>{user.level_id}</td>
+                            <td>{user.levelId}</td>
                             <td>{user.email}</td>
                             <td>{user.email_confirmed ? format(new Date(user.email_confirmed), 'dd MMMM yyyy, HH:mm', {locale: ruLocale}) : 'NULL'}</td>
                             <td>{user.tg_id}</td>

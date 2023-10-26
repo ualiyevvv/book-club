@@ -17,13 +17,14 @@ import TelegramAttachModal from "../../features/telegram_attach/TelegramAttachMo
 import Modal from "../../shared/ui/modal/Modal";
 import TelegramAttach from "../../features/telegram_attach/TelegramAttach";
 import {useNavigate} from "react-router-dom";
+import VoteList from "../../features/vote_list/VoteList";
 
 export default function ChooseBook({item, roomHash, isRoomEnd}) {
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log('CHOOOSEE VOOTE', item)
+        // console.log('CHOOOSEE VOOTE', item)
     }, []);
 
     const {isAuth, user, voteViewSettingValue, offerHandler} = useAuth();
@@ -31,14 +32,15 @@ export default function ChooseBook({item, roomHash, isRoomEnd}) {
 
     const [isActive, toggle] = useToggle(false);
     const [isTgActive, toggleTg] = useToggle(false);
+    const [isVotelistActive, toggleVotelist] = useToggle();
     const {isVoteLoading, sendVote} = useVote();
     const [isVoteSent, setIsVoteSent] = useState()
 
     useEffect(() => {
         setIsVoteSent(item.votes?.find(vote => vote.userId === user?.id))
-        console.log('ChooseBook', item)
+        // console.log('ChooseBook', item)
     }, [item]);
-    
+
     function onSendVote() {
         if (!isAuth) {
             navigate('/authn', {replace: true})
@@ -56,6 +58,9 @@ export default function ChooseBook({item, roomHash, isRoomEnd}) {
         {isTgActive && <Modal minWidth={340} maxWidth={480} height={'80%'} onClose={toggleTg}>
             <TelegramAttach tg_startHash={user?.tg_startHash} onClose={toggleTg} />
         </Modal>}
+        {isVotelistActive && <Modal minWidth={340} maxWidth={480} height={'80%'} onClose={toggleVotelist}>
+            <VoteList votes={item.votes}/>
+        </Modal>}
         { isActive && <BookInfo item={item} onClose={toggle}/> }
         {isVoteLoading && <Overlay><Loading /></Overlay>}
 
@@ -64,7 +69,7 @@ export default function ChooseBook({item, roomHash, isRoomEnd}) {
                 <div className={styles['ChooseBook__user']}>
                     {/*<div className="author__avatar"></div>*/}
                     <div className={styles['user__name']}>
-                        <strong>{item.user.email} </strong>
+                        <strong>{item.user.name} </strong>
                         <span>предложил книгу {formatRelative(new Date(item.createdAt), new Date(), {locale: ruLocale})}</span>
                     </div>
                     {item?.comment &&
@@ -89,10 +94,9 @@ export default function ChooseBook({item, roomHash, isRoomEnd}) {
                     <Link text={'Узнать подробнее'} onClick={toggle} />
                 </Block>
             </div>
-
             {isRoomEnd ? <div style={{position: "relative"}}>
                 Голосование завершено
-                {voteViewSettingValue == 1 && <Badge right={0} bottom={0} air={true} text={'Голосов ' + item.votes_count} />}
+                {voteViewSettingValue == 1 && <Badge right={0} bottom={0} air={true} text={'Баллы ' + item.total_scores} />}
             </div> : <>
                 <Button badge={true} size={'small'} variant={'outline'} onClick={onSendVote}>
 
@@ -100,8 +104,15 @@ export default function ChooseBook({item, roomHash, isRoomEnd}) {
                             ? 'Отменить голос'
                             : 'Проголосовать ✋'
                         }
-                    {voteViewSettingValue == 1 && <Badge top={-15}  air={true} text={'Голосов ' + item.votes_count} />}
+                    {voteViewSettingValue == 1 && <Badge top={-15}  air={true} text={'Баллы ' + item.total_scores} />}
                 </Button>
+            </>}
+
+            {item.votes.length > 0 && <>
+                <Block bottom={15}></Block>
+                <Block isAlignCenter={true}>
+                    <Link text={'Посмотреть список голосов'} onClick={toggleVotelist} />
+                </Block>
             </>}
         </div>
     </>)

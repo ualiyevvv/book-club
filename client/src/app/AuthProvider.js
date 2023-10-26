@@ -81,7 +81,7 @@ export function AuthProvider({ children }) {
         try {
             const response = await AuthService.checkCode(email, code);
 
-            console.log('STOREEEEE RESPONSE SERVER API', response)
+            // console.log('STOREEEEE RESPONSE SERVER API', response)
             localStorage.setItem('token', response.data.accessToken);
             setAuth(true)
             setUser(response.data.user)
@@ -122,7 +122,7 @@ export function AuthProvider({ children }) {
             localStorage.setItem('token', response.data.accessToken);
             setAuth(true)
             setUser(response.data.user)
-            console.log('AXIOOOOS', response.data.user)
+            // console.log('AXIOOOOS', response.data.user)
 
         } catch (e) {
             // console.log(e.response?.data?.message)

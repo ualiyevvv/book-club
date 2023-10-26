@@ -19,14 +19,16 @@ export default function VoteStatistics({title='', onClose, offers}) {
             {offers.length > 0 &&
                 <Table>
                     <TableHead>
-                        <TableRow isHead={true}>Book</TableRow>
-                        <TableRow isHead={true}>Votes</TableRow>
+                        <TableRow isHead={true}>Книга</TableRow>
+                        <TableRow isHead={true}>Баллы</TableRow>
+                        <TableRow isHead={true}>Кол-во голосов</TableRow>
                     </TableHead>
                     <TableBody Loader={<Loader color={'black'}/>}>
                         { offers.map( offer => (<>
                             <TableRow key={offer.id}>
                                 <td>{offer.info.title}</td>
-                                <td>{offer.votes_count}</td>
+                                <td>{offer.total_scores}</td>
+                                <td>{offer.votes.length}</td>
                             </TableRow>
                         </>))}
                     </TableBody>

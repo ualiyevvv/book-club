@@ -81,7 +81,7 @@ export default function MobileRoom({roomHash, roomData, offers=[]}) {
     function onCreateOffer() {
         if (!isAuth) {
             navigate('/authn', {replace: true})
-            console.log('IS AUTH', isAuth)
+            // console.log('IS AUTH', isAuth)
         } else {
             toggleCreateBookModal()
         }

@@ -1,5 +1,4 @@
 import React, {useContext, useEffect} from 'react';
-import {useAppContext} from "./context/AppContext";
 import Router from "./Router";
 import useTheme from "./hooks/useTheme";
 

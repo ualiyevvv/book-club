@@ -37,7 +37,7 @@ export default function BookInfoWidget({book, votes}) {
     }
 
     useEffect(() => {
-        console.log('book info widg',book, votes)
+        // console.log('book info widg',book, votes)
     }, []);
 
     return (<>

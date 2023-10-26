@@ -4,6 +4,6 @@ export default function BooksCounter({isVote=false, booksLength=0, currentCounte
 
     return (<div className={`${styles.BooksCounter} ${isVote && styles['BooksCounter--vote']}`} >
         {!isVote && <><span>{currentCounter} / </span>{booksLength}</>}
-        {isVote && <><span>{currentCounter} </span>✋</>}
+        {isVote && <>Баллов <span>{currentCounter}</span></>}
     </div>)
 }

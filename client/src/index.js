@@ -6,7 +6,6 @@ import {BrowserRouter} from "react-router-dom";
 import Main from "./Main";
 
 import './assets/css/global.css';
-import {StoreContextProvider} from "./app/store/Store";
 import {AuthProvider} from "./app/AuthProvider";
 
 

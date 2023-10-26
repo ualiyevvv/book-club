@@ -15,7 +15,7 @@ export default function PageNew({children}) {
         // if (user == null) {
             if(localStorage.getItem('token')) {
                 checkAuth()
-                console.log(user)
+                // console.log(user)
             } else {
                 setLoading(false)
             }

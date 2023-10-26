@@ -11,6 +11,7 @@ export default function VoteViewSettings({title='', onClose}) {
 
     const {setVoteViewSettingValue} = useAuth()
     function onSubmit(value) {
+        localStorage.setItem('voteViewSettingValue', value)
         setVoteViewSettingValue(value)
         onClose()
     }
@@ -21,7 +22,7 @@ export default function VoteViewSettings({title='', onClose}) {
                 <Typography align={'center'} weight={700} size={24}>{title}</Typography>
             </Block>
             <GroupButtons top={20}>
-                <Button type={'submit'} onClick={() => onSubmit(1)}>Показывать 👀</Button>
+                <Button onClick={() => onSubmit(1)}>Показывать 👀</Button>
                 <Button variant={'cancel'} onClick={() => onSubmit(2)}>Не показывать 🧿</Button>
             </GroupButtons>
         </form>

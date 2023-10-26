@@ -28,7 +28,7 @@ const New = () => {
     }, []);
 
     useEffect(() => {
-        console.log('ROOMS',rooms)
+        // console.log('ROOMS',rooms)
     }, [rooms])
 
     if (isLoading) {

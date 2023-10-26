@@ -27,7 +27,7 @@ export default function Drawer({title, onClose=f=>f, children, isDrawerActive=fa
     };
 
     const handleTouchStart = (event) => {
-        console.log('TOOOUCH DRAWER HEADER')
+        // console.log('TOOOUCH DRAWER HEADER')
         // scrollableComponent.style.overflowY = 'hidden';
         // event.preventDefault(); // Предотвращаем прокрутку страницы
         setStartY(event.touches[0].clientY);

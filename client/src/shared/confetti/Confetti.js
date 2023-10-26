@@ -6,7 +6,7 @@ export default function MyConfetti() {
     const { width, height } = useWindowSize()
 
     useEffect(() => {
-        console.log('confietttiiiiiii')
+        // console.log('confietttiiiiiii')
     }, [])
 
     return (<div style={{zIndex: 99}}>

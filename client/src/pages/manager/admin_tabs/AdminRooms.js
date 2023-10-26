@@ -12,6 +12,7 @@ import Button from "../../../shared/ui/button/Button";
 import useToggle from "../../../hooks/useToggle";
 import CreateRoomModal from "../../../features/admin/create_room/CreateRoomModal";
 import GetQrModal from "../../../features/admin/get_qr/GetQrModal";
+import Badge from "../../../shared/ui/badge/Badge";
 
 export default function AdminRooms() {
 
@@ -59,7 +60,7 @@ export default function AdminRooms() {
                             <td>{room.id}</td>
                             <td>{room.name}</td>
                             <td>{room.tg_group_id}</td>
-                            <td>{room.status}</td>
+                            <td>{room.status} {new Date(room.end_date) < new Date() && <Badge text={'Завершен'} />}</td>
                             <td>{room.roomHash}</td>
                             <td>{room.end_date ? format(new Date(room.end_date), 'dd MMMM yyyy, HH:mm', {locale: ruLocale}) : 'NULL'}</td>
                             <td>{room.createdAt ? format(new Date(room.createdAt), 'dd MMMM yyyy, HH:mm', {locale: ruLocale}) : 'NULL'}</td>

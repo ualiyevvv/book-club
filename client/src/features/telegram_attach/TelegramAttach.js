@@ -1,11 +1,13 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import Typography from "../../shared/ui/typography/Typography";
 import Block from "../../shared/ui/block/Block";
 import Button from "../../shared/ui/button/Button";
 import {useAuth} from "../../app/AuthProvider";
 import {useNavigate} from "react-router-dom";
-export default function TelegramAttach({tg_startHash, onClose=f=>f}) {
+export default function TelegramAttach({onClose=f=>f}) {
 
+    const {user} = useAuth()
+    const [tg_startHash, setTgStartHash] = useState(user.tg_startHash)
 
     function onClick() {
         onClose()

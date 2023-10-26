@@ -46,7 +46,7 @@ export default function OfferDrawer({roomHash, setIsDrawerActive, isDrawerActive
 
     return (<>
         {isTgAttchModal && <Modal minWidth={340} maxWidth={480} height={'80%'} onClose={toggleTgAttch}>
-            <TelegramAttach tg_startHash={user.tg_startHash} onClose={toggleTgAttch} />
+            <TelegramAttach onClose={toggleTgAttch} />
         </Modal>}
 
         {isVoteLoading && <Overlay><Loader/></Overlay>}
@@ -54,10 +54,13 @@ export default function OfferDrawer({roomHash, setIsDrawerActive, isDrawerActive
             onClose={setIsDrawerActive}
             isDrawerActive={isDrawerActive}
             Buttons={<>
-                { voteViewSettingValue == 1 && <BooksCounter isVote={true} currentCounter={offer.votes?.length} /> }
+                {/*{ voteViewSettingValue == 1 && <BooksCounter isVote={true} currentCounter={offer.votes?.length} /> }*/}
+                { voteViewSettingValue == 1 && <BooksCounter isVote={true} currentCounter={offer.total_scores} /> }
                 {!isRoomEnd && <>
                     {isVoteSent
                         ? <Button width={'100%'} onClick={onSendVote} isBgLight={true}>Отменить голос</Button>
+                        // в проголосовать (+N баллов), но нужно делать запрос на level по user.levelId и получить level_score,
+                        // либо в userDto отдавать include level, либо level_score хранить в поле user
                         : <Button width={'100%'} onClick={onSendVote} isBgLight={true} variant={'yellow'}>Проголосовать ✋</Button>
                     }
                 </>}

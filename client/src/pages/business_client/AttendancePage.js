@@ -57,11 +57,11 @@ export default function AttendancePage() {
                 .then(data => {
                     setAttendeeResponse(data)
                     // Handle the data from the response
-                    console.log(data);
+                    // console.log(data);
                 })
                 .catch(error => {
                     // Handle any errors that occurred during the fetch
-                    console.error('Error:', error);
+                    // console.error('Error:', error);
                 });
         }
 
@@ -69,7 +69,7 @@ export default function AttendancePage() {
     }, [])
 
     useEffect(() => {
-        console.log('attendeeResponse', attendeeResponse)
+        // console.log('attendeeResponse', attendeeResponse)
     }, [attendeeResponse]);
 
 
@@ -97,7 +97,7 @@ export default function AttendancePage() {
                         <Typography align={'center'} size={24} weight={700}>🥳 Поздравляем у тебя новый уровень 🥳</Typography>
                     </Block>
                     <Block isAlignCenter={true} bottom={40}>
-                        <Typography align={'center'} size={18} weight={500} bottom={10}>Теперь твой голос весит <b>{attendeeResponse?.level.level_score}</b> очков.</Typography>
+                        <Typography align={'center'} size={18} weight={500} bottom={10}>Теперь твой голос весит {attendeeResponse?.level.level_score} баллов.</Typography>
                         <Typography align={'center'} size={18} weight={500}>Продолжай в том же духе 🌟</Typography>
                     </Block>
                     <Block>
@@ -106,13 +106,16 @@ export default function AttendancePage() {
                 </Modal>
                 <MyConfetti />
             </>}
+
+
             {attendeeResponse?.attendees_count && <>
                 <Modal minWidth={340} maxWidth={600}>
                     <Block isAlignCenter={true} bottom={20}>
                         <Typography align={'center'} size={24} weight={700}>Участие подтверждено ✅</Typography>
                     </Block>
                     <Block isAlignCenter={true} bottom={40}>
-                        <Typography align={'center'} size={18} weight={500}>Ухты, это уже твое <b>{attendeeResponse?.attendees_count}</b> участие. Спасибо за вовлеченность 🤗</Typography>
+                        <Typography align={'center'} size={18} weight={500} bottom={10}>Ухты, это уже твое {attendeeResponse?.attendees_count.length} участие.</Typography>
+                        <Typography align={'center'} size={18} weight={500}> Спасибо за вовлеченность 🤗</Typography>
                     </Block>
                     <Block>
                         <Button onClick={() => navigate('/')} isBgLight={true} bottom={10}>На главную</Button>
@@ -120,6 +123,7 @@ export default function AttendancePage() {
                 </Modal>
                 <MyConfetti />
             </>}
+
             {attendeeResponse?.status === 'Already attend' && <Modal minWidth={340} maxWidth={600}>
                 <Block isAlignCenter={true} bottom={20}>
                     <Typography align={'center'} size={24} weight={700}>Упс 🙊</Typography>
