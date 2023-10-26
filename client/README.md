@@ -1,4 +1,4 @@
-## Concierge Front-end
+## Book Club Front-end
 
 ## Getting Started
 These instructions will help you start and run a copy of the project on your local computer for development and testing purposes.
@@ -14,7 +14,7 @@ $ cd ./client
 ```
 
 ## Installation
-
+[README.md](README.md)
 To install and set up the libraries, run:
 ```sh    
 $ npm install
