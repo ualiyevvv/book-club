@@ -5,6 +5,8 @@ import Button from "../../../shared/ui/button/Button";
 import Block from "../../../shared/ui/block/Block";
 import {useAuth} from "../../../app/AuthProvider";
 import Typography from "../../../shared/ui/typography/Typography";
+import Overlay from "../../../shared/ui/overlay/Overlay";
+import Loader from "../../../shared/ui/loader/Loader";
 const CreateRoom = ({toggle}) => {
 
     const {roomHandler} = useAuth();
@@ -13,6 +15,7 @@ const CreateRoom = ({toggle}) => {
     const [roomName, setRoomName] = useState('')
     const [roomEndDate, setRoomEndDate] = useState('')
     const [roomTgGroupId, setTgGroupId] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const {user} = useAuth()
 
@@ -21,6 +24,7 @@ const CreateRoom = ({toggle}) => {
     }
     function createRoom() {
 
+        setIsLoading(true)
         const room = {
             name: roomName,
             tg_group_id: roomTgGroupId,
@@ -51,10 +55,13 @@ const CreateRoom = ({toggle}) => {
             .catch(error => {
                 console.error(error);
             });
+        setIsLoading(false)
     }
 
 
+
     return (<>
+        {isLoading && <Overlay><Loader/></Overlay>}
         <Block isAlignCenter={true} bottom={15}>
             <Typography size={24} weight={600} bottom={20}>Create a room</Typography>
             <Input type={'text'} value={roomName} placeHolder={'room name'} name={'name'} onChange={(e) => setRoomName(e.target.value)} />

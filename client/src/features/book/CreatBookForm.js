@@ -6,6 +6,8 @@ import Input from "../../shared/ui/input/Input";
 import Typography from "../../shared/ui/typography/Typography";
 import TelegramAttachModal from "../telegram_attach/TelegramAttachModal";
 import {useAuth} from "../../app/AuthProvider";
+import Overlay from "../../shared/ui/overlay/Overlay";
+import Loader from "../../shared/ui/loader/Loader";
 
 export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
 
@@ -13,6 +15,7 @@ export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
     const {getOffersByRoomHash} = offerHandler
     // TODO !!!!! for searchResults если ничего не найдено обработать ошибку
     const [isLoading, setIsLoading] = useState(false);
+    const [isFromLoading, setIsFormLoading] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -114,6 +117,7 @@ export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
 
     async function sendBookOffer(item) {
         // console.log('ROOM HASH', roomHash)
+        setIsFormLoading(true)
         const bookOfferObjForSend = {
             info: JSON.stringify(item),
             comment: bookOfferComment,
@@ -148,9 +152,11 @@ export default function CreatBookForm({roomHash=null, setIsBookOffering=f=>f}) {
             .catch(error => {
                 // console.error(error);
             });
+        setIsFormLoading(false)
     }
 
     return (<>
+        {isFromLoading && <Overlay><Loader /></Overlay>}
         <div className={styles['CreateBook']}>
 
             <div className={styles['CreateBook__steps']}>
